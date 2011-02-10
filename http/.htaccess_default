@@ -1,0 +1,35 @@
+RewriteEngine On
+
+RewriteRule ^css/(.*)$ css/$1 [L]
+RewriteRule ^img/(.*)$ img/$1 [L]
+RewriteRule ^js/(.*)$ js/$1 [L]
+
+RewriteRule ^([a-z_]+)/example$ examples/$1 [L]
+
+RewriteRule ^snarm_explained/?$ snarm_explained.php
+RewriteRule ^current/spec/?$ current_spec.php
+RewriteRule ^generic/spec/?$ generic_spec.php
+RewriteRule ^upload_specs/?$ upload_specs.php
+RewriteRule ^urlencoder/?$ urlencoder.php
+RewriteRule ^swbrowsers/?$ swbrowsers.php
+RewriteRule ^sparql/?$ sparql.php
+RewriteRule ^howtosparql/?$ howtosparql.php
+RewriteRule ^ore/?$ ore.php
+
+RewriteRule ^[A-Z].* rdfredirect.php
+
+
+<Files ~ "private|current|upload_specs|rdfgen">
+  	Order deny,allow
+ 	Deny from all
+ 	AuthName "Secure myExperiment Area"
+  	AuthUserFile /home/drn05r/hg-repos/linkeddata/http/.htpass
+  	AuthType Basic
+  	Require valid-user
+  	allow from 127.0.0.1
+        allow from 152.78.189.65
+        allow from 152.78.65.3
+	allow from 152.78.189.69
+        Satisfy Any
+</Files>
+
