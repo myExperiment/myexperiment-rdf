@@ -38,4 +38,5 @@
 
 	//Use rake for generating workflow component XML
 	$use_rake=TRUE;
+	$rails_env="production";
 ?>
