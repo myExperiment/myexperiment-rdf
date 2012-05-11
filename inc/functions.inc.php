@@ -487,9 +487,9 @@ function getProxyFor($entity){
         return $xml;
 }
 function writeDataflowToFile($wfvid,$ent_uri,$fileloc,$content_type){
-	global $myexppath, $rakepath;
+	global $myexppath, $rakepath, $rails_env;
 	require_once('xmlfunc.inc.php');
-	$ph=popen("cd $myexppath; ".$rakepath."rake RAILS_ENV=production myexp:workflow:components ID=$wfvid | grep -v '^(in' 2>/dev/null",'r');
+	$ph=popen("cd $myexppath; ".$rakepath."rake RAILS_ENV=$rails_env myexp:workflow:components ID=$wfvid | grep -v '^(in' 2>/dev/null",'r');
         $xml="";
         while(!feof($ph)){
 	        $xml.=fgets($ph);
