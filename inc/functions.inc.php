@@ -517,7 +517,7 @@ function getDataflowComponents($entity,$type,$retrieve=true){
 	$wfv=mysql_fetch_assoc($res);
 	$ent_uri=$datauri."workflows/$wfv[workflow_id]/versions/$wfv[version]";
         if ($wfv['mime_type']=='application/vnd.taverna.t2flow+xml') $df_uri="$ent_uri#dataflows/1";
-        else $df_uri=$datauri."$ent_uri#dataflow";
+        else $df_uri="$ent_uri#dataflow";
 	$fileloc=$comp_path.$wfv['id'];
 	if (!file_exists($fileloc)) writeDataflowToFile($wfv['id'],$ent_uri,$fileloc,$wfv['mime_type']);
 	$lines=file($fileloc);

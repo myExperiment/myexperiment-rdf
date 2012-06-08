@@ -459,7 +459,7 @@ function generateDataflows($dataflows,$ent_uri){
 					if (substr($prop['value'],0,7)!="http://") $prop['value']=$dfmap[$prop['value']];
 					$rdf.="        <".$prop['type']." rdf:resource=\"$prop[value]\"/>\n";
 				}
-                       		else $rdf.="        <".$prop['type']." rdf:resource=\"$dfuri/components/".urlencode($prop['value'])."\"/>\n";
+                       		elseif (isset($prop['value'])) $rdf.="        <".$prop['type']." rdf:resource=\"$dfuri/components/".urlencode($prop['value'])."\"/>\n";
                 	}
                 	$rdf.="        <mecomp:belongs-to-workflow rdf:resource=\"$ent_uri\"/>\n      </mecomp:$comptype>\n    </mecomp:has-component>\n";          
         	}
@@ -561,7 +561,8 @@ function processGalaxyComponents($allcomponents,$ent_uri){
 function processRapidMinerComponents($allcomponents,$ent_uri,$content_type,$nested=0){
 	$components=array();
 	if ($nested==0) $mainprocesscomps=$allcomponents[0]['children'][0]['children'][0]['children'];
-	else $mainprocesscomps=$allcomponents[0]['children'];
+	elseif (isset($allcomponents[0]['children'])) $mainprocesscomps=$allcomponents[0]['children'];
+	else $mainprocesscomps=array();
 	$c=1;
 	foreach ($mainprocesscomps as $mpcomp){
 		$props=array();
