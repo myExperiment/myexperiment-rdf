@@ -37,9 +37,9 @@
                 $wget="wget -q -O /tmp/wfvc_$wfvid.xml -o /dev/null '${datauri}workflow.xml?id=$wfv[workflow_id]&versions=$wfv[version]&elements=components'";
                 exec($wget);
                 $parsedxml=parseXML(implode("",file("/tmp/wfvc_$wfvid.xml")));
+		if (!isset($parsedxml[0]['children'][0]['children'])) continue;
                 $wfvc=$parsedxml[0]['children'][0]['children'];
-                if ($wfv['mime_type']=='application/vnd.taverna.t2flow+xml') $ent_uri=$datauri."workflows/$wfv[workflow_id]/versions/$wfv[version]#dataflows/1";
-                else $ent_uri=$datauri."workflows/$wfv[id]/versions/$wfv[version]#dataflow";
+		$ent_uri=$datauri."workflows/$wfv[workflow_id]/versions/$wfv[version]";
                 $dataflows=tabulateDataflowComponents($wfvc,$ent_uri,$wfv['mime_type']);
                 $fh=fopen($filelocdir.$wfvid,'w');
                 if ($dataflows) fwrite($fh,generateDataflows($dataflows,$ent_uri));
