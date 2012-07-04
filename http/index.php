@@ -25,7 +25,7 @@ Object Reuse and Exchange Homepage">OAI-ORE</a>, that can be assembled to build 
   <p>All myExperiment's public RDF data can queried using the query language SPARQL at <a href="sparql">myExperiment's SPARQL Endpoint</a>.  An introduction to SPARQL with a guide to querying myExperiment RDF <a href="howtosparql">is available here</a>.</p>
 
   <h3>Vocabulary of Interlinked Datasets (VoID)</h3>
-  <p>A <a href="void.rdf">description of myExperiment RDF</a> is specified in <a href="http://vocab.deri.ie/void" title="voiD Homepage">voiD</a>.  One thing voiD encourages is the publication of RDF datasets so they can easily be reused by others rather than having to crawl each NIR for its RDF.  An <a href="myexperiment.rdf">RDF dumpof all myExperiment's Public data</a> is available for download. (N.B. the file is gzip transfer-encoded, to make it quicker to download) .</p>
+  <p>A <a href="void.rdf">description of myExperiment RDF</a> is specified in <a href="http://vocab.deri.ie/void" title="voiD Homepage">voiD</a>.  One thing voiD encourages is the publication of RDF datasets so they can easily be reused by others rather than having to crawl each NIR for its RDF.  An <a href="myexperiment.rdf">RDF dump of all myExperiment's Public data</a> is available for download. (N.B. the file is gzip transfer-encoded, to make it quicker to download) .</p>
 
  <br/>
 <?php include('footer.inc.php'); ?>
