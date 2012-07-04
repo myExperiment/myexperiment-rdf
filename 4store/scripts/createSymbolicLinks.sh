@@ -5,7 +5,7 @@ if [ -e $LD_PATH/http/myexperiment.rdf.gz ]; then
 	rm $LD_PATH/http/myexperiment.rdf.gz
 fi
 ln -s $DATA_PATH/$TRIPLESTORE/myexperiment.rdf.gz  $LD_PATH/http/myexperiment.rdf.gz
-echo "Created Symbolic Link for myexperiment.rdf.gz"
+echo "Created Symbolic Link for myexperiment.rdf (gzipped for transfer-encoding)"
 
 if [ -e $LD_PATH/http/ontologies/spec.html ]; then
         rm $LD_PATH/http/ontologies/spec.html
