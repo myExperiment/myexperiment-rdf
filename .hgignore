@@ -11,8 +11,8 @@ http/.htaccess
 http/linksets
 http/void.rdf
 http/myexperiment.rdf
+http/myexp_data_and_ontologies.zip
 http/ontologies/spec.html
-http/ontologies/myexp_reasoned.owl
 rdfgen/entity_sizes.txt
 http/nif/*
 settings.bash

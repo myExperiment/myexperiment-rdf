@@ -70,6 +70,9 @@ Examples
 ./sqs.sh <triplestore> data-dump
   <triplestore> = [ $TRIPLESTORE ]
 
+./sqs.sh <triplestore> generate-data-and-ontologies-zip
+  <triplestore> = [ $TRIPLESTORE ]
+
 ./sqs.sh <triplestore> generate-linksets
   <triplestore> = [ $TRIPLESTORE ]
 

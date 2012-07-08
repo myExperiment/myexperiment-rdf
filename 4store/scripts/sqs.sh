@@ -143,12 +143,15 @@ import(){
 }
 update(){
         check_triplestore $1
-	update-database
+	if [ "$2" != "no-db-update" ]; then
+		update-database
+	fi
         check-versions $1
 	generate-dataflows-rdf $1
 	data-dump $1
 	import $1
 	check-entity-sizes
+        generate-data-and-ontologies-zip $1
 	generate-spec $1
 	generate-linksets $1
 	generate-voidspec $1
@@ -167,7 +170,7 @@ count-triples(){
 }
 generate-dataflows-rdf(){
 	echo "[`date +%T`] Generating Dataflow RDF"
-	$PHPEXEC_PATH/php $STORE4_PATH/scripts/generateDataflowRDF.php $1
+	`which php` $STORE4_PATH/scripts/generateDataflowRDF.php
 }
 generate-spec(){
 	if [ $1 == $TRIPLESTORE ]; then
@@ -191,7 +194,7 @@ data-dump(){
 }
 generate-linksets(){
 	check_triplestore $1
-	for l in `cat ../config/linksets.txt`; do
+	for l in `cat $STORE4_PATH/config/linksets.txt`; do
 	        linkset=`echo $l | awk 'BEGIN{FS="|"}{print $1}'`
         	linkseturi=`echo $l | awk 'BEGIN{FS="|"}{print $2}'`
 	        $STORE4EXEC_PATH/4s-query -f text --soft-limit=1000000 $1 "select * where { ?s ?p ?o . FILTER(isURI(?o) && REGEX(STR(?o),'^$linkseturi+','i'))}" | grep "^<" | sed "s/$/ ./g" > $DATA_PATH/$1/linksets/myExperiment-$linkset.nt
@@ -202,8 +205,8 @@ generate-voidspec(){
 	check_triplestore $1
 	notriples=`cat $STORE4_PATH/log/${1}_datadump_triples.log`
 	outputfile="$DATA_PATH/${1}/void.rdf"
-	cat ../config/voidbase.rdf | sed "s/NO_OF_TRIPLES/$notriples/" > $outputfile
-	for l in `cat ../config/linksets.txt`; do
+	cat $STORE4_PATH/config/voidbase.rdf | sed "s/NO_OF_TRIPLES/$notriples/" > $outputfile
+	for l in `cat $STORE4_PATH/config/linksets.txt`; do
         	linkset=`echo $l | awk 'BEGIN{FS="|"}{print $1}'`
 	        linkseturi=`echo $l | awk 'BEGIN{FS="|"}{print $2}'`
         	objset=`echo $l | awk 'BEGIN{FS="|"}{print $3}'`
@@ -266,12 +269,23 @@ update-database(){
 	scp backup@tents:$filepath /tmp/
 	echo "[`date +%T`] Downloaded Latest myExperiment Database Snapshot: $filename"
 	if [ ${#MYSQL_PASSWORD} -gt 0 ]; then
-        	zcat /tmp/$filename | grep -v 'INSERT INTO `sessions`' | grep -v 'INSERT INTO `viewings`' | grep -v 'INSERT INTO `downloads`' | grep -v 'INSERT INTO `pictures`' | grep -v 'INSERT INTO `content_blobs`' | mysql -u $MYSQL_USERNAME -p$MYSQL_PASSWORD m2_production
-	else
-        	zcat /tmp/$filename | grep -v 'INSERT INTO `sessions`' | grep -v 'INSERT INTO `viewings`' | grep -v 'INSERT INTO `downloads`' | grep -v 'INSERT INTO `pictures`' | grep -v 'INSERT INTO `content_blobs`' | mysql -u $MYSQL_USERNAME m2_production
-	fi
+		mysqlpw="-p$MYSQL_PASSWORD"
+        fi	
+	zcat /tmp/$filename | egrep -v '^INSERT INTO `(activity_limits|downloads|key_permissions|oauth_|picture|previews|service|topic|viewings|workflow_processors)' | mysql -u $MYSQL_USERNAME $mysqlpw m2_production
 	echo "[`date +%T`] Uploaded SQL File ($filename) to MySQL"
 	rm -f /tmp/$filename
+}
+
+generate-data-and-ontologies-zip(){
+	myexp_dao_tempdir=`mktemp -d /tmp/myexp_dao_XXXXX`
+	mkdir $myexp_dao_tempdir/myexp_data_and_ontologies
+	cd $myexp_dao_tempdir 
+	cp $DATA_PATH/$1/myexperiment.rdf myexp_data_and_ontologies/
+        cp $LD_PATH/http/ontologies/myexp_* myexp_data_and_ontologies/
+	zip -r myexp_data_and_ontologies myexp_data_and_ontologies/
+	mv myexp_data_and_ontologies.zip $DATA_PATH/$1/
+	rm -r $myexp_dao_tempdir
+	echo "[`date +%T`] Created myexp_data_and_ontologies.zip containing RDF graphs for all myExperiment's public data and ontologies."
 }
 	
 case "$2" in
@@ -374,6 +388,9 @@ case "$2" in
 	;;
   update-database)
 	update-database
+	;;
+  generate-data-and-ontologies-zip)
+  	generate-data-and-ontologies-zip $1
 	;;
   *)
 	$STORE4_PATH/scripts/sqs_help.sh

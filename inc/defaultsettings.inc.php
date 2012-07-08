@@ -19,8 +19,6 @@
         $datapath="/var/linkeddata/data/";
 	// Path to myExperiment as a Ruby-on-Rails application
         $myexppath="/var/rails/myexperiment/";
-	//The salt to encrypt hidden values
-        $salt="changeme";
 
 	 //Exec paths
         $store4execpath="/usr/local/bin/";
@@ -37,5 +35,6 @@
         //4store version info
         $store4versions="4Store (undefined), Raptor (undefined), Rasqal (undefined)";
 
-
+	//Use rake for generating workflow component XML
+	$use_rake=TRUE;
 ?>
