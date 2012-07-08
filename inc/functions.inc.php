@@ -489,7 +489,7 @@ function getProxyFor($entity){
 function writeDataflowToFile($wfvid,$ent_uri,$fileloc,$content_type){
 	global $myexppath;
 	require_once('xmlfunc.inc.php');
-	$ph=popen("cd $myexppath; rake myexp:workflow:components ID=$wfvid | grep -v '^(in' 2>/dev/null",'r');
+	$ph=popen("cd $myexppath; rake RAILS_ENV=production myexp:workflow:components ID=$wfvid | grep -v '^(in' 2>/dev/null",'r');
         $xml="";
         while(!feof($ph)){
 	        $xml.=fgets($ph);
@@ -508,7 +508,7 @@ function getDataflow($entity,$type){
 }
 
 function getDataflowComponents($entity,$type,$retrieve=true){
-	global $datauri,$datapath,$myexppath;
+	global $datauri,$datapath,$myexppath,$use_rake;
 	$comp_path=$datapath."dataflows/";
 	$sql="select workflow_versions.*, content_types.mime_type from workflow_versions inner join content_types on workflow_versions.content_type_id=content_types.id where ";
 	if ($type=="workflows") $sql.="version='$entity[current_version]' and workflow_id='$entity[id]'";
@@ -519,8 +519,13 @@ function getDataflowComponents($entity,$type,$retrieve=true){
         if ($wfv['mime_type']=='application/vnd.taverna.t2flow+xml') $df_uri="$ent_uri#dataflows/1";
         else $df_uri="$ent_uri#dataflow";
 	$fileloc=$comp_path.$wfv['id'];
-	if (!file_exists($fileloc)) writeDataflowToFile($wfv['id'],$ent_uri,$fileloc,$wfv['mime_type']);
-	$lines=file($fileloc);
+	if ($use_rake){
+		if (!file_exists($fileloc)) writeDataflowToFile($wfv['id'],$ent_uri,$fileloc,$wfv['mime_type']);
+		$lines=file($fileloc);
+	}
+	else{
+		return "";
+	}
 	if (trim($lines[0])=="NONE") return "";
 	elseif($retrieve==false) return $df_uri;
 	return implode("",$lines);

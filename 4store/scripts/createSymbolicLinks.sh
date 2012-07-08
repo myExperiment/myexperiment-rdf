@@ -7,17 +7,17 @@ fi
 ln -s $DATA_PATH/$TRIPLESTORE/myexperiment.rdf.gz  $LD_PATH/http/myexperiment.rdf.gz
 echo "Created Symbolic Link for myexperiment.rdf (gzipped for transfer-encoding)"
 
+if [ -e $LD_PATH/http/myexp_data_and_ontologies.zip ]; then
+        rm $LD_PATH/http/myexp_data_and_ontologies.zip
+fi
+ln -s $DATA_PATH/$TRIPLESTORE/myexp_data_and_ontologies.zip  $LD_PATH/http/myexp_data_and_ontologies.zip
+echo "Created Symbolic Link for myexperiment_data_and_ontologies.zip"
+
 if [ -e $LD_PATH/http/ontologies/spec.html ]; then
         rm $LD_PATH/http/ontologies/spec.html
 fi
 ln -s $DATA_PATH/$TRIPLESTORE/html/spec.html  $LD_PATH/http/ontologies/spec.html
 echo "Created Symbolic Link for spec.html"
-
-#if [ -e $LD_PATH/http/ontologies/myexp_reasoned.owl ]; then
-#        rm $LD_PATH/http/ontologies/myexp_reasoned.owl
-#fi
-#ln -s $DATA_PATH/$TRIPLESTORE/$TRIPLESTORE"_reasoned.owl" $LD_PATH/http/ontologies/myexp_reasoned.owl
-#echo "Created Symbolic Link for myexp_reasoned.owl"
 
 if [ -e $LD_PATH/http/linksets ]; then
         rm $LD_PATH/http/linksets
