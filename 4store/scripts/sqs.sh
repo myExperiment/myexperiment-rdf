@@ -269,9 +269,13 @@ update-database(){
 	scp backup@tents:$filepath /tmp/
 	echo "[`date +%T`] Downloaded Latest myExperiment Database Snapshot: $filename"
 	if [ ${#MYSQL_PASSWORD} -gt 0 ]; then
-		mysqlpw="-p$MYSQL_PASSWORD"
-        fi	
-	zcat /tmp/$filename | egrep -v '^INSERT INTO `(activity_limits|downloads|key_permissions|oauth_|picture|previews|service|topic|viewings|workflow_processors)' | mysql -u $MYSQL_USERNAME $mysqlpw m2_production
+		mysqlparams="-p${MYSQL_PASSWORD}"
+        fi
+        if [ ${#MYSQL_HOST} -gt 0 ]; then
+                mysqlparams="-h ${MYSQL_HOST} ${mysqlparams}"
+        fi
+	
+	zcat /tmp/$filename | egrep -v '^INSERT INTO `(activity_limits|downloads|key_permissions|oauth_|picture|previews|service|topic|viewings|workflow_processors)' | mysql -u $MYSQL_USERNAME $mysqlparams m2_production
 	echo "[`date +%T`] Uploaded SQL File ($filename) to MySQL"
 	rm -f /tmp/$filename
 }
