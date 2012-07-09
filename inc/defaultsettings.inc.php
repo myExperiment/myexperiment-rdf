@@ -23,6 +23,7 @@
 	 //Exec paths
         $store4execpath="/usr/local/bin/";
         $phppath="/usr/bin/";
+        $rakepath="/home/myexperiment/local/bin/";
 
 	//Triplestore name
         $triplestore="myexp_public";
