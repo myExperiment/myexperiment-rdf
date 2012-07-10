@@ -23,7 +23,7 @@
 	 //Exec paths
         $store4execpath="/usr/local/bin/";
         $phppath="/usr/bin/";
-        $rakepath="/home/myexperiment/local/bin/";
+	$rakepath="";
 
 	//Triplestore name
         $triplestore="myexp_public";
@@ -33,8 +33,8 @@
 	$onto_db=array("user"=>"username","password"=>"password","server"=>"localhost","database"=>"dbname");
 	$sparql_db=array("user"=>"username","password"=>"password","server"=>"localhost","database"=>"dbname");
 
-        //4store version info
-        $store4versions="4Store (undefined), Raptor (undefined), Rasqal (undefined)";
+	//4store version info
+	$store4versions="4Store (undefined), Raptor (undefined), Rasqal (undefined)";
 
 	//Use rake for generating workflow component XML
 	$use_rake=TRUE;

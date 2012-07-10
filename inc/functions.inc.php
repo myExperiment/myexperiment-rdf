@@ -504,8 +504,29 @@ function writeDataflowToFile($wfvid,$ent_uri,$fileloc,$content_type){
 }
 
 function getDataflow($entity,$type){
-	return getDataflowComponents($entity,$type,0);	
+	if (canUserDownload($entity)) return getDataflowComponents($entity,$type,0);	
+	return "";
 }
+
+function canUserDownload($entity){
+	global $rdfgen_userid, $use_rake;
+	if (!$use_rake) return TRUE;
+	if ($entity['contributor_type'] != 'User') return FALSE;
+        if ($rdfgen_userid == $entity['contributor_id']) return TRUE;
+        elseif ($entity['share_mode'] == 0) return TRUE;
+        elseif (in_array($entity['share_mode'],array(1,3))){
+        	$sql2 = "SELECT * FROM friendships WHERE accepted_at IS NOT NULL AND (user_id = $entity[contributor_id] OR friend_id = $entity[contributor_id]) AND (user_id = $rdfgen_userid OR friend_id = $rdfgen_userid)";  
+                $res2 = mysql_query($sql2);
+                if (mysql_num_rows($res2)>0) return TRUE;
+        }                       
+        else{
+                $sql3 = "SELECT * FROM memberships WHERE network_id IN (SELECT contributor_id FROM permissions WHERE policy_id = ".$entity['policy_id']." AND contributor_type = 'Network' AND download = 1) AND user_id = $rdfgen_userid";
+                $res3 = mysql_query($sql3);
+                if (mysql_num_rows($res3)>0) return TRUE;
+        }
+	return FALSE;
+}
+
 
 function getDataflowComponents($entity,$type,$retrieve=true){
 	global $datauri,$datapath,$myexppath,$use_rake;
@@ -519,15 +540,11 @@ function getDataflowComponents($entity,$type,$retrieve=true){
         if ($wfv['mime_type']=='application/vnd.taverna.t2flow+xml') $df_uri="$ent_uri#dataflows/1";
         else $df_uri="$ent_uri#dataflow";
 	$fileloc=$comp_path.$wfv['id'];
-	if ($use_rake){
-		if (!file_exists($fileloc)) writeDataflowToFile($wfv['id'],$ent_uri,$fileloc,$wfv['mime_type']);
-		$lines=file($fileloc);
-	}
-	else{
-		return "";
-	}
+	if (!file_exists($fileloc) && $use_rake) writeDataflowToFile($wfv['id'],$ent_uri,$fileloc,$wfv['mime_type']);
+	if (file_exists($fileloc)) $lines=file($fileloc);
+	else return "";
 	if (trim($lines[0])=="NONE") return "";
-	elseif($retrieve==false) return $df_uri;
+	elseif ($retrieve==false) return $df_uri;
 	return implode("",$lines);
 }
 	
