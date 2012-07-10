@@ -84,12 +84,6 @@
 		}
 		$etag="  </$fullentity>\n\n";
 		$xml.=$etag;
-		if ($format=="ore"){
-			$xml.=printAggregatedResources($datauri.$type."/".$row['id']);
-			clearAggregatedResources($datauri.$type."/".$row['id']);
-			$xml.=printProxies($datauri.$type."/".$row['id']);
-			clearProxies($datauri.$type."/".$row['id']);
-		}	
 		return $xml;
 	}
 	function getHomepageAndFormats($uri,$type,$id,$entity=''){
