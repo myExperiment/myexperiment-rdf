@@ -17,7 +17,11 @@
 				$rdfgen_userid = $args[4];
 				$params = $params=explode("/",$args[3]);
 			}
-			else $rdfgen_userid = $args[3];
+			else{
+				$paramstemp = explode("/",$args[3]);
+				if ($paramstemp[0] =='versions') $params = $paramstemp;
+				else $rdfgen_userid = $args[3];
+			}
 		}
 		elseif (isset($args[3])) $params=explode("/",$args[3]);
 		$wfid='0';
@@ -60,7 +64,7 @@
                 else $cursql=$sql[$type];
                 return mysql_query($cursql);
 	}
-	if (sizeof($argv)>4) exit("Too many arguments!\n");
+	if (sizeof($argv)>5) exit("Too many arguments!\n");
 	list($type,$id,$params,$wfid)=setTypeIDandParams($argv);
 	if (entityExists($type,$id)){
 	        $res=getEntityResults($type,$id);
