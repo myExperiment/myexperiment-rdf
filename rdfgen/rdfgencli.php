@@ -17,7 +17,7 @@
 				$rdfgen_userid = $args[4];
 				$params = $params=explode("/",$args[3]);
 			}
-			else{
+			elseif (isset($args[3])) {
 				$paramstemp = explode("/",$args[3]);
 				if ($paramstemp[0] =='versions') $params = $paramstemp;
 				else $rdfgen_userid = $args[3];

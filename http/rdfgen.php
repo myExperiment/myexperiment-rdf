@@ -13,6 +13,8 @@
 	$type=array_shift($urlbits);
 	$id=array_shift($urlbits);
 	$params=implode('/',$urlbits);
+	$userid='';
+	if ($type == "workflows") $userid='0';
 	$data="";
 	if ($type){
 		$cmd="/usr/bin/php ../rdfgen/rdfgencli.php $type $id $params";
