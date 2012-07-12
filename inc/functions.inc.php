@@ -544,7 +544,7 @@ function getDataflowComponents($entity,$type,$retrieve=true){
 	if (file_exists($fileloc)) $lines=file($fileloc);
 	else return "";
 	if (trim($lines[0])=="NONE") return "";
-	elseif ($retrieve==false) return $df_uri;
+	elseif($retrieve==false) return $df_uri;
 	return implode("",$lines);
 }
 	
