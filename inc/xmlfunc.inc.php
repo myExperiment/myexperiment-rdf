@@ -491,6 +491,7 @@ function tabulateDataflowComponents($allcomponents,$ent_uri,$content_type,$neste
         	        }
 			break;
 		case 'application/vnd.galaxy.workflow+xml':
+		case 'application/vnd.galaxy.workflow+json':
 			$dfs[$ent_uri."/dataflow"]=processGalaxyComponents($allcomponents,$ent_uri."/dataflow/",$nested); 
 			break;
 		case 'application/vnd.rapidminer.rmp+zip':
@@ -526,6 +527,7 @@ function processGalaxyComponents($allcomponents,$ent_uri){
 	$c=1;
 	foreach ($comps['input'] as $input){
                 $components[$c]['type']="Source";
+		if (!isset($input['description'])) $input['description']='';
 		$components[$c++]['props']=array(array('type'=>'dcterms:title','value'=>$input['name']),array('type'=>'dcterms:description','value'=>$input['description']));
         }
 	foreach ($comps['output'] as $o => $output){
