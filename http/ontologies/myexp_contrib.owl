@@ -36,11 +36,11 @@
     <rdfs:comment>This provides the different types of contributions used in myExperiment.</rdfs:comment>
     <dc:language>en</dc:language>
     <dc:title xml:lang="en">The myExperiment Contributions Ontology</dc:title>
-    <dc:creator rdf:resource="http://rdf.ecs.soton.ac.uk/person/9421"/>
+    <dc:creator rdf:resource="http://id.ecs.soton.ac.uk/person/9421"/>
     <dc:contributor rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David R Newman</dc:contributor>
     <dc:publisher rdf:resource="http://rdf.myexperiment.org"/>
     <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2009-01-28</dc:date>
-    <owl:versionInfo>$Date: 2011/02/20 $</owl:versionInfo>
+    <owl:versionInfo>$Date: 2012/08/01 $</owl:versionInfo>
     <dc:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rdf/xml</dc:format>
   </owl:Ontology>
 
@@ -141,10 +141,9 @@
 
 
   <!-- =============== myExperiment Entity Classes ================= -->
-
-  <owl:Class rdf:about="File">
-    <rdfs:label>File</rdfs:label>
-    <rdfs:comment>A File uploaded by an Actor</rdfs:comment>
+  <owl:Class rdf:about="AbstractFile">
+    <rdfs:label>AbstractFile</rdfs:label>
+    <rdfs:comment>An AbstractFile from which File and FileVersion can be templated on</rdfs:comment>
     <owl:disjointWith rdf:resource="AbstractWorkflow"/>
     <rdfs:subClassOf rdf:resource="&mebase;Upload"/>
     <rdfs:subClassOf rdf:resource="&meannot;Commentable"/>
@@ -156,10 +155,28 @@
     <rdfs:isDefinedBy rdf:resource="&mecontrib;"/>
   </owl:Class>
 
+  <owl:Class rdf:about="File">
+    <rdfs:label>File</rdfs:label>
+    <rdfs:comment>A File uploaded by an Actor</rdfs:comment>
+    <owl:disjointWith rdf:resource="FileVersion"/>
+    <rdfs:subClassOf rdf:resource="&mebase;Versionable"/>
+    <rdfs:subClassOf rdf:resource="&mebase;AbstractFile"/>
+    <rdfs:isDefinedBy rdf:resource="&mecontrib;"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="FileVersion">
+    <rdfs:label>FileVersion</rdfs:label>
+    <rdfs:comment>A Version of a File</rdfs:comment>
+    <owl:disjointWith rdf:resource="File"/>
+    <rdfs:subClassOf rdf:resource="&mebase;Version"/>
+    <rdfs:subClassOf rdf:resource="AbstractFile"/>
+    <rdfs:isDefinedBy rdf:resource="&mecontrib;"/>
+  </owl:Class>
+
   <owl:Class rdf:about="AbstractWorkflow">
     <rdfs:label>AbstractWorkflow</rdfs:label>
     <rdfs:comment>An AbstractWorkflow from which Workflow and WorkflowVersion can be templated on</rdfs:comment>
-    <owl:disjointWith rdf:resource="File"/>
+    <owl:disjointWith rdf:resource="AbstractFile"/>
     <rdfs:subClassOf rdf:resource="&meannot;Citationable"/>
     <rdfs:subClassOf rdf:resource="&meannot;Commentable"/>
     <rdfs:subClassOf rdf:resource="&meannot;Reviewable"/>
@@ -208,7 +225,7 @@
   <owl:Class rdf:about="WorkflowVersion">
     <rdfs:label>WorkflowVersion</rdfs:label>
     <rdfs:comment>A Version of a Workflow</rdfs:comment>
-     <owl:disjointWith rdf:resource="Workflow"/>
+    <owl:disjointWith rdf:resource="Workflow"/>
     <rdfs:subClassOf rdf:resource="&mebase;Version"/>
     <rdfs:subClassOf rdf:resource="AbstractWorkflow"/>
     <rdfs:isDefinedBy rdf:resource="&mecontrib;"/>
