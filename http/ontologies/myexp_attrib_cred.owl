@@ -30,7 +30,7 @@
     <rdfs:comment>This allows contributions to give attribution to earlier contributions and pay credit to users and groups involved in their creation.</rdfs:comment>
     <dc:language>en</dc:language>
     <dc:title xml:lang="en">The myExperiment Attribution &amp; Creditation ontology</dc:title>
-    <dc:creator rdf:resource="http://rdf.ecs.soton.ac.uk/person/9421"/>
+    <dc:creator rdf:resource="http://id.ecs.soton.ac.uk/person/9421"/>
     <dc:contributor rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David R Newman</dc:contributor>
     <dc:publisher rdf:resource="http://rdf.myexperiment.org"/>
     <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2009-01-28</dc:date>
