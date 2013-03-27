@@ -27,6 +27,7 @@ function getOREAggregatedResources($entry,$type){
 			if (isset($row['contributable_type']) && $row['contributable_type']=="Blob")  $row['contributable_type']="File";
                         if (isset($row['runnable_id'])){
 				$row['contributable_type']="Job";
+				$row['contributable_id']=$row['id'];
 				$row['entry_type']="LocalPackEntry";
 			}
                         if (isset($row['contributable_version']) && $row['contributable_version']>0){
