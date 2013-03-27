@@ -70,3 +70,5 @@ rdfs:label string
 rdfs:comment string
 dc:language string
 dc:format string
+mepack:is-latest-snapshot boolean
+mebase:revision-comments string

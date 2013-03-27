@@ -1,5 +1,5 @@
 <?php
-$ontprefixes=array('rdf:','rdfs:','owl:','xsd:','dc:','dcterms:','foaf:','sioc:','ore:','cc:','skos:','snarm:','mebase:','meannot:','mepack:','meexp:','mecontrib:','mevd:','mecomp:','mespec:');
+$ontprefixes=array('rdf:','rdfs:','owl:','xsd:','dc:','dcterms:','foaf:','sioc:','ore:','cc:','skos:','dbpedia','snarm:','mebase:','meannot:','mepack:','meexp:','mecontrib:','mevd:','mecomp:','mespec:');
 $onturls=array(
        	'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         'http://www.w3.org/2000/01/rdf-schema#',
@@ -10,8 +10,9 @@ $onturls=array(
        	'http://xmlns.com/foaf/0.1/',
         'http://rdfs.org/sioc/ns#',
         'http://www.openarchives.org/ore/terms/',
-       	'http://web.resource.org/cc/',
+       	'http://creativecommons.org/ns#',
         'http://www.w3.org/2004/02/skos/core#',
+	'http://dbpedia.org/ontology/',
         'http://rdf.myexperiment.org/ontologies/snarm/',
        	'http://rdf.myexperiment.org/ontologies/base/',
         'http://rdf.myexperiment.org/ontologies/annotations/',

@@ -23,6 +23,7 @@
 	$tables['experiments']="experiments";
 	$tables['favourites']="bookmarks";
 	$tables['files']="blobs";
+	$tables['file_versions']="blob_versions";
 	$tables['friendships']="friendships";
 	$tables['jobs']="jobs";
 	$tables['groups']="networks";
@@ -34,6 +35,7 @@
 	$tables['messages']="messages";
 	$tables['ontologies']="ontologies";
 	$tables['packs']="packs";
+	$tables['pack_versions']="pack_versions";
 	$tables['relationship_entries']="relationships";
 	$tables['policies']="policies";
         $tables['predicates']="predicates";
@@ -60,6 +62,7 @@
         $ontent['experiments']="Experiment";
         $ontent['favourites']="Favourite";
         $ontent['files']="File";
+	$ontent['file_versions']="FileVersion";
         $ontent['friendships']="Friendship";
         $ontent['jobs']="Job";
         $ontent['groups']="Group";
@@ -71,6 +74,7 @@
         $ontent['messages']="Message";
 	$ontent['ontologies']="Ontology";
         $ontent['packs']="Pack";
+	$ontent['pack_versions']="PackSnapshot";
 	$ontent['relationship_entries']="RelationshipEntry";
 	$ontent['policies']="Policy";
 	$ontent['predicates']="ObjectProperty";
@@ -86,6 +90,11 @@
         $ontent['workflow_versions']="WorkflowVersion";
 
 	$urient=array_flip($ontent);
+
+	//Version entities
+	$versionent['files']="file_versions";
+	$versionent['packs']="pack_versions";
+	$versionent['workflows']="workflow_versions";
 
 	//Model Aliases
 	$modelalias['File']="Blob";
@@ -103,6 +112,7 @@
 	$entityns['experiments']="meexp";
 	$entityns['favourites']="meannot";
 	$entityns['files']="mecontrib";
+	$entityns['file_versions']="mecontrib";
 	$entityns['friendships']="mebase";
 	$entityns['jobs']="meexp";
 	$entityns['groups']="mebase";
@@ -114,6 +124,7 @@
 	$entityns['messages']="mebase";
 	$entityns['ontologies']="owl";
 	$entityns['packs']="mepack";
+	$entityns['pack_versions']="mepack";
 	$entityns['relationship_entries']="mepack";
 	$entityns['policies']="snarm";
 	$entityns['predicates']="owl";
@@ -163,6 +174,7 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
         	$sql['experiments']="select * from experiments where 1=2";
 	        $sql['favourites']="select bookmarks.* from bookmarks inner join contributions on bookmarks.bookmarkable_id=contributions.contributable_id and bookmarks.bookmarkable_type=contributions.contributable_type inner join policies on contributions.policy_id=policies.id where ($pubcond)";
         	$sql['files']="select blobs.*, contributions.id as contribution_id, contributions.viewings_count, contributions.downloads_count, policies.id as policy_id, policies.update_mode, policies.share_mode from blobs inner join contributions on contributions.contributable_id=blobs.id inner join policies on contributions.policy_id=policies.id where contributable_type='Blob' and ($pubcond)";
+		$sql['file_versions']="select blob_versions.*, blobs.license_id, contributions.contributor_type, contributions.contributor_id, contributions.id as contribution_id, contributions.viewings_count, contributions.downloads_count, policies.id as policy_id, policies.update_mode, policies.share_mode from blobs inner join contributions on contributions.contributable_id=blobs.id inner join blob_versions on blobs.id=blob_versions.blob_id inner join policies on contributions.policy_id=policies.id where contributable_type='Blob' and ($pubcond)";
 	        $sql['friendships']="select * from friendships";
 	        $sql['groups']="select * from networks";
         	$sql['group_announcements']="select * from group_announcements where (public=1)";
@@ -174,6 +186,7 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
         	$sql['messages']="select * from messages where 1=2";
 		$sql['ontologies']="select * from ontologies";
 	        $sql['packs']="select packs.*, contributions.viewings_count, contributions.downloads_count, policies.id as policy_id, policies.update_mode, policies.share_mode from packs inner join contributions on packs.id=contributions.contributable_id and contributions.contributable_type='Pack' inner join policies on contributions.policy_id=policies.id where ($pubcond)";
+		$sql['pack_versions']="select pack_versions.*, contributions.contributor_type, contributions.contributor_id, contributions.viewings_count, contributions.downloads_count, policies.id as policy_id, policies.update_mode, policies.share_mode from packs inner join contributions on packs.id = contributions.contributable_id and contributions.contributable_type='Pack' inner join pack_versions on packs.id=pack_versions.pack_id inner join policies on contributions.policy_id=policies.id where ($pubcond)";
 		$sql['relationship_entries']="select relationships.*, predicates.title as predicate, ontologies.uri as ontology_uri from relationships inner join predicates on relationships.predicate_id=predicates.id inner join ontologies on predicates.ontology_id=ontologies.id inner join packs on relationships.context_id=packs.id inner join contributions on packs.id=contributions.contributable_id and contributions.contributable_type='Pack' inner join policies on contributions.policy_id=policies.id where context_type='Pack' and ($pubcond)";
 		$sql['policies']="select contributions.contributable_type, contributions.contributable_id, contributions.contributor_type, contributions.contributor_id, policies.id as policy_id, policies.id from policies inner join contributions on policies.id=contributions.policy_id where contributable_type in ('Workflow','Pack','Blob','Network') and ($pubcond)";
         	$sql['ratings']="select ratings.* from ratings inner join contributions on ratings.rateable_id=contributions.contributable_id and ratings.rateable_type=contributions.contributable_type inner join policies on contributions.policy_id=policies.id where ($pubcond)";
@@ -199,6 +212,7 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
         	$sql['experiments']="select experiments.* from experiments";
 	        $sql['favourites']="select bookmarks.* from bookmarks";
         	$sql['files']="select blobs.*, contributions.id as contribution_id, contributions.viewings_count, contributions.downloads_count, policies.id as policy_id, policies.update_mode, policies.share_mode from blobs inner join contributions on contributions.contributable_id=blobs.id inner join policies on contributions.policy_id=policies.id where contributable_type='Blob'";
+		$sql['file_versions']="select blob_versions.*, blobs.license_id, contributions.contributor_type, contributions.contributor_id, contributions.id as contribution_id, contributions.viewings_count, contributions.downloads_count, policies.id as policy_id, policies.update_mode, policies.share_mode from blobs inner join contributions on contributions.contributable_id=blobs.id inner join blob_versions on blobs.id=blob_versions.blob_id inner join policies on contributions.policy_id=policies.id where contributable_type='Blob'";
 	        $sql['friendships']="select friendships.* from friendships";
 	        $sql['groups']="select networks.* from networks";
         	$sql['group_announcements']="select group_announcements.* from group_announcements";
@@ -210,6 +224,7 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
         	$sql['messages']="select messages.* from messages";
 		$sql['ontologies']="select * from ontologies";
 	        $sql['packs']="select packs.*, contributions.viewings_count, contributions.downloads_count, policies.id as policy_id, policies.update_mode, policies.share_mode from packs inner join contributions on packs.id = contributions.contributable_id and contributions.contributable_type='Pack' inner join policies on contributions.policy_id=policies.id";
+		$sql['pack_versions']="select pack_versions.*, contributions.contributor_type, contributions.contributor_id, contributions.viewings_count, contributions.downloads_count, policies.id as policy_id, policies.update_mode, policies.share_mode from packs inner join contributions on packs.id = contributions.contributable_id and contributions.contributable_type='Pack' inner join pack_versions on packs.id=pack_versions.pack_id inner join policies on contributions.policy_id=policies.id";
 		$sql['relationship_entries']="select relationships.*, predicates.title as predicate, ontologies.uri as ontology_uri from relationships inner join predicates on relationships.predicate_id=predicates.id inner join ontologies on predicates.ontology_id=ontologies.id inner join packs on relationships.context_id=packs.id inner join contributions on packs.id=contributions.contributable_id and contributions.contributable_type='Pack' inner join policies on contributions.policy_id=policies.id where context_type='Pack'";
 		$sql['policies']="select contributions.contributable_type, contributions.contributable_id, contributions.contributor_type, contributions.contributor_id, policies.id as policy_id, policies.id from policies inner join contributions on policies.id=contributions.policy_id where contributable_type in ('Workflow','Pack','Blob','Network')";
 		$sql['ratings']="select ratings.* from ratings";
@@ -232,20 +247,22 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
 	$mappings['predicate_relations']=array('id'=>'url');
        	$mappings['content_types']=array('id'=>'url','user_id'=>'&User|sioc:has_owner','title'=>'dcterms:title','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','description'=>'dcterms:description','mime_type'=>'dcterms:type');
         $mappings['creditations']=array('id'=>'url','creditor_type'=>'+creditor_id|meac:credits','creditable_type'=>'+creditable_id|meac:has-creditable','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified');
-        $mappings['experiments']=array('id'=>'url','described_by'=>'@&getResourceMapURI|ore:isDescribedBy','described_by_atom'=>'@&getAtomEntryURI|ore:isDescribedBy','title'=>'dcterms:title', 'description'=>'dcterms:description', 'contributor_type'=>'+contributor_id|sioc:has_owner','experiment_manifest'=>'@&getOREAggregatedResources','created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','annotations'=>'@&getAnnotations|');
+        $mappings['experiments']=array('id'=>'url','described_by'=>'@&getResourceMapURI|ore:isDescribedBy','title'=>'dcterms:title', 'description'=>'dcterms:description', 'contributor_type'=>'+contributor_id|sioc:has_owner','experiment_manifest'=>'@&getOREAggregatedResources','created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','annotations'=>'@&getAnnotations|');
        	$mappings['favourites']=array('id'=>'url','bookmarkable_type'=>'+bookmarkable_id|mebase:annotates','user_id'=>'&User|mebase:has-annotator','title'=>'dcterms:title','created_at'=>'dcterms:created');
-        $mappings['files']=array('id'=>'url','content-url'=>'@-getFileDownloadURL|mebase:content-url','local_name'=>'mebase:filename','contributor_type'=>'+contributor_id|sioc:has_owner','content_type_id'=>'&ContentType|mebase:has-content-type', 'license_id'=>'&License|mebase:has-license', 'created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','title'=>'dcterms:title', 'body'=>'dcterms:description','viewings_count'=>'mevd:viewed','downloads_count'=>'mevd:downloaded', 'policy_id'=>'@&-getPolicyURI|mebase:has-policy','annotations'=>'@&getAnnotations|');
+        $mappings['files']=array('id'=>'url','content-url'=>'@-getFileDownloadURL|mebase:content-url','local_name'=>'mebase:filename','contributor_type'=>'+contributor_id|sioc:has_owner','content_type_id'=>'&ContentType|mebase:has-content-type', 'license_id'=>'&License|cc:license', 'created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','title'=>'dcterms:title', 'body'=>'dcterms:description', 'current_version'=>'@&-getCurrentVersion|mebase:has-current-version', 'other_versions'=>'@&-getVersions|', 'viewings_count'=>'mevd:viewed','downloads_count'=>'mevd:downloaded', 'policy_id'=>'@&-getPolicyURI|mebase:has-policy','annotations'=>'@&getAnnotations|');
+	 $mappings['file_versions']=array('id'=>'url','content-url'=>'@-getFileDownloadURL|mebase:content-url','local_name'=>'mebase:filename','contributor_type'=>'+contributor_id|sioc:has_owner','content_type_id'=>'&ContentType|mebase:has-content-type', 'license_id'=>'&License|cc:license', 'revision_comments'=>'mebase:revision-comments', 'created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','title'=>'dcterms:title', 'body'=>'dcterms:description', 'blob_id'=>'&File|dcterms:isVersionOf', 'version'=>'mebase:version-number', 'currentversion'=>'@isCurrentVersion|mebase:is-current-version', 'viewings_count'=>'mevd:viewed','downloads_count'=>'mevd:downloaded', 'policy_id'=>'@&-getPolicyURI|mebase:has-policy','annotations'=>'@&getAnnotations|');
        	$mappings['friendships']=array('id'=>'url','user_id'=>'&User|mebase:has-requester','friend_id'=>'&User|mebase:has-accepter','created_at'=>'dcterms:created','accepted_at'=>'mebase:accepted-at','message'=>'mebase:text');
        	$mappings['groups']=array('id'=>'url','user_id'=>'&User|sioc:has_owner', 'created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','title'=>'sioc:name','description'=>'dcterms:description', 'auto_accept'=>'mebase:auto-accept','members'=>'@&getMembers|','annotations'=>'@&getAnnotations|');
         $mappings['group_announcements']=array('id'=>'url','title'=>'dcterms:title','network_id'=>'&Group|mebase:announced-to','user_id'=>'&User|mebase:has-announcer','public'=>'mebase:public-announcement', 'created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','body'=>'mebase:text');
-       	$mappings['jobs']=array('id'=>'url','described_by'=>'@&getResourceMapURI|ore:isDescribedBy','described_by_atom'=>'@&getAtomEntryURI|ore:isDescribedBy','title'=>'dcterms:title','description'=>'dcterms:description','experiment_id'=>'&Experiment|ore:isAggregatedBy','user_id'=>'&User|sioc:has_owner','runnable'=>'@getRunnable|meexp:has-runnable','runner'=>'@getRunner|meexp:has-runner','submitted_at'=>'meexp:submitted-at','started_at'=>'meexp:started-at','completed_at'=>'meexp:completed-at','last_status'=>'meexp:last-status','last_status_at'=>'meexp:last-status-at','job_uri'=>'@-getJobURI|mebase:uri','job-manifest'=>'meexp:job-manifest','inputs'=>'@%getInput|meexp:has-input','outputs'=>'@%getOutput|meexp:has-output','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','parent_job_id'=>'&Job|meexp:has-parent-job');
-        $mappings['local_pack_entries']=array('id'=>'url','pack_id'=>'&Pack|ore:proxyIn','proxy_for'=>'@getProxyFor|ore:proxyFor','comment'=>'dcterms:description','user_id'=>'&User|sioc:has_owner','created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified');
+       	$mappings['jobs']=array('id'=>'url','described_by'=>'@&getResourceMapURI|ore:isDescribedBy','title'=>'dcterms:title','description'=>'dcterms:description','experiment_id'=>'&Experiment|ore:isAggregatedBy','user_id'=>'&User|sioc:has_owner','runnable'=>'@getRunnable|meexp:has-runnable','runner'=>'@getRunner|meexp:has-runner','submitted_at'=>'meexp:submitted-at','started_at'=>'meexp:started-at','completed_at'=>'meexp:completed-at','last_status'=>'meexp:last-status','last_status_at'=>'meexp:last-status-at','job_uri'=>'@-getJobURI|mebase:uri','job-manifest'=>'meexp:job-manifest','inputs'=>'@%getInput|meexp:has-input','outputs'=>'@%getOutput|meexp:has-output','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','parent_job_id'=>'&Job|meexp:has-parent-job');
+        $mappings['local_pack_entries']=array('id'=>'url','pack_id'=>'&Pack|ore:proxyIn','proxy_for'=>'@-getProxyFor|ore:proxyFor','comment'=>'dcterms:description','user_id'=>'&User|sioc:has_owner','created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified');
        	$mappings['licenses']=array('id'=>'url','unique_name'=>'dcterms:identifier','title'=>'dcterms:title','description'=>'dcterms:description','url'=>'owl:sameAs','user_id'=>'&User|sioc:has_owner','attributes'=>'@getLicenseAttributes|','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified');
 	$mappings['maps']=array('id'=>'url','title'=>'dcterms:title','description'=>'dcterms:description','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','contributor_type'=>'+contributor_id|sioc:has_owner','latitude'=>'neiss:latitude','longitude'=>'neiss:longitude','zoom'=>'neiss:zoom','map_descriptor'=>'neiss:map_descriptor','copyright_url'=>'neiss:copyright_url','copyright_statement'=>'neiss:copyright_statement','copyright_text'=>'neiss:copyright_text');
        	$mappings['memberships']=array('id'=>'url','requester'=>'@getRequester|mebase:has-requester','accepter'=>'@getAccepter|mebase:has-accepter','requested_at'=>'@getRequesterTime|dcterms:created','accepted_at'=>'@getAccepterTime|mebase:accepted-at','message'=>'mebase:text');
        	$mappings['messages']=array('id'=>'url','from'=>'&User|mebase:from','to'=>'&User|mebase:to','subject'=>'mebase:subject','body'=>'mebase:text','created_at'=>'dcterms:created','read_at'=>'mebase:read-at','deleted_by_sender'=>'mebase:deleted-by-sender','deleted_by_recepient'=>'mebase:deleted-by-recepient');
 	$mappings['ontologies']=array('id'=>'url','title'=>'rdfs:label','description'=>'rdfs:comment','user_id'=>'&User|dc:creator','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','staticdetails'=>'@getStaticOntologyDetails');
-        $mappings['packs']=array('id'=>'url','described_by2'=>'@&-getOREDescribedBy|ore:isDescribedBy','manifest'=>'@&getOREAggregatedResources|','entries'=>'@getPackEntries|','relationships'=>'@getPackRelationshipEntries|','contributor_type'=>'+contributor_id|sioc:has_owner','title'=>'dcterms:title', 'description'=>'dcterms:description','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','viewings_count'=>'mevd:viewed','downloads_count'=>'mevd:downloaded','policy_id'=>'@&-getPolicyURI|mebase:has-policy','annotations'=>'@&getAnnotations|');
+        $mappings['packs']=array('id'=>'url','described_by'=>'@&-getOREDescribedBy|ore:isDescribedBy','manifest'=>'@&getOREAggregatedResources|','entries'=>'@getPackEntries|','relationships'=>'@getPackRelationshipEntries|','contributor_type'=>'+contributor_id|sioc:has_owner','title'=>'dcterms:title', 'description'=>'dcterms:description','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','current_version'=>'@&-getCurrentVersion|mebase:has-latest-snapshot','other_versions'=>'@&-getVersions|','viewings_count'=>'mevd:viewed','downloads_count'=>'mevd:downloaded','policy_id'=>'@&-getPolicyURI|mebase:has-policy','annotations'=>'@&getAnnotations|');
+	$mappings['pack_versions']=array('id'=>'url','described_by'=>'@&-getOREDescribedBy|ore:isDescribedBy','manifest'=>'@&getOREAggregatedResources|','entries'=>'@getPackEntries|','relationships'=>'@getPackRelationshipEntries|','contributor_type'=>'+contributor_id|sioc:has_owner','title'=>'dcterms:title', 'description'=>'dcterms:description','pack_id'=>'&Pack|dcterms:isVersionOf','version'=>'mebase:version-number','currentversion'=>'@isCurrentVersion|mepack:is-latest-snapshot','revision_comments'=>'mebase:revision-comments','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','viewings_count'=>'mevd:viewed','downloads_count'=>'mevd:downloaded','policy_id'=>'@&-getPolicyURI|mebase:has-policy','annotations'=>'@&getAnnotations|');
 	$mappings['relationship_entries']=array('id'=>'url','relationship'=>'@-getRelationship|','context_id'=>'&Pack|ore:proxyIn','user_id'=>'&User|sioc:has_owner','created_at'=>'dcterms:created');
 	$mappings['policies']=array('policy_id'=>'url','policy'=>'@&getPolicy|');
        	$mappings['ratings']=array('id'=>'url','rateable_type'=>'+rateable_id|mebase:annotates','rating'=>'meannot:rating-score','user_id'=>'&User|mebase:has-annotator','created_at'=>'dcterms:created');
@@ -256,21 +273,9 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
        	$mappings['tags']=array('id'=>'url','name'=>'dcterms:title','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','taggings'=>'@getTaggings|');
         $mappings['users']=array('id'=>'url','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','name'=>'@-getSiocAndFoafName|','body'=>'dcterms:description','avatar_id'=>'@-pictureURL|sioc:avatar','location_city'=>'<foaf:based_near', 'location_country'=>'<mebase:country','residence'=>'@&getResidence|','website'=>'<foaf:homepage', 'last_seen_at'=>'mebase:last-seen-at','activated_at'=>'mebase:activated-at','receive_notifications'=>'mebase:receive-notifications','profile_email'=>'@-mailto_profile|foaf:mbox','email_sha1sum'=>'@-mbox_sha1sum|foaf:mbox_sha1sum','organisation'=>'mebase:organisation','field_or_industry'=>'mebase:field','occupations_or_roles'=>'mebase:occuptation','interests'=>'mebase:interests','contact_details'=>'mebase:contact-details','friendships'=>'@getFriendships|','memberships'=>'@getMemberships|','favourites'=>'@getFavourites|');
         $mappings['vocabularies']=array('id'=>'url','title'=>'dcterms:title','description'=>'dcterms:description','user_id'=>'&User|sioc:has_owner','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified');
-       	$mappings['workflows']=array('id'=>'url','title'=>'dcterms:title','body'=>'dcterms:description', 'content_type_id'=>'&ContentType|mebase:has-content-type', 'contributor_type'=>'+contributor_id|sioc:has_owner','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','filename'=>'@&-getFilename|mebase:filename','described_by'=>'@&getResourceMapURI|ore:isDescribedBy','described_by_atom'=>'@&getAtomEntryURI|ore:isDescribedBy','content-url'=>'@-getWorkflowDownloadURL|mebase:content-url','preview'=>'@-getPreview|mecontrib:preview','thumbnail'=>'@-getThumbnail|mecontrib:thumbnail', 'thumbnail_big'=>'@-getThumbnailBig|mecontrib:thumbnail-big','svg'=>'@-getSVG|mecontrib:svg','current_version'=>'@getCurrentWorkflowVersion|mebase:has-current-version','other_versions'=>'@-getWorkflowVersions|','license_id'=>'&License|mebase:has-license','last_edited_by'=>'&User|mebase:last-edited-by','viewings_count'=>'mevd:viewed','downloads_count'=>'mevd:downloaded','policy_id'=>'@&-getPolicyURI|mebase:has-policy','dataflow'=>'@&-getDataflow|mecomp:executes-dataflow','annotations'=>'@&getAnnotations|');
-       	$mappings['workflow_versions']=array('id'=>'url','title'=>'dcterms:title','body'=>'dcterms:description','content_type_id'=>'&ContentType|mebase:has-content-type', 'workflow_id'=>'&Workflow|dcterms:isVersionOf','version'=>'mebase:version-number','currentversion'=>'@isCurrentVersion|mebase:is-current-version','contributor_type'=>'+contributor_id|sioc:has_owner', 'created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','filename'=>'@&-getFilename|mebase:filename','described_by'=>'@&getResourceMapURI|ore:isDescribedBy','described_by_atom'=>'@&getAtomEntryURI|ore:isDescribedBy','content-url'=>'@-getWorkflowDownloadURL|mebase:content-url','preview'=>'@-getPreview|mecontrib:preview', 'thumbnail'=>'@-getThumbnail|mecontrib:thumbnail', 'thumbnail_big'=>'@-getThumbnailBig|mecontrib:thumbnail-big', 'svg'=>'@-getSVG|mecontrib:svg','license_id'=>'&License|mebase:has-license','last_edited_by'=>'&User|mebase:last-edited-by','policy_id'=>'@&-getPolicyURI|mebase:has-policy','dataflow'=>'@&-getDataflow|mecomp:executes-dataflow','annotations'=>'@&getAnnotations|');
+       	$mappings['workflows']=array('id'=>'url','title'=>'dcterms:title','body'=>'dcterms:description', 'content_type_id'=>'&ContentType|mebase:has-content-type', 'contributor_type'=>'+contributor_id|sioc:has_owner','created_at'=>'dcterms:created','updated_at'=>'dcterms:modified','filename'=>'@&-getFilename|mebase:filename','content-url'=>'@-getWorkflowDownloadURL|mebase:content-url','preview'=>'@-getPreview|mecontrib:preview','thumbnail'=>'@-getThumbnail|mecontrib:thumbnail', 'thumbnail_big'=>'@-getThumbnailBig|mecontrib:thumbnail-big','svg'=>'@-getSVG|mecontrib:svg','current_version'=>'@&-getCurrentVersion|mebase:has-current-version','other_versions'=>'@&-getVersions|','license_id'=>'&License|cc:license','last_edited_by'=>'&User|mebase:last-edited-by','viewings_count'=>'mevd:viewed','downloads_count'=>'mevd:downloaded','policy_id'=>'@&-getPolicyURI|mebase:has-policy','dataflow'=>'@&-getDataflow|mecomp:executes-dataflow','annotations'=>'@&getAnnotations|');
+       	$mappings['workflow_versions']=array('id'=>'url','title'=>'dcterms:title','body'=>'dcterms:description','content_type_id'=>'&ContentType|mebase:has-content-type', 'workflow_id'=>'&Workflow|dcterms:isVersionOf','version'=>'mebase:version-number','currentversion'=>'@isCurrentVersion|mebase:is-current-version','revision_comments'=>'mebase:revision-comments','contributor_type'=>'+contributor_id|sioc:has_owner', 'created_at'=>'dcterms:created', 'updated_at'=>'dcterms:modified','filename'=>'@&-getFilename|mebase:filename','content-url'=>'@-getWorkflowDownloadURL|mebase:content-url','preview'=>'@-getPreview|mecontrib:preview', 'thumbnail'=>'@-getThumbnail|mecontrib:thumbnail', 'thumbnail_big'=>'@-getThumbnailBig|mecontrib:thumbnail-big', 'svg'=>'@-getSVG|mecontrib:svg','license_id'=>'&License|cc:license','last_edited_by'=>'&User|mebase:last-edited-by','policy_id'=>'@&-getPolicyURI|mebase:has-policy','dataflow'=>'@&-getDataflow|mecomp:executes-dataflow','annotations'=>'@&getAnnotations|');
        
-        //Temporarily unset until ORE stuff can be re-implemented for linked data 
-        unset($mappings['experiments']['described_by']);
-        unset($mappings['experiments']['described_by_atom']);
-        unset($mappings['jobs']['described_by']);
-        unset($mappings['jobs']['described_by_atom']);
-        unset($mappings['packs']['described_by']);
-        unset($mappings['packs']['described_by_atom']);
-        unset($mappings['workflows']['described_by']);
-        unset($mappings['workflows']['described_by_atom']);
-        unset($mappings['workflow_versions']['described_by']);
-        unset($mappings['workflow_versions']['described_by_atom']);
-
 	
 	$xmluri['announcements']="announcement.xml?id=";
 	$xmluri['citations']="citation.xml?id=";
@@ -279,11 +284,13 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
 	$xmluri['experiments']="experiment.xml?id=";
 	$xmluri['favourites']="favourite.xml?id=";
 	$xmluri['files']="file.xml?id=";
+	$xmluri['file_versions']="file.xml?id=~&amp;version=!";
 	$xmluri['jobs']="job.xml?id=";
 	$xmluri['groups']="group.xml?id=";
 	$xmluri['licenses']="license.xml?id=";
 	$xmluri['messages']="message.xml?id=";
 	$xmluri['packs']="pack.xml?id=";
+	$xmluri['pack_versions']="pack.xml?id=~&amp;version=!";
 	$xmluri['ratings']="rating.xml?id=";
 	$xmluri['reviews']="review.xml?id=";
 	$xmluri['runners']="runner.xml?id=";
@@ -302,6 +309,7 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
         $homepage['experiments']=1;
         $homepage['favourites']=0;
         $homepage['files']=1;
+	$homepage['file_versions']=1;
         $homepage['friendships']=0;
         $homepage['jobs']=0;
         $homepage['groups']=1;
@@ -311,6 +319,7 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
         $homepage['memberships']=0;
         $homepage['messages']=1;
         $homepage['packs']=1;
+	$homepage['pack_versions']=1;
         $homepage['policies']=0;
         $homepage['ratings']=0;
         $homepage['remote_pack_entries']=0;
@@ -327,8 +336,10 @@ PREFIX ore: <http://www.openarchives.org/ore/terms/>";
 	
 	$entannot['experiments']=array();
 	$entannot['files']=array('comments','favourites','ratings','taggings');
+	$entannot['file_versions']=array();
 	$entannot['groups']=array('comments','taggings');
 	$entannot['packs']=array('comments','favourites','taggings');
+	$entannot['pack_versions']=array();
 	$entannot['workflows']=array('comments','favourites','ratings','reviews','taggings');
 	$entannot['workflow_versions']=array('citations');
 

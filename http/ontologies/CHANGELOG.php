@@ -6,6 +6,7 @@
 <p><big>This page includes the changelog for the <a href=".">myExperiment Ontology</a> and consequently myExperiment's RDF data.</big></p>
 
 <ul class="changelog">
+  <li><b>26/03/2013</b> Added Pack snapshotting similar to Workflow and File versioning with AbstractPack and PackSnapshot.  Added mebase:revision-comments for all entities of class Version.</li>
   <li><b>01/08/2012</b> Added File versioning similar to versioning for Workflows (i.e. with FileVersion and AbstractFile).</li>
   <li><b>24/04/2012</b> Fixed mismatch between sioc:User and sioc:UserAccount in the base ontology.</li>
   <li><b>02/03/2012</b> Added mecomp:waits-on and mecomp:is-waited-on to support chronologicial dependencies between Processors not explicitly defined by the data flow.</li>

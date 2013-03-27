@@ -12,7 +12,6 @@
 	function printEntity($row,$type,$format=''){
 		global $datauri,$domain,$datatypes,$entityns, $mappings, $ontent;
 		$template=$mappings[$type];
-		//echo "<!-- $type -->\n";
 		$idfield=array_search('url',$template);
 		$id=$row[$idfield];
 		unset($template[$idfield]);
@@ -25,7 +24,6 @@
 		$xml=$stag;
 		$xml.=getHomepageAndFormats($uri,$type,$id,$row);
 		foreach ($template as $field => $property){
-			//$xml.="<!-- $field -->\n";
 			switch (substr($property, 0, 1)){
 			case '<':
 				if (!isset($row[$field])) break;
@@ -263,7 +261,7 @@
 		$namespaces['owl']='http://www.w3.org/2002/07/owl#';
         	$namespaces['dc']='http://purl.org/dc/elements/1.1/';
 	        $namespaces['dcterms']='http://purl.org/dc/terms/';
-	        $namespaces['cc']='http://web.resource.org/cc/';
+	        $namespaces['cc']='http://creativecommons.org/ns#';
         	$namespaces['foaf']='http://xmlns.com/foaf/0.1/';
 	        $namespaces['sioc']='http://rdfs.org/sioc/ns#';
 		$namespaces['skos']='http://www.w3.org/2004/02/skos/core#';

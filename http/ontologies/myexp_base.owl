@@ -42,7 +42,7 @@
     <dc:contributor rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David R Newman</dc:contributor>
     <dc:publisher rdf:resource="http://rdf.myexperiment.org"/>
     <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2009-01-28</dc:date>
-    <owl:versionInfo>$Date: 2012/04/24 $</owl:versionInfo>
+    <owl:versionInfo>$Date: 2013/03/26 $</owl:versionInfo>
     <dc:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rdf/xml</dc:format>
     <owl:imports rdf:resource="&snarm;"/>
   </owl:Ontology>
@@ -248,16 +248,10 @@
     <rdfs:label>Versionable</rdfs:label>
     <rdfs:comment>A Contribution that can be a Version</rdfs:comment>
     <rdfs:subClassOf rdf:resource="Interface"/>
-     <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="has-current-version" />
-        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty rdf:resource="has-version" />
-        <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
+        <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:isDefinedBy rdf:resource="&mebase;"/>
@@ -380,7 +374,7 @@
         <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
-     <rdfs:subClassOf>
+    <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty rdf:resource="has-policy" />
         <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
@@ -1114,6 +1108,15 @@
     <rdfs:comment>Does the user receive-notifications</rdfs:comment>
     <rdfs:domain rdf:resource="User"/>
     <rdfs:range rdf:resource="&xsd;boolean"/>
+    <rdfs:isDefinedBy rdf:resource="&mebase;"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="revision-comments">
+    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    <rdfs:label>revision-comments</rdfs:label>
+    <rdfs:comment>Comments may be associated with a particular Version of something</rdfs:comment>
+    <rdfs:domain rdf:resource="Version"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
     <rdfs:isDefinedBy rdf:resource="&mebase;"/>
   </owl:DatatypeProperty>
 

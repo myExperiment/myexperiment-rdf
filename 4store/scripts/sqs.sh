@@ -303,6 +303,9 @@ case "$2" in
         status $1
 	;;
   restart)
+        if [ -n "$3" ]; then
+          sleep $3
+        fi 
 	stop $1
 	start $1
 	;;

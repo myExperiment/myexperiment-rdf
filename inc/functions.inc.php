@@ -33,19 +33,29 @@ function getEntityURI($type,$id,$entity,$format=''){
 			default:
 				break;
 		}
-	 }
-         elseif ($type=="workflow_versions"){
-	        $wvsql="select workflow_id, version from workflow_versions where id=$id";
+	}
+        elseif ($type=="workflow_versions"){
+		$wvsql="select workflow_id, version from workflow_versions where id=$id";
                 $wvres=mysql_query($wvsql);
                 return $datauri."workflows/".mysql_result($wvres,0,'workflow_id')."/versions/".mysql_result($wvres,0,'version');
-         }
-         elseif ($type=="group_announcements"){
+        }
+	elseif ($type=="file_versions") {
+		$fvsql="select blob_id, version from blob_versions where id = $id";
+		$fvres=mysql_query($fvsql);
+		return $datauri."files/".mysql_result($fvres,0,'blob_id')."/versions/".mysql_result($fvres,0,'version');
+	}
+	elseif ($type=="pack_versions") {
+		$pvsql = "select pack_id, version from pack_versions where id = $id";
+		$pvres=mysql_query($pvsql);
+                return $datauri."packs/".mysql_result($pvres,0,'pack_id')."/versions/".mysql_result($pvres,0,'version'); 
+	}
+        elseif ($type=="group_announcements"){
    	 	$gasql="select network_id from group_announcements where id=$id";
                 $gares=mysql_query($gasql);
                 return $datauri."groups/".mysql_result($gares,0,'network_id')."/announcements/".$id;
-         }
-	 elseif ($type=="ontologies") return $entity['uri'];
-         return $datauri."$type/$id";
+        }
+	elseif ($type=="ontologies") return $entity['uri'];
+        return $datauri."$type/$id";
 }
 
 function getRequester($mship){
@@ -140,7 +150,7 @@ function getFavourites($user){
 	        $fsql=addWhereClause($sql['favourites'],"user_id=$user[id]");
         	$fres=mysql_query($fsql);
 	        for ($f=0; $f<mysql_num_rows($fres); $f++){
-        	        $xml.="    <mebase:has-favourite rdf:resource=\"${datauri}users/$user[id]/favourites/".mysql_result($fres,$f,'id')."\"/>\n";
+        	        $xml.="    <meannot:has-favourite rdf:resource=\"${datauri}users/$user[id]/favourites/".mysql_result($fres,$f,'id')."\"/>\n";
         	}
         	return $xml;
 	}
@@ -225,11 +235,8 @@ function getWorkflowDownloadUrl($workflow){
 		$table="workflows";
 		$id= $workflow['id'];
 	}
-//	print_r($workflow);
 	$ctsql="select mime_type from content_types where id=$workflow[content_type_id]";
-//	echo "<!-- $ctsql -->\n";
 	$ctres=mysql_query($ctsql);
-//	print_r(mysql_fetch_assoc($ctres));
 	if (isset($workflow['format'])) $format = $workflow['format'];
 	else $format = "";
 	return $url;
@@ -244,37 +251,56 @@ function getLicense($contrib){
 	global $licenses;
 	return $licenses[$contrib['license']];
 }
-function getCurrentWorkflowVersion($workflow){
-	global $mappings, $datauri, $sql;
-        $wvsql=$sql['workflow_versions']. " and workflow_id=$workflow[id] and version=$workflow[current_version]";
-        $wvsql=str_replace(array('~','?'),array('0','0'),$wvsql);
-        $res=mysql_query($wvsql);
-       	$row=mysql_fetch_assoc($res);
-	$aggregates="workflows/$workflow[id]/versions/$workflow[current_version]";
-	if (isset($workflow['format'])) $format = $workflow['format'];
-        else $format = "";
+function getCurrentVersion($entity, $type) {
+	global $mappings, $datauri, $sql, $tables, $versionent;
+	if (empty($entity['current_version'])) return "";
+        $tvtbits = explode("_", $tables[$versionent[$type]]);
+	$vtbits = explode("_", $versionent[$type]);
+	$type_for_id = $tvtbits[0];
+	$type_for_table = $vtbits[0];
+	$versionsql = $sql[$type_for_table.'_versions']. " and {$type_for_id}_id={$entity['id']} and version={$entity['current_version']}";
+	$versionsql=str_replace(array('~','?'),array('0','0'),$versionsql);
+	$res=mysql_query($versionsql);
+        $row=mysql_fetch_assoc($res);
+        $aggregates="$datauri{$type}/{$entity['id']}/versions/{$entity['current_version']}";
         return $aggregates;
 }
-function isCurrentVersion($workflowversion){
-	$sql="select workflows.id from workflows inner join workflow_versions on workflows.current_version=workflow_versions.version and workflows.id=workflow_versions.workflow_id where workflow_versions.id=$workflowversion[id]";
-//	echo $sql;
+
+function isCurrentVersion($version){
+	if (isset($version['workflow_id'])) {
+		$sql="select workflows.id from workflows inner join workflow_versions on workflows.current_version=workflow_versions.version and workflows.id=workflow_versions.workflow_id where workflow_versions.id=$version[id]";
+	}
+	elseif (isset($version['blob_id'])) {
+		$sql="select blobs.id from blobs inner join blob_versions on blobs.current_version=blob_versions.version and blobs.id=blob_versions.blob_id where blob_versions.id=$version[id]";
+	}
+	elseif (isset($version['pack_id'])) {
+		$sql="select packs.id from packs inner join pack_versions on packs.current_version=pack_versions.version and packs.id=pack_versions.pack_id where pack_versions.id=$version[id]";
+	}
+	else {
+		return;
+	}
 	$res=mysql_query($sql);
 	return mysql_num_rows($res);
 }
-function getWorkflowVersions($workflow){
-	global $mappings, $datauri, $sql;
-	$wvsql=$sql['workflow_versions']. " and workflow_id=$workflow[id] and version!=$workflow[current_version]";
-	$res=mysql_query($wvsql);
+function getVersions($entity, $type){
+	global $mappings, $datauri, $sql, $tables, $versionent;
+	$version_type = $versionent[$type];
+	if (empty($entity['current_version'])) return "";
+	$tvtbits = explode("_", $tables[$version_type]);
+	$versions_sql = $sql[$version_type]. " and {$tvtbits[0]}_id={$entity['id']} and version!={$entity['current_version']}";
+	$res=mysql_query($versions_sql);
 	$aggregates="";
-	for ($i=0; $i<mysql_num_rows($res); $i++){
-		$row=mysql_fetch_assoc($res);
-		 if (isset($workflow['format'])) $format = $workflow['format'];
-        	else $format = "";
-		
-		if ($format=="ore") $aggregates.="    <ore:aggregates rdf:resource=\"".$datauri."workflows/".$row['workflow_id']."/versions/".$row['version']."\"/>\n";
-		else $aggregates.="    <mebase:has-version rdf:resource=\"".$datauri."workflows/".$row['workflow_id']."/versions/".$row['version']."\"/>\n";
+	if ($type == "packs") {
+		$property_name = "mepack:has-snapshot";
 	}
-	return $aggregates;	
+	else {
+		$property_name = "mebase:has-version";
+	}
+	for ($i=0; $i<mysql_num_rows($res); $i++){
+                $row=mysql_fetch_assoc($res);
+                $aggregates.="    <$property_name rdf:resource=\"".$datauri.$type."/".$row[$tvtbits[0].'_id']."/versions/".$row['version']."\"/>\n";
+        }
+        return $aggregates;
 }
 function foafPictureURL($pic_id){
 	global $datauri;
@@ -282,7 +308,7 @@ function foafPictureURL($pic_id){
 }
 function pictureURL($user){
        	global $datauri;
-       	if (isset($user['avatar_id']) && $user['avatar_id']>0) return $datauri."pictures/show/".$user['avatar_id']."?size=160x160.png";
+       	if (isset($user['picture_id']) && $user['picture_id']>0) return $datauri."pictures/show/".$user['picture_id']."?size=160x160.png";
 	return $datauri."images/avatar.png";
 }
 function validateEmail($email){
@@ -343,8 +369,20 @@ function isPartOfURI($entry){
 	return  "packs/".$entry['pack_id'];
 }
 function getVersionID($entity){
-	if ($entity['contributable_type']=="Workflow") $sql="select id from workflow_versions where workflow_id=$entity[contributable_id] and version=$entity[contributable_version]";
-	if ($sql){
+	$contributable_type = $entity['contributable_type'];
+        $contributable_id = $entity['contributable_id'];
+        $contributable_version = $entity['contributable_version'];
+	switch ($contributable_type) {
+		case "Workflow":
+			$sql = "select id from workflow_versions where workflow_id=$contributable_id and version=$contributable_version";
+			break;
+		case "File":
+			$sql = "select id from blob_versions where blob_id=$contributable_id and version=$contributable_version";
+			break;
+		case "Pack":
+			$sql = "select id from pack_versions where pack_id=$contributable_id and version=$contributable_version";
+	}
+	if (isset($sql)){
 		$res=mysql_query($sql);
 		return mysql_result($res,0,'id');
 	}
@@ -377,6 +415,12 @@ function getPackEntries($pack){
 	if (stripos($lsql,'where')>0) $lsql.=" and ";
 	else $lsql.=" where ";	
 	$lsql.="pack_id=$pack[id]";
+	if (empty($pack['version'])) {
+		$lsql.=" and version IS NULL";
+	}
+	else {
+		$lsql.= " and version = {$pack['version']}";
+	}
 	$lres=mysql_query($lsql);
 	$xml="";
 	$packurl=getEntityURI('packs',$pack['id'],$pack);
@@ -463,7 +507,6 @@ function getRunner($entity){
 	$runner="runners/$entity[runner_id]";
 	$cursql=$sql['runners']." where id=$entity[runner_id]";
 	$res=mysql_query($cursql);
-//	echo $cursql;
 	if (isset($entity['format'])) $format = $entity['format'];
         else $format = "";
 	return $runner;
@@ -474,12 +517,13 @@ function getProxyFor($entity){
 	if (isset($entity['contributable_type'])){
 		if ($entity['contributable_version']){
 			$entity['contributable_id']=getVersionID($entity);
-			if ($entity['contributable_type']=="Workflow") $entity['contributable_type']="WorkflowVersion";
+			$entity['contributable_type'].="Version";
 		}
 		if (in_array($entity['contributable_type'],$modelalias)) $etype=array_search($entity['contributable_type'],$modelalias);
 		else $etype = $entity['contributable_type'];
 		$etype=array_search($etype,$ontent);
-		return $etype."/".$entity['contributable_id'];
+		$enturi = getEntityURI($etype, $entity['contributable_id'], $entity);
+		return $enturi;
 	}
 	$xml.="<rdf:Description rdf:about=\"".str_replace("&","&amp;",$entity['uri'])."\"";
         if ($entity['alternate_uri']) $xml.=">\n      <rdfs:seeAlso>\n        <rdf:Description rdf:about=\"".str_replace("&","&amp;",$entity['alternate_uri'])."\"/>\n      </rdfs:seeAlso>\n    </rdf:Description>\n";
