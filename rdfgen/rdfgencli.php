@@ -1,10 +1,11 @@
 #!/usr/bin/php
 <?php 
+//	ini_set('display_errors', 1);
 //	error_reporting(E_ALL);
 	include('include.inc.php');
 	require('genrdf.inc.php');
 	function setTypeIDandParams($args,$noexit=0){
-		global $nesting, $rdfgen_userid;
+		global $nesting, $rdfgen_userid, $tables;
 		$rdfgen_userid=0;
 		if (isset($args[2])){
 			$type=$args[1];
@@ -12,7 +13,7 @@
 		}
 		else exit("Not enough arguments!\n");
 		$params = array();
-		if ($type == "workflows"){
+		if (in_array($type, array("files", "packs", "workflows"))){
 			if (isset($args[4])){
 				$rdfgen_userid = $args[4];
 				$params = $params=explode("/",$args[3]);
@@ -24,19 +25,38 @@
 			}
 		}
 		elseif (isset($args[3])) $params=explode("/",$args[3]);
-		$wfid='0';
+		$primary_id='0';
 		if (isset($params[0]) and strlen($params[0])>0){
 			if (sizeof($params)>1 && isset($nesting[$params[sizeof($params)-2]])){
 				$type=$params[sizeof($params)-2];
 				$id=$params[sizeof($params)-1];
 				$params=array();
          		}
-			elseif ($params[0]=="versions" && $type=="workflows"){
-				$type="workflow_versions"; 
-				$wvsql="select id from workflow_versions where workflow_id=$id and version=$params[1]";
-				$wvres=mysql_query($wvsql);
-				$wfid=$id;
-				$id=mysql_result($wvres,0,'id');
+			elseif ($params[0]=="versions") {
+				switch($type) {
+					case "files":
+                                                $type = "file_versions";
+                                                break;
+					case "packs":
+						if (isset($params[2]) && $params[2]=="relationships") {
+							$type="pack_relationships";
+                                			$id=$params[3];
+						}
+						else {
+                                                	$type = "pack_versions";
+						}
+                                                break;
+					case "workflows":
+						$type = "workflow_versions";
+						break;
+				}
+				$typebits=explode('_', $tables[$type]);
+				if ($typebits[1]=="versions") {
+					$version_sql="select id from {$tables[$type]} where {$typebits[0]}_id=$id and version=$params[1]";
+					$version_res=mysql_query($version_sql);
+					$primary_id=$id;
+					$id=mysql_result($version_res,0,'id');
+				}
 			}
 			elseif ($params[0]=="announcements" && $type=="groups"){
 				$type="group_announcements";
@@ -50,7 +70,7 @@
 				exit();
 			}
 		}
-		return array($type,$id,$params,$wfid);
+		return array($type,$id,$params,$primary_id);
 	}
 	function getEntityResults($type,$id){
 		global $tables, $sql;
@@ -65,7 +85,7 @@
                 return mysql_query($cursql);
 	}
 	if (sizeof($argv)>5) exit("Too many arguments!\n");
-	list($type,$id,$params,$wfid)=setTypeIDandParams($argv);
+	list($type,$id,$params,$primary_id)=setTypeIDandParams($argv);
 	if (entityExists($type,$id)){
 	        $res=getEntityResults($type,$id);
 		$row=mysql_fetch_assoc($res);
@@ -107,17 +127,17 @@
 					if (in_array("previews",$mbits) && (in_array("full",$mbits)||in_array("medium",$mbits)||in_array("thumb",$mbits)||in_array("svg",$mbits))) continue;
 					elseif (strpos($m,'.') === false && $mbits[0] && isset($sql[$mbits[0]]) && $datauri.$m != $uri){
 						if ($posthash){
-							$wfid=$mbits[1];
+							$primary_id=$mbits[1];
                                                	        $version=$mbits[3];
-                                                       	$id=getWorkflowVersion($wfid,$version);
-                              	                        $xml.=extractRDF($id,$wfid,$version,$posthash)."\n";
+                                                       	$id=getWorkflowVersion($primary_id,$version);
+                              	                        $xml.=extractRDF($id,$primary_id,$version,$posthash)."\n";
 						}
 						else{
 							$args[1]=array_shift($mbits);
 							$args[2]=array_shift($mbits);
 							$args[3]=implode('/',$mbits);
 							$args[4]=1;
-							list($type,$id,$params,$wfid)=setTypeIDandParams($args,true);
+							list($type,$id,$params,$primary_id)=setTypeIDandParams($args,true);
 							if (isset($type)){
 								$res=getEntityResults($type,$id);	
 								$xml.=printEntity(mysql_fetch_assoc($res),$type);	
@@ -142,4 +162,5 @@
 		header('Content-type: application/rdf+xml');
 		echo $xml;
 	}
+//	echo "Entity - type:$type id:$id does not exist";
 ?>

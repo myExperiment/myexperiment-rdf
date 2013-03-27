@@ -30,7 +30,7 @@
   <!-- =============== Description ==================== -->
 
   <owl:Ontology rdf:about="&mepack;">
-    <rdfs:label>myExperiment Packs v1.1</rdfs:label>
+    <rdfs:label>myExperiment Packs v1.2</rdfs:label>
     <rdfs:comment>This facilitates the use of packs to aggregate contributions and remote urls together and link these items together with relationships.</rdfs:comment>
     <dc:language>en</dc:language>
     <dc:title xml:lang="en">The myExperiment Packs Ontology</dc:title>
@@ -38,7 +38,7 @@
     <dc:contributor rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David R Newman</dc:contributor>
     <dc:publisher rdf:resource="http://rdf.myexperiment.org"/>
     <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2009-01-28</dc:date>
-    <owl:versionInfo>$Date: 2011/10/03 $</owl:versionInfo> 
+    <owl:versionInfo>$Date: 2013/03/26 $</owl:versionInfo> 
     <dc:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rdf/xml</dc:format>
   </owl:Ontology>
 
@@ -142,6 +142,14 @@
     <rdf:type rdf:resource="&owl;Class"/>
   </rdf:Description>
 
+  <rdf:Description rdf:about="&mebase;has-current-version">
+    <rdf:type rdf:resource="&owl;ObjectProperty"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="&mebase;has-version">
+    <rdf:type rdf:resource="&owl;ObjectProperty"/>
+  </rdf:Description>
+
   <rdf:Description rdf:about="&mebase;uri">
     <rdf:type rdf:resource="&owl;ObjectProperty"/>
   </rdf:Description>
@@ -211,7 +219,7 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty rdf:resource="&ore;proxyIn" />
-        <owl:allValuesFrom rdf:resource="Pack" />
+        <owl:allValuesFrom rdf:resource="&mepack;Pack" />
       </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
@@ -233,26 +241,42 @@
     <rdfs:isDefinedBy rdf:resource="&mepack;"/>
   </owl:Class>
 
-  <owl:Class rdf:about="Pack">
-    <rdfs:label>Pack</rdfs:label>
-    <rdfs:comment>A Pack of Contributions/remote urls</rdfs:comment>
+  <owl:Class rdf:about="AbstractPack">
+    <rdfs:label>AbstractPack</rdfs:label>
+    <rdfs:comment>An AbstractPack from which Pack and PackSnapshot can be templated on</rdfs:comment>
     <owl:disjointWith rdf:resource="&mebase;Upload"/> 
     <rdfs:subClassOf rdf:resource="&mebase;Contribution" />
     <rdfs:subClassOf rdf:resource="&meannot;Commentable"/>
     <rdfs:subClassOf rdf:resource="&meannot;Taggable"/>
-    <rdfs:subClassOf rdf:resource="&meannot;Rateable"/>
+    <rdfs:subClassOf rdf:resource="&meannot;Favouritable"/>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty rdf:resource="&ore;aggregates" />
+        <owl:onProperty rdf:resource="&ore;aggregates"/>
         <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
      <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty rdf:resource="&ore;isDescribedBy" />
+        <owl:onProperty rdf:resource="&ore;isDescribedBy"/>
         <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:isDefinedBy rdf:resource="&mepack;"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="Pack">
+    <rdfs:label>Pack</rdfs:label>
+    <rdfs:comment>A Pack of Contributions/remote urls</rdfs:comment>
+    <owl:disjointWith rdf:resource="PackSnapshot"/> 
+    <rdfs:subClassOf rdf:resource="AbstractPack"/>
+    <rdfs:isDefinedBy rdf:resource="&mepack;"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="PackSnapshot">
+    <rdfs:label>PackSnapshot</rdfs:label>
+    <rdfs:comment>A Snapshot of a Pack</rdfs:comment>
+    <owl:disjointWith rdf:resource="Pack"/>
+    <rdfs:subClassOf rdf:resource="AbstractPack"/>
     <rdfs:isDefinedBy rdf:resource="&mepack;"/>
   </owl:Class>
 
@@ -262,8 +286,8 @@
     <rdfs:subClassOf rdf:resource="Entry"/>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty rdf:resource="&ore;proxyFor" />
-        <owl:allValuesFrom rdf:resource="Relationship" />
+        <owl:onProperty rdf:resource="&ore;proxyFor"/>
+        <owl:allValuesFrom rdf:resource="Relationship"/>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:isDefinedBy rdf:resource="&mepack;"/>
@@ -312,9 +336,27 @@
   <owl:ObjectProperty rdf:about="has-entry">
     <rdfs:label>has-pack-entry</rdfs:label>
     <rdfs:comment>A pack may have zero or more pack entries.</rdfs:comment>
-    <rdfs:domain rdf:resource="Pack"/>
+    <rdfs:domain rdf:resource="AbstractPack"/>
     <rdfs:range rdf:resource="Entry"/>
     <owl:inverseOf rdf:resource="&ore;proxyIn"/>
+    <rdfs:isDefinedBy rdf:resource="&mepack;"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="has-snapshot">
+    <rdfs:subPropertyOf rdf:resource="&mebase;has-version"/>
+    <rdfs:label>has-snapshot</rdfs:label>
+    <rdfs:comment>A pack may have a snapshot of itself at a certain point in time.</rdfs:comment>
+    <rdfs:domain rdf:resource="Pack"/>
+    <rdfs:range rdf:resource="PackSnapshot"/>
+    <rdfs:isDefinedBy rdf:resource="&mepack;"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="has-latest-snapshot">
+    <rdfs:subPropertyOf rdf:resource="&mebase;has-current-version"/>
+    <rdfs:label>has-latest-snapshot</rdfs:label>
+    <rdfs:comment>A Pack may have a snapshot of itself at a certain point in time, which is the latest of all snapshots for this Pack.</rdfs:comment>
+    <rdfs:domain rdf:resource="Pack"/>
+    <rdfs:range rdf:resource="PackSnapshot"/>
     <rdfs:isDefinedBy rdf:resource="&mepack;"/>
   </owl:ObjectProperty>
 

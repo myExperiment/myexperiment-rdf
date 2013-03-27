@@ -86,7 +86,7 @@ function getUsefulPrefixesArray($domain,$merge=false){
 	        $other['foaf']='http://xmlns.com/foaf/0.1/';
         	$other['sioc']='http://rdfs.org/sioc/ns#';
 	        $other['ore']='http://www.openarchives.org/ore/terms/';
-        	$other['cc']='http://web.resource.org/cc/';
+        	$other['cc']='http://creativecommons.org/ns#';
 		$other['dbpedia']='http://dbpedia.org/ontology/';
 	}
 	if (trim($domain)=="private" ){
