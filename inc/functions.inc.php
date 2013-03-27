@@ -452,7 +452,7 @@ function getOutput($entity){
 	$xml="";
 	if ($entity['outputs_uri']){		
 		$uri=getEntityURI('jobs',$entity['id'],$entity);
-		$xml="      <meexp:Data rdf:about=\"$uri/output\">\n";
+		$xml="<meexp:Data rdf:about=\"$uri/output\">\n";
 		if ($entity['outputs_uri']) $xml.= "        <mebase:uri rdf:resource=\"$entity[outputs_uri]\"/>\n";
 
 		$xml.="      </meexp:Data>";
@@ -491,9 +491,7 @@ function getRunnable($entity){
 	
 	$cursql="$sql[$type] and $idf=$id";
 	$res=mysql_query($cursql);
-        if ($res!== false || mysql_num_rows($res)==0) return "";
-	if (isset($entity['format'])) $format = $entity['format'];
-        else $format = "";
+        if ($res === false || mysql_num_rows($res)==0) return "";
 	return $runnable;
 }
 function getJobURI($entity){
