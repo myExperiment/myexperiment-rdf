@@ -1,3 +1,12 @@
+<?php
+/**
+ * @file http/hts/4.php
+ * @brief How to SPARQL guide: 4. WHERE
+ * @version beta
+ * @author David R Newman
+ * @details Fourth page of the How to SPARQL guide explaining how to use the WHERE sub-clause of SPARQL.
+ */
+?>
 <h2>4. WHERE</h2>
 <p>The <em>WHERE</em> clause of a SPARQL query defines where you want to find values for the variables you have defined in the SELECT clause.  Inside the curly parenthesis {} the basic unit is a triple, this is made up of three components, a subject, a predicate and an object.  This is much like the grammatical structure of a basic natural language sentence.</p>
 <table style="margin-left: auto; margin-right: auto; width: 400px;">

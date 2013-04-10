@@ -1,4 +1,10 @@
 #!/bin/bash
+## @file 4store/scripts/default_settings.sh
+## @brief Default settings file providing parameters for bash scripts in the 4store/scripts directory.
+## @author David R Newman
+## @version beta
+## @details This script is the default variables to be exported for use by bash scripts in the 4store/scripts directory.  A copy of this should be taken to produce 4store/scripts/settings.sh that can then be configured for individual instances.
+
 export PKG_CONFIG_PATH="/usr/lib64/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig"
 export LD_PATH="/var/linkeddata"
 export LD_LIBRARY_PATH="/usr/local/lib"

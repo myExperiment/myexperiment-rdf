@@ -1,3 +1,13 @@
+<?php
+/**
+ * @file http/hts/announcements.inc.php
+ * @brief A table of Announcement SPARQL results.
+ * @version beta
+ * @author David R Newman
+ * @details A table of Announcement SPARQL results for use in How to SPARQL guide.
+ */
+?>
+
 <table class="listing">
   <tr><th>a</th><th>text</th></tr>
   <tr><td class="shade"><?= $datauri ?>announcements/6</td><td class="shade"><p>myExperiment is discussed by Jim Hendler in his article <i>Reinventing Academic Publishing, Part 3 </i>in IEEE Intelligent Systems January/February 2008, page 2-3.</p></td></tr>

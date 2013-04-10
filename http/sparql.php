@@ -1,13 +1,21 @@
 <?php
+/**
+ * @file http/sparql.php
+ * @brief myExperiment SPARQL endpoint web interface.
+ * @version beta
+ * @author David R Newman
+ * @details Web interface for the SPARQL endpoint to the 4Store knowledge base containing myExperiment RDF data nad ontologies.
+ */
+
 $pagetitle="SPARQL Endpoint";
 $htmlheader[]='<link rel="stylesheet" type="text/css" href="/css/style.css"/>';
 $htmlheader[]='<script src="/js/sparql.js" type="text/javascript"></script>';
 $htmlheader[]='<script src="/js/codemirror.js" type="text/javascript"></script>';
 include('include.inc.php');
-include('xmlfunc.inc.php');
-include('sparqlconnect.inc.php');
-require('4storefunc.inc.php');
-require('miscfunc.inc.php');
+include('functions/xml.inc.php');
+include('connect/sparql.inc.php');
+require('functions/4store.inc.php');
+require('functions/utility.inc.php');
 $domain="public";
 $ts=$triplestore;
 $notriples=getNoTriples($ts);

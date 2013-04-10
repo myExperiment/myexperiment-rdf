@@ -1,3 +1,12 @@
+<?php
+/**
+ * @file http/hts/9.php
+ * @brief How to SPARQL guide: 9. Troubleshooting
+ * @version beta
+ * @author David R Newman
+ * @details Ninth page of the How to SPARQL guide providing troubleshooting advice on errors / warnings returned from SPARQL query requests.
+ */
+?>
 <h2>9. Troubleshooting</h2>
 <p>When trying to execute a query you may get one or more warning/error messages.  If you are using the query form with <em>HTML Table</em> results these messages will be shown in a red box just above the query text box. E.g.</p>
 <div class="red" style="text-align: center;"><b> parser warning: Variable q was selected but is unused in the query. at line 1 </b></div>

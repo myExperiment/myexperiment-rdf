@@ -1,3 +1,13 @@
+<?php
+/**
+ * @file http/hts/7.php
+ * @brief How to SPARQL guide: 7. ORDER BY
+ * @version beta
+ * @author David R Newman
+ * @details Seventh page of the How to SPARQL guide explaining how to use the ORDER BY sub-clause of SPARQL.
+ */
+?>
+
 <h2>7. ORDER BY</h2>
 <p>The <a href="?page=FILTER#On Dates">filter on dates example</a> restricts the workflows returned, however you may want to go further, listing the most recent workflows first.  The <em>ORDER BY</em> clause can be used to do this:</p>
 <div class="yellow"><pre>PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;

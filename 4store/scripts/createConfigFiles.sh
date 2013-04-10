@@ -1,4 +1,9 @@
 #!/bin/bash
+## @file 4store/scripts/createConfigFiles.sh
+## @brief Used by the installer (install.sh) to generate configuration files for managing reasoning over the myExperiment ontology.
+## @author David R Newman
+## @version beta
+## @details This script generates a file listing of ontology modules that need to be reasoned concurrently to produced an reasoned version of the complete ontology.  It alos generates a configuration file specifying where the reasoned version of the complete ontology should be stored.
 source `dirname $BASH_SOURCE`/settings.sh
 if [ -e $STORE4_PATH/config/$STORE4_PATH/log ]; then
 	"Config files have already been created!"

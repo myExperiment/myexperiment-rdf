@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file http/index.php
+ * @brief Index page for myExperiment Linked Data, Ontology, SPARQL endpoint, etc.
+ * @version beta
+ * @author David R Newman
+ * @details Index page for myExperiment Linked Data, Ontology, SPARQL endpoint, etc.
+ */
+
 	include('include.inc.php');
 	$pagetitle="Linked Data";
 	include('header.inc.php');

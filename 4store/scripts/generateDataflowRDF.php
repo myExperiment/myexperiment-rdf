@@ -1,7 +1,15 @@
 #!/usr/bin/php
 <?php
+/**
+ * @file 4store/scripts/generateDataflowRDF.php
+ * @brief Generates RDF to represent the dataflow of publically downloadable workflows on a particular myExperiment instance.
+ * @version beta
+ * @author David R Newman
+ * @details This script queries the database to determine publically downloadable workflows.  It then downloads those public workflows for which does not already have dataflow RDF generated and parses the XML returned to generate this dataflow RDF which is then stored locally.
+ */
+
 	include('include.inc.php');
-	require_once('genrdf.inc.php');
+	require_once('functions/rdf.inc.php');
 	$ph=popen("cd ${datapath}dataflows/; du -b * | awk 'BEGIN{FS=\" \"}{ if ($1!=\"4\") print $2 }'",'r');
 	$temp="";
 	while (!feof($ph)){

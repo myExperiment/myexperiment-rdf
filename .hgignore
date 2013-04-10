@@ -3,7 +3,7 @@ syntax: glob
 *.pid
 *~
 .htaccess
-inc/settings.inc.php
+inc/config/settings.inc.php
 4store/scripts/settings.sh
 data/*
 4store/config/myexp*
@@ -13,6 +13,5 @@ http/void.rdf
 http/myexperiment.rdf
 http/myexp_data_and_ontologies.zip
 http/ontologies/spec.html
-rdfgen/entity_sizes.txt
-http/nif/*
+inc/config/entity_sizes.txt
 settings.bash

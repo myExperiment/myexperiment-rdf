@@ -1,4 +1,10 @@
 #!/bin/bash
+## @file 4store/scripts/cacheSpec.sh
+## @brief Caches an HTML specification document of a currently uploaded ontology/schema.
+## @author David R Newman
+## @version beta
+## @details This script uses an OWL ontology or RDF schema that has already been loaded into the 4Store ontologies knowledge base to generate an HTML specification document of it.  It calls the http/generic_spec.php script with the uncached GET parameter to 1, ensuring the document is generated anew rather than from a copy already generated.  Appropriate logging messages are output dependent on the success of failure of this script.
+
 source `dirname $BASH_SOURCE`/settings.sh
 cd $STORE4_PATH/scripts
 echo "============== `date` =============="

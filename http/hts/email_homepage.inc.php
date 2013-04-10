@@ -1,3 +1,13 @@
+<?php
+/**
+ * @file http/hts/email_homepage.inc.php
+ * @brief A table of homepage / public email address SPARQL results.
+ * @version beta
+ * @author David R Newman
+ * @details A table of homepage and public email address SPARQL results for a limited set of users.
+ */
+?>
+
 <table class="listing">
   <tr><th>homepage</th><th>mbox</th></tr>
   <tr><td class="shade">http://www.linkedin.com/in/drneilravenhill</td><td class="shade">mailto:neilr@alto-marketing.com</td></tr>

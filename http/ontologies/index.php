@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file http/ontologies/index.php
+ * @brief myExperient Ontology web page.
+ * @version beta
+ * @author David R Newman
+ * @details Web page explaining the purpose and structure of the myExperiment Ontology.
+ */
+
 	include('../include.inc.php');
 	$pagetitle="Ontology";
 	include('header.inc.php');

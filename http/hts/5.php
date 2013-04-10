@@ -1,3 +1,12 @@
+<?php
+/**
+ * @file http/hts/5.php
+ * @brief How to SPARQL guide: 5. FILTER
+ * @version beta
+ * @author David R Newman
+ * @details Fifth page of the How to SPARQL guide explaining how to use the FILTER sub-clause of SPARQL.
+ */
+?>
 <h2>5. FILTER</h2>
 <p>The <em>FILTER</em> clause is used within the curly parenthesis {} as a subclause of the WHERE clause.  As its name suggests, it allows you to filter the results based on certain conditions.  Most commonly you may want to filter on text but you can also filter on numbers and dates.</p>
 <h3>5.1. On Text<a name="On Text"/></h3>

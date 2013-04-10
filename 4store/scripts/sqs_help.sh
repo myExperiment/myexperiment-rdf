@@ -1,4 +1,10 @@
-echo "Usage: triplestore <triplestore_name> {start|stop|restart|status|update|import|add|remove|test|reason-ontology|reason-file|reason-files|list-graphs|count-triples|generate-spec|graph-size|data-dump|generate-linksets|generate-voidspec|run-diagnostic|check-versions|help} [OPTIONS]
+## @file 4store/scripts/sqs_help.sh
+## @brief Prints out the help instructions for the sqs.sh script.
+## @author David R Newman
+## @version beta
+## @details This script prints out the help instructions for the script at 4store/scripts/sqs.sh, whenever the help or an invalid command are invoked by this script.
+
+echo "Usage: triplestore <triplestore_name> {start|stop|restart|status|update|import|add|remove|test|reason-ontology|list-graphs|count-triples|generate-spec|graph-size|data-dump|generate-linksets|generate-voidspec|run-diagnostic|check-versions|help} [OPTIONS]
 
 Examples
 
@@ -22,16 +28,6 @@ Examples
 
 ./sqs.sh <triplestore> reason-ontology
   <triplestore> = [ $TRIPLESTORE ]
-
-./sqs.sh <triplestore> reason-file <filepath> <reasonedpath>
-  <triplestore> = [ $TRIPLESTORE ]
-  E.g. <filepath> = $DATA_PATH/$TRIPLESTORE/workflows/12
-  <reasonedpath> = $DATA_PATH/$TRIPLESTORE/reasoned/
-
-./sqs.sh <triplestore> reason-files <filespath> <reasonedpath>
-  <triplestore> = [ $TRIPLESTORE ]
-  E.g. <filespath> = /home/user/files_to_reasoned.txt
-  <reasonedpath> = $DATA_PATH/$TRIPLESTORE/reasoned/
 
 ./sqs.sh <triplestore> manage-dataflows
   <triplestore> = [ $TRIPLESTORE ]

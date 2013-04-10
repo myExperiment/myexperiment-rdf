@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file http/rdfredirect.php
+ * @brief Legacy script to redirect from old RDF URIs to new Linked Data RDF URIs.
+ * @version beta
+ * @author David R Newman
+ * @details Legacy script to redirect from old RDF URIs to new Linked Data RDF URIs
+ */
+
 	include('include.inc.php');
 	include('data.inc.php');
 	include('myexpconnect.inc.php');

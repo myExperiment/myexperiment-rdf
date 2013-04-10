@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file http/generate_spec.php
+ * @brief Generates HTML specification of any RDFS schema / OWL ontology.
+ * @version beta
+ * @author David R Newman
+ * @details Generates HTML specification of any RDFS schema / OWL ontology using SPARQL queries to the 4Store SPARQL endpoint.
+ */
+
 include('include.inc.php');
 include_once('ontoconnect.inc.php');
 $query="select * from ontologies order by name, namespace";

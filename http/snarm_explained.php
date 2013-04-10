@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file http/snarm_explained.php
+ * @brief Documengtation page explaining how the SNARM ontology works.
+ * @version beta
+ * @author David R Newman
+ * @details Documengtation page explaining how the SNARM ontology works.  Explains how entities in the ontology can be put together to define the policy for using a particular myExperiment Contribution.
+ */
+
 	include('include.inc.php');
 	$pagetitle="SNARM Explained";
 	include('header.inc.php');

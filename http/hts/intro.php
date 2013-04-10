@@ -1,3 +1,13 @@
+<?php
+/**
+ * @file http/hts/intro.php
+ * @brief How to SPARQL guide: Contents
+ * @version beta
+ * @author David R Newman
+ * @details A contents / introduction page for the How to SPARQL guide.
+ */
+?>
+
 <div class="purple" style="float: left; margin-right: 10px; margin-bottom:10px;">
 <h3>Contents</h3>
 <ol>

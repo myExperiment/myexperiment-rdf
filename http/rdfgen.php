@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file http/rdfgen.php
+ * @brief Web-based version of myExperiment RDF generator at rdfgen/rdfgencli.php.
+ * @version beta
+ * @author David R Newman
+ * @details Web-based version of myExperiment RDF generator at rdfgen/rdfgencli.php.  Locked down by a password preotected .htaccess file.
+ */
+
 	$url=str_replace("http://www.myexperiment.org/","",$_GET['url']);
 	if (strpos($url,".")>0){
 		if (strpos($url,".rdf")>0){

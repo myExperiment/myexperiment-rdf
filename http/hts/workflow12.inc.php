@@ -1,3 +1,12 @@
+<?php
+/**
+ * @file http/hts/workflow12.inc.php
+ * @brief A table containing all property-value pairs assoicated with Workflow 12.
+ * @version beta
+ * @author David R Newman
+ * @details A table containing the predicate and object of all RDF triples for which Workflow 12 is the subject.
+ */
+?>
 <table class="listing">
   <tr><th>p</th><th>o</th></tr>
   <tr><td class="shade">http://purl.org/dc/terms/modified</td><td class="shade">2007-11-13T16:16:54Z</td></tr>
