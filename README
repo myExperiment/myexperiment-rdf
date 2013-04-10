@@ -1,10 +1,10 @@
 == Installation Instructions
 
-1. Copy default_settings.bash to settings.bash and alter settings.bash parameters as appropiate
+1. Copy default_settings.sh to settings.sh and alter settings.sh parameters as appropiate
 
-	cp default_settings.bash settings.bash
+	cp default_settings.sh settings.sh
 
 
-2. Run install.bash
+2. Run install.sh
 
-	/bin/bash install.bash
+	/bin/bash install.sh

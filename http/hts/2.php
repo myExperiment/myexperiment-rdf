@@ -1,3 +1,13 @@
+<?php
+/**
+ * @file http/hts/2.php
+ * @brief How to SPARQL guide: 2. PREFIX
+ * @version beta
+ * @author David R Newman
+ * @details Second page of the How to SPARQL guide explaining how to use the PREFIX and BASE clauses of SPARQL.
+ */
+?>
+
 <h2>2. PREFIX</h2>
 <p>The first part of most queries is the listing of one or more prefixes:</p>
 <div class="yellow" ><pre><b>PREFIX mebase: &lt;http://rdf.myexperiment.org/ontologies/base/&gt;

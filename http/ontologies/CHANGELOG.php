@@ -1,7 +1,16 @@
 <?php 
-        include('../include.inc.php');
-        $pagetitle="Changelog";
-	include('header.inc.php');
+/**
+ * @file http/ontologies/CHANGELOG.php
+ * @brief Changelog for the myExperiment Ontology modules
+ * @version beta
+ * @author David R Newman
+ * @details Lists dated channges to the myExperiment Ontology modules over time.
+ */
+
+include('../include.inc.php');
+$pagetitle="Ontology Changelog";
+include('partials/header.inc.php');
+
 ?>
 <p><big>This page includes the changelog for the <a href=".">myExperiment Ontology</a> and consequently myExperiment's RDF data.</big></p>
 

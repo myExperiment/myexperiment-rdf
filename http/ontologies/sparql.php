@@ -1,11 +1,19 @@
 <?php
-	ini_set('include_path','../inc/:.');
+/**
+ * @file http/ontologies/sparql.php
+ * @brief Web interface to the SPARQL Endpoint for the Ontologies 4Store knowledge base.
+ * @version beta
+ * @author David R Newman
+ * @details Web interface allowing SPARQL queries against the ontologies uploaded by the Ontology Uploader in http/upload_specs.php 
+ */
+
+	include('../include.inc.php');
 	$pagetitle="<small>Ontologies SPARQL Endpoint</small>";
 	$htmlheader[]='<script src="/js/sparql.js" type="text/javascript"></script>';
-	include('xmlfunc.inc.php');
-        require('4storefunc.inc.php');
-	require('miscfunc.inc.php');
-	$domain="ontologies";
+	include('functions/xml.inc.php');
+        require('functions/4store.inc.php');
+	require('functions/utility.inc.php');
+	$domain="public";
 	$prefix="Ontologies ";
 	$ts="ontologies";
         $notriples=getNoTriples($ts);

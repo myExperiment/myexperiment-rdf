@@ -1,3 +1,13 @@
+<?php
+/**
+ * @file http/hts/1.php
+ * @brief How to SPARQL guide: 1. Using the SPARQL Endpoint
+ * @version beta
+ * @author David R Newman
+ * @details First page of the How to SPARQL guide explaining how to use the myExperiment SPARQL endpoint web interface.
+ */
+?>
+
 <h2>1. Using the SPARQL Endpoint</h2>
 <h3><a name="Useful Prefixes"/>1.1. Useful Prefixes</h3>
 <p>The <a href="/sparql">myExperiment SPARQL endpoint</a> has a number of features to assist in its use.  As explained in the <a href="?page=PREFIX">PREFIX</a> page, both the PREFIX and BASE clauses facilitate writing more succinct and easier to follow queries.  If you need to include any prefixes in your query just use the PREFIX as defined in Useful Prefixes (e.g. rdfs, mebase etc.) and the PREFIX line will be prepended to the query before it is executed.</p>

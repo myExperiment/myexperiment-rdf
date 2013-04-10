@@ -1,9 +1,95 @@
 #!/bin/bash
+## @file 4store/scripts/sqs.sh
+## @brief Script that automates the RDF generation and triplestore upload and control.
+## @author David R Newman
+## @version beta
+## @details Init.d style script that supports myExperiment RDF generation; starting, stopping and restarting of 4Store knowledge base interfaces; the adding and removing of graphs from 4Store knowledge bases; generation of linkset and VoiD specifications.  And overall the whole process of updating the myExperiment 4Store knowledge base so the SPARQL endpoint can query the latest available version of the myExperiment database.  The following help instructions are provided:
+##
+## Usage: triplestore <triplestore_name> {start|stop|restart|status|update|import|add|remove|test|list-graphs|count-triples|generate-spec|graph-size|data-dump|generate-linksets|generate-voidspec|run-diagnostic|check-versions|help} [OPTIONS]
+## 
+## Examples
+## 
+## ./sqs.sh <triplestore> start
+##   <triplestore> = [ myexp_public, ontologies ]
+## 
+## ./sqs.sh <triplestore> stop
+##   <triplestore> = [ myexp_public, ontologies ]
+## 
+## ./sqs.sh <triplestore> restart
+##   <triplestore> = [ myexp_public, ontologies ]
+## 
+## ./sqs.sh <triplestore> test
+##   <triplestore> = [ myexp_public, ontologies ]
+## 
+## ./sqs.sh <triplestore> update [ no-cache ]
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> import
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> manage-dataflows
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> add <filename> 
+##   <triplestore> = [ myexp_public, ontologies ]
+##   E.g. <filename> = /home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+## 
+## ./sqs.sh <triplestore> add-list <filename>
+##   <triplestore> = [ myexp_public, ontologies ]
+##   E.g. <filename> = /tmp/graphs_to_add.txt
+## 
+## ./sqs.sh <triplestore> remove <filename> <option>
+##   <triplestore> = [ myexp_public, ontologies ]
+##   E.g. <filename> = /home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+##   <option> = [ delete, NULL ]
+## 
+## ./sqs.sh <triplestore> remove-list <filename> <option>
+##   <triplestore> = [ myexp_public, ontologies ]
+##   E.g. <filename> = /tmp/graphs_to_remove.txt
+##   <option> = [ delete, NULL ]
+## 
+## ./sqs.sh <triplestore> list-graphs
+##   <triplestore> = [ myexp_public, ontologies ]
+## 
+## ./sqs.sh <triplestore> count-triples
+##   <triplestore> = [ myexp_public, ontologies ]
+## 
+## ./sqs.sh <triplestore> generate-spec
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> graph-size <graphuri>
+##   <triplestore> = [ myexp_public ]
+##   E.g. <graphuri> = file:///home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+## 
+## ./sqs.sh <triplestore> data-dump
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> generate-data-and-ontologies-zip
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> generate-linksets
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> generate-voidspec
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> run-diagnostic
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> check-versions
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> check-entity-sizes
+##   <triplestore> = [ myexp_public ]
+## 
+## ./sqs.sh <triplestore> help
+##   <triplestore> = [ myexp_public ontologies ]
+## 
+
 d=`dirname $0`
 basedir=`cd ${d}; pwd`
 source "$basedir/settings.sh"
 
-echo "============== `date` =============="
 check(){
 	ps aux | grep 4s- | grep $1 | grep -v grep | wc -l
 }	
@@ -63,18 +149,6 @@ test(){
 		sudo /etc/init.d/avahi-daemon restart; 
 		start $1; 
 	}
-}
-reason-ontology(){
-	check_triplestore $1
-	myexp_ts=`expr match "$1" 'myexp_[a-zA-Z0-9_]*'`
-	if [ $myexp_ts -gt 0 ]; then
-		reasoned_filename="$DATA_PATH/$1/$1_reasoned.owl"
-		java -cp $JAVA_CP RDFSReasonerOntologyMerger $STORE4_PATH/config/$1_ontologies.txt > $reasoned_filename 2> /dev/null
-		chmod 777 $reasoned_filename
-		echo "[`date +%T`] Ontologies from $1_ontologies.txt successfully reasoned and written to $reasoned_filename"
-	else
-		echo "[`date +%T`] reason command cannot be used with $1 triplestore"
-	fi
 }
 add(){
 	error=`$STORE4EXEC_PATH/4s-import $1 $2 2>&1`
@@ -310,9 +384,11 @@ case "$2" in
 	start $1
 	;;
   test)
+	echo "============== `date` =============="
 	test $1
 	;;
   update)
+	echo "============== `date` =============="
 	update $1 $3
 	;;
   import)

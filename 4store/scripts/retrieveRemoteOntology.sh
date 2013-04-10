@@ -1,4 +1,10 @@
 #!/bin/bash
+## @file 4store/scripts/retrieveRemoteOntology.sh
+## @brief Retrieves a remote ontology/schema, uploads it to the ontologies 4Store knowledge base and generates a HTML specification document for it.
+## @author David R Newman
+## @version beta
+## @details This script uses wget to make a local copy of a remote ontology/schema.  This is then imported in the 4Store knowledge base.  The script at http/generic_spec.php is then used to generate and HTML specification document of the remote ontology/schema.  Appropriate logging messages are displayed dependent on the success of failure of these operations.
+
 source `dirname $BASH_SOURCE`/settings.sh
 triplestore="ontologies"
 echo "============== `date` =============="

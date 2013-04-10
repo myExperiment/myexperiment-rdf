@@ -1,16 +1,26 @@
 <?php
-	include('include.inc.php');
-	$pagetitle="URL Encoder/Decoder";
-	include('header.inc.php');
-	include('miscfunc.inc.php');
-	if ($_POST['encode']){
-		$string=urlencode($_POST['string']);
-		print_message("String Encoded",'center');
-	}
-	elseif ($_POST['decode']){
-		$string=urldecode($_POST['string']);
-		print_message("String Decoded",'center');
-	}	
+/**
+ * @file http/urlencoder.php
+ * @brief URL Encoder/Decoder web page
+ * @version beta
+ * @author David R Newman
+ * @details Web page that provides an application for encoding/decoding strings so they can be added to / extracted from the GET parameters of a URL.
+ */
+
+include('include.inc.php');
+/** @brief The title of the page to be rendered in an h1 tag and in title of the html header. */
+$pagetitle="URL Encoder/Decoder";
+include('partials/header.inc.php');
+include('functions/utility.inc.php');
+if ($_POST['encode']){
+	/** @brief The string to URL encoded/decoded. */
+	$string=urlencode($_POST['string']);
+	print_message("String Encoded",'center');
+}
+elseif ($_POST['decode']){
+	$string=urldecode($_POST['string']);
+	print_message("String Decoded",'center');
+}	
 ?>
 <form name="urlendec" method="post">
 <p style="text-align: center;">
@@ -22,4 +32,4 @@
   <input type="submit" name="decode" value="Decode">
 </p>
 
-<?php include('footer.inc.php');
+<?php include('partials/footer.inc.php');

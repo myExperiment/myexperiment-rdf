@@ -1,6 +1,14 @@
 <?php
+/**
+ * @file http/xmlparser.php
+ * @brief Web-based utility converting XML file in PHP array
+ * @version beta
+ * @author David R Newman
+ * @details Web-based utility for converting XML file into multidimensional PHP array.  To test the validity of the chosemn XML file and evaluate how this is represented in a PHP array.
+ */
+
 	include('include.inc.php');
-	include('xmlfunc.inc.php');
+	include('functions/xml.inc.php');
 	if ($_POST['filename']){
 		$fh=fopen($_POST['filename'],'r');
 		while ($line = fgets($fh, 4096)) {

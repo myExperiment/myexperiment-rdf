@@ -1,13 +1,21 @@
 <?php
+/**
+ * @file http/sparql_ontologies.php
+ * @brief Web interface for the SPARQL endpoint to the 4Store ontologies knowledge base.
+ * @version beta
+ * @author David R Newman
+ * @details Web interface for the SPARQL endpoint to the 4Store ontologies knowledge base.  Allows queries on the ontologies uploaded into the specification document generator to be made.
+ */
+
 $pagetitle="Ontologies SPARQL Endpoint";
 $htmlheader[]='<link rel="stylesheet" type="text/css" href="/css/style.css"/>';
 $htmlheader[]='<script src="/js/sparql.js" type="text/javascript"></script>';
 $htmlheader[]='<script src="/js/codemirror.js" type="text/javascript"></script>';
 include('include.inc.php');
-include('xmlfunc.inc.php');
-include('ontologiesconnect.inc.php');
-require('4storefunc.inc.php');
-require('miscfunc.inc.php');
+include('functions/xml.inc.php');
+include('connect/ontologies.inc.php');
+require('funtions/4store.inc.php');
+require('functions/utility.inc.php');
 $ts='ontologies';
 $notriples=getNoTriples($ts);
 $prefix="";

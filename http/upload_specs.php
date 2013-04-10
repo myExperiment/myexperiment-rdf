@@ -1,9 +1,17 @@
 <?php
+/**
+ * @file http/upload_specs.php
+ * @brief Web interface for uploading ontologies to the HTML specification generator.
+ * @version beta
+ * @author David R Newman
+ * @details Web interface for uploading ontologies to the HTML specification generator.  Restricted by an .htaccess with local password.
+ */
+
 	$pagetitle="Ontology Uploader";
 	include('include.inc.php');
-	include('header.inc.php');
-        include('ontoconnect.inc.php');
-	require_once('4storefunc.inc.php');
+	include('partials/header.inc.php');
+        include('connect/ontologies.inc.php');
+	require_once('functions/4store.inc.php');
 	$types=array("OWL Ontology","RDFS Schema","Unsure");
 	foreach($_POST as $postkey => $postvar){
 		$_POST[$postkey]= mysql_real_escape_string($postvar);
@@ -108,4 +116,4 @@
     <tr><td colspan="2" style="text-align: center;"><input type="submit" name="addedit" value="Add/Edit"/>&nbsp;&nbsp;<input type="submit" name="uploadcache" value="Upload &amp; Cache"/>&nbsp;&nbsp;<input type="submit" name="cache" value="Cache"/>&nbsp;&nbsp;<a href="generic/spec?ontology=<?= $_POST['ontology'] ?>">View Ontology Spec</a></td></tr>
   </table>
 </form>
-<?php include('footer.inc.php'); ?>
+<?php include('partials/footer.inc.php'); ?>

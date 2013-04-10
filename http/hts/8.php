@@ -1,3 +1,13 @@
+<?php
+/**
+ * @file http/hts/8.php
+ * @brief How to SPARQL guide: 8. LIMIT
+ * @version beta
+ * @author David R Newman
+ * @details Eighth page of the How to SPARQL guide explaining how to use the LIMIT and OFFSET sub-clauses of SPARQL.
+ */
+?>
+
 <h2>8. LIMIT</h2>
 <p>Sometimes you may not want all possible results.  The <em>LIMIT</em> clause allows you to limit how many results are returned.  In the examples used in <a href="?page=FILTER">FILTER</a> and <a href="?page=ORDER BY">ORDER BY</a> you may only want to the latest 10 workflows:</p>
 <div class="yellow"><pre>PREFIX dcterms: &lt;http://purl.org/dc/terms/&gt;

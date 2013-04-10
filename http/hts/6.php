@@ -1,3 +1,13 @@
+<?php
+/**
+ * @file http/hts/6.php
+ * @brief How to SPARQL guide: 6. GROUP BY
+ * @version beta
+ * @author David R Newman
+ * @details Sixth page of the How to SPARQL guide explaining how to use the GROUP BY sub-clause of SPARQL.
+ */
+?>
+
 <h2>6. GROUP BY</h2>
 
 <p>The purpose of the <em>GROUP BY</em> clause is to allow aggregation over one or more properties.  This is particularly useful when you want to use mathematical functions on variables in the <a href="?page=SELECT">SELECT</a> clause.  A good example is using <a href="?page=SELECT#COUNT">COUNT</a> to list how many workflows are owned by each user.</p>

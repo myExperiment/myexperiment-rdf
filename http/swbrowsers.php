@@ -1,9 +1,17 @@
 <?php
+/**
+ * @file http/swbrowsers.php
+ * @brief Inspect myExperiment RDF data in various Semantic Web browsers.
+ * @version beta
+ * @author David R Newman
+ * @details Coose a particular myExperiment entity to examine in one of a number of Semantic Web browsers.  Including Graphite, Disco, Marbles, Zitgist RDF browser and SIOC browser.
+ */
+
 	include('include.inc.php');
 	$pagetitle="<small>Semantic Web Browsers</small>";
-	include('header.inc.php');
-	require('miscfunc.inc.php');
-	include('data.inc.php');
+	include('partials/header.inc.php');
+	require('functions/utility.inc.php');
+	include('config/data.inc.php');
 	$swbrowsers=array("Raw myExperiment RDF/XML"=>"","Graphite"=>"http://graphite.ecs.soton.ac.uk/browser/?uri=","Disco"=>"http://www4.wiwiss.fu-berlin.de/rdf_browser/?browse_uri=","Marbles"=>"http://beckr.org/marbles?uri=", "Zitgist RDF Browser"=>"http://dataviewer.zitgist.com/?uri=", "SIOC Browser"=>"http://sparql.captsolo.net/browser/browser.py?url=");
 	$types=array("announcements","content_types","files","experiments","groups","licenses","messages","packs","policies","users","workflows");
 	if ($_POST){
@@ -86,4 +94,4 @@ else if ($err){
   </div>
 </form>
 
-<?php include('footer.inc.php');
+<?php include('partials/footer.inc.php');

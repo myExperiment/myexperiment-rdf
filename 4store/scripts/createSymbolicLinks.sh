@@ -1,4 +1,15 @@
 #!/bin/bash
+## @file 4store/scripts/createSymbolicLinks.sh
+## @brief Generates symbolics to allow files generated locally to be accessible via the web interface. 
+## @author David R Newman
+## @version beta
+## @details This script creates symbolic links so the following files can be accessed via the web interface:
+##  - myexperiment.rdf.gz: A gzipped version of myExperiment's RDF data
+##  - myexp_data_and_ontologies.zip: A zipped archive containing each of the myExperiment ontology module files and a file containing myExperiment's RDF data.
+##  - spec.html: An HTML specification document of the myExperiment ontology.
+##  - linksets: A folder containing all the linksets of myExperiment's Linked Data.
+##  - void.rdf:  A VoiD specification of myExperiment's Linked Data.
+
 source `dirname $BASH_SOURCE`/settings.sh
 
 if [ -e $LD_PATH/http/myexperiment.rdf.gz ]; then

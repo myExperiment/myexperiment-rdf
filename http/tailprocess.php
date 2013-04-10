@@ -1,6 +1,14 @@
 <?php
+/**
+ * @file http/tailprocess.php
+ * @brief Display output of ontology specification document generation.
+ * @version beta
+ * @author David R Newman
+ * @details Displays the output for an iframe of the upload, SPARQL querying and document generation of an ontology added to the HTML specification generation tool.
+ */
+
 include('include.inc.php');
-include('4storefunc.inc.php');
+include('functions/4store.inc.php');
 
 handle_Request($_GET);
 function handle_Request($params){

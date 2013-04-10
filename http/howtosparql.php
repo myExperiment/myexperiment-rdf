@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file http/howtosparql.php
+ * @brief Page for navigating the interactive tutorial in writing SPARQL queries
+ * @version beta
+ * @author David R Newman
+ * @details Page for navigating the interactive tutorial in writing SPARQL queries against myExperiment RDF data using the myExperiment SPARQL endpoint.
+ */
+
 	include('include.inc.php');
 	$pagetitle="How To SPARQL";
 	$htmlheader=array('<script src="/js/howtosparql.js" type="text/javascript"></script>');

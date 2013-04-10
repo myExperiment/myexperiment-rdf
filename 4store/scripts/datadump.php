@@ -1,5 +1,12 @@
 #!/usr/bin/php
 <?php
+/**
+ * @file 4store/scripts/datadump.php
+ * @brief Generates a data dump of all public myExperiment RDF.
+ * @version beta
+ * @author David R Newman
+ * @details This script generates a data dump of all public myExperiment RDF data so that it can be wrapped up in a single file.
+ */
         $domain="public";
 	include('include.inc.php');
         include('changeddata.inc.php');
@@ -26,7 +33,7 @@
 				$row=mysql_fetch_assoc($res);
 				$id=$row['id'];
 				if (!isset($row['user_id'])) $row['user_id']="AnonymousUser";
-				$xml.=printEntity($row,$k,$mappings[$k],"$datauri$k/",'id','');
+				$xml.=printEntity($row,$k);
 				$ents++;
 				if ($ents==1000){
 		        	        fwrite($fh,$xml);
