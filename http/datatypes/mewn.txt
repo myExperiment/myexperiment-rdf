@@ -1,2 +1,0 @@
-mewn:has-literal-value string
-mewn:is-plural boolean

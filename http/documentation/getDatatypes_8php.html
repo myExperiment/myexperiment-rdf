@@ -71,13 +71,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1d420fcdb8b362b7909b4f257c9b916"></a><!-- doxytag: member="getDatatypes.php::$ph" ref="ac1d420fcdb8b362b7909b4f257c9b916" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$ph</b> = popen($store4execpath.&quot;4s-query myexp_public \&quot;PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt; PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; select distinct ?prop ?dt where {?prop rdf:type owl:DatatypeProperty . ?prop rdfs:range ?dt}\&quot;&quot;,'r')</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="getDatatypes_8php.html#ac1d420fcdb8b362b7909b4f257c9b916">$ph</a> = popen($store4execpath.&quot;4s-query $myexp_kb \&quot;PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt; PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; select distinct ?prop ?dt where {?prop rdf:type owl:DatatypeProperty . ?prop rdfs:range ?dt}\&quot;&quot;,'r')</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A handler for the piped output of a SPARQL query to the myExperiment knowledge base to find all OWL datatype properties specified in the myExperiment ontology. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49a8a4009b02e49717caa88b128affc5"></a><!-- doxytag: member="getDatatypes.php::$res" ref="a49a8a4009b02e49717caa88b128affc5" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$res</b> = &quot;&quot;</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="getDatatypes_8php.html#a49a8a4009b02e49717caa88b128affc5">$res</a> = &quot;&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string holding all the SPARQL results XML from the OWL datatype query. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a764c69dc58967c7fb2c958e513f75a86"></a><!-- doxytag: member="getDatatypes.php::$resarr" ref="a764c69dc58967c7fb2c958e513f75a86" args="" -->
-while(!feof($ph))&#160;</td><td class="memItemRight" valign="bottom"><b>$resarr</b> = parseXML($res)</td></tr>
+while(!feof($ph))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="getDatatypes_8php.html#a764c69dc58967c7fb2c958e513f75a86">$resarr</a> = parseXML($res)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An associative array representing the parsed SPARQL results XML from the OWL datatype query. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a015aa0bda28030cbf1a64c0afb88f958"></a><!-- doxytag: member="getDatatypes.php::$fh" ref="a015aa0bda28030cbf1a64c0afb88f958" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$fh</b> = fopen($ldpath.'inc/config/datatypes.txt','w')</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="getDatatypes_8php.html#a015aa0bda28030cbf1a64c0afb88f958">$fh</a> = fopen($ldpath.'inc/config/datatypes.txt','w')</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A handler to write datatype properties and their datatypes out to a local file. <br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Queries the myExperiment 4Store knowledge base to determine the datatypes of all myExperiment properties. </p>
@@ -101,7 +105,7 @@ while(!feof($ph))&#160;</td><td class="memItemRight" valign="bottom"><b>$resarr<
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

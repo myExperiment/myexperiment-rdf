@@ -67,28 +67,31 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 select distinct ?myprop ?exprop where {{?myprop rdf:type owl:DatatypeProperty} UNION {?myprop rdf:type owl:ObjectProperty} . ?myprop rdfs:subPropertyOf ?exprop . FILTER( !REGEX(STR(?exprop),'^$ontopath') && REGEX(STR(?myprop),'^$ontopath'))}";
 
 /** @brief The results from th SPARQL queries for generating the HTML specification. */
-$res=sparqlQueryClientMultiple($triplestore,$query,100000,300,true);
+$res=callSPARQLQueryClientMultiple($myexp_kb,$query,100000,300,true);
 
 /** @brief Array to store error messages from failed SPARQL queries. */
 $errs = array();
 
-/** @brief The results from the first SPARQL query for generating the HTML specificatiosn formatted as a tabular array. */
+/** @brief The results from the first SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres1=array();
 if (queryFailed($res[1])){
 	$errs[]="Property Domain Class-Property Relations Query Failed";
 }
-else $tableres1=tabulateSparqlResultsAssoc(parseXML($res[1]));
+else {
+	$tableres1=tabulateSPARQLResultsAssoc(parseXML($res[1]));
+}
 
-
-/** @brief The results from the second SPARQL query for generating the HTML specificatiosn formatted as a tabular array. */
+/** @brief The results from the second SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres2=array();
 if (queryFailed($res[2])){
         $errs[]="Class Property Restictions Class-Property Relations Query Failed";
 }
-else $tableres2=tabulateSparqlResultsAssoc(parseXML($res[2]));
+else {
+	$tableres2=tabulateSPARQLResultsAssoc(parseXML($res[2]));
+}
 
 /** @brief Array containing the class properties found from the SPARQL queries against the MyExperiment ontology. */
-$classprops=array_multiunique(array_merge($tableres1,$tableres2));
+$classprops=multidimensionalArrayUnique(array_merge($tableres1,$tableres2));
 
 /** @brief Array containing the classes found from the SPARQL queries against the MyExperiment ontology. */
 $classes=array();
@@ -96,17 +99,17 @@ if (queryFailed($res[3])){
         $errs[]="Label and Comment for Classes Query Failed";
 }
 else{
-        $classes=tabulateSparqlResultsAssoc(parseXML($res[3]));
+        $classes=tabulateSPARQLResultsAssoc(parseXML($res[3]));
         $classes=setKey($classes,'class');
 }
 
-/** @brief The results from the fourth SPARQL query for generating the HTML specificatiosn formatted as a tabular array. */
+/** @brief The results from the fourth SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres4=array();
 if (queryFailed($res[4])){
         $errs[]="Superclasses for Classes Query Failed";
 }
 else {
-	$tableres4=tabulateSparqlResultsAssoc(parseXML($res[4]));
+	$tableres4=tabulateSPARQLResultsAssoc(parseXML($res[4]));
 }
 foreach ($tableres4 as $sclass){
 	$classes[$sclass['class']]['subclassof'][]=$sclass['superclass'];
@@ -118,44 +121,49 @@ if (queryFailed($res[5])){
         $errs[]="Label and Comment for Properties Failed";
 }
 else{
-        $properties=tabulateSparqlResultsAssoc(parseXML($res[5]));
+        $properties=tabulateSPARQLResultsAssoc(parseXML($res[5]));
         $properties=setkey($properties,'property');
 }
 foreach ($classprops as $classprop){
         $classes[$classprop['class']]['property'][]=$classprop['property'];
-        if (myexp_namespace(replace_namespace($classprop['property']))) $properties[$classprop['property']]['inclass'][]=$classprop['class'];
+        if (isMMyexperimentNamespace(replaceNamespace($classprop['property']))) $properties[$classprop['property']]['inclass'][]=$classprop['class'];
 }
 
 ksort($classes);
 ksort($properties);
 
+/** @brief The results from the sixth SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres6=array();
 if (queryFailed($res[6])){
         $errs[]="Equivalent Classes Query Failed";
 }
-/** @brief The results from the sixth SPARQL query for generating the HTML specificatiosn formatted as a tabular array. */
-else $tableres6=tabulateSparqlResultsAssoc(parseXML($res[6]));
-
+else {
+	$tableres6=tabulateSPARQLResultsAssoc(parseXML($res[6]));
+}
+/** @brief The results from the seventh SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres7=array();
 if (queryFailed($res[7])){
         $errs[]="Equivalent Properties Query Failed";
 }
-/** @brief The results from the seventh SPARQL query for generating the HTML specificatiosn formatted as a tabular array. */
-else $tableres7=tabulateSparqlResultsAssoc(parseXML($res[7]));
-
+else {
+	$tableres7=tabulateSPARQLResultsAssoc(parseXML($res[7]));
+}
+/** @brief The results from the eighth SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres8=array();
 if (queryFailed($res[8])){
         $errs[]="SubClass Classes Query Failed";
 }
-/** @brief The results from the eighth SPARQL query for generating the HTML specificatiosn formatted as a tabular array. */
-else $tableres8=tabulateSparqlResultsAssoc(parseXML($res[8]));
-
+else {
+	$tableres8=tabulateSPARQLResultsAssoc(parseXML($res[8]));
+}
+/** @brief The results from the ninth SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres9=array();
 if (queryFailed($res[9])){
 	$errs[]="SubProperty Properties Query Failed";
 }
-/** @brief The results from the ninth SPARQL query for generating the HTML specificatiosn formatted as a tabular array. */
-else $tableres9=tabulateSparqlResultsAssoc(parseXML($res[9]));
+else {
+	$tableres9=tabulateSPARQLResultsAssoc(parseXML($res[9]));
+}
 
 /** @brief The page title to be displayed in an h1 tag and the title of the html header. */
 $pagetitle="Ontology Specification";
@@ -170,7 +178,9 @@ if (isset($errs) && sizeof($errs)>0){
         }
         echo "    </div>\n    <br/>\n";
 }
-else echo "    <!-- Correct -->\n";
+else {
+	echo "    <!-- Correct -->\n";
+}
 
 //Print Class Listing
 echo "  <div class=\"purple\">\n";
@@ -187,7 +197,7 @@ foreach ($classes as $class_uri => $class){
 	/** @brief The namespace of the current class. */
 	$current_namespace=$class_uri_bits[sizeof($class_uri_bits)-2];
 	/** @brief The class name using the URI's path replaced with the ontology prefix (e.g. mebase). */
-	$class_name=replace_namespace($class_uri);
+	$class_name=replaceNamespace($class_uri);
 	if ($current_namespace!=$previous_namespace){
 		echo substr($text,0,-3);
 		$text="";
@@ -217,7 +227,7 @@ foreach ($properties as $property_name => $property) {
         $property_uri_bits=explode("/",$property_uri);
 	$current_namespace=$property_uri_bits[sizeof($property_uri_bits)-2];
 	/** @brief The property name using the URI's path replaced with the ontology prefix (e.g. mebase). */
-	$property_name=replace_namespace($property_uri);
+	$property_name=replaceNamespace($property_uri);
 	if ($current_namespace!=$previous_namespace){
                 echo substr($text,0,-3);
                 $text="";
@@ -241,27 +251,27 @@ echo "    <h3>Borrowed Classes and Properties</h3>\n";
 echo "    <h4>Equivalent Classes</h4>\n    <p>\n";
 foreach ($tableres6 as $eqclass){
 	/** @brief local class name equivalent/subclass to an external class. */
-	$myclass=replace_namespace($eqclass['myclass']);
-        echo "<a href=\"#$myclass\">$myclass</a> - ".replace_namespace($eqclass['exclass'])."<br/>\n";
+	$myclass=replaceNamespace($eqclass['myclass']);
+        echo "<a href=\"#$myclass\">$myclass</a> - ".replaceNamespace($eqclass['exclass'])."<br/>\n";
 }
 if (sizeof($tableres6)==0) echo "none";
 echo "    </p>\n      <h4>Equivalent Properties</h4>\n    <p>\n";
 foreach ($tableres7 as $eqprop){
 	/** @brief local property name equivalent/subproperty to an external property. */
-	$myprop=replace_namespace($eqprop['myprop']);
-        echo "<a href=\"#$myprop\">$myprop</a> - ".replace_namespace($eqprop['exprop'])."<br/>\n";
+	$myprop=replaceNamespace($eqprop['myprop']);
+        echo "<a href=\"#$myprop\">$myprop</a> - ".replaceNamespace($eqprop['exprop'])."<br/>\n";
 }
 if (sizeof($tableres7)==0) echo "none";
 echo "    </p>\n      <h4>Subclasses of</h4>\n    <p>\n";
 foreach ($tableres8 as $subclass){
-	$myclass=replace_namespace($subclass['myclass']);
-        echo "<a href=\"#$myclass\">$myclass</a> - ".replace_namespace($subclass['exclass'])."<br/>\n";
+	$myclass=replaceNamespace($subclass['myclass']);
+        echo "<a href=\"#$myclass\">$myclass</a> - ".replaceNamespace($subclass['exclass'])."<br/>\n";
 }
 if (sizeof($tableres8)==0) echo "none";
 echo "    </p>\n      <h4>Subproperties of</h4>\n    <p>\n";
 foreach ($tableres9 as $subprop){
-	$myprop=replace_namespace($subprop['myprop']);
-        echo "<a href=\"#$myprop\">$myprop</a> - ".replace_namespace($subprop['exprop'])."<br/>\n";
+	$myprop=replaceNamespace($subprop['myprop']);
+        echo "<a href=\"#$myprop\">$myprop</a> - ".replaceNamespace($subprop['exprop'])."<br/>\n";
 }
 if (sizeof($tableres9)==0) echo "none";
 echo "    </p>\n  </div>\n  <br/>\n";
@@ -269,14 +279,14 @@ echo "    </p>\n  </div>\n  <br/>\n";
 //Individual Classes
 echo "  <h2>Classes</h2>\n";
 foreach ($classes as $class_uri => $class){
-	$class_name=replace_namespace($class_uri);
+	$class_name=replaceNamespace($class_uri);
 	echo "  <div class=\"yellow\">\n";
 	echo "  <a name=\"".$class_name."\"/>\n    <h3>".$class_name."</h3>\n    <p><b>Label:</b> ".$class['label']."\n      <br/>\n      <b>Comment:</b> ".$class['comment']."\n      <br/>\n      <b>Subclass of:</b>\n";
 	$sc=0;
 	if ($class['subclassof']){
 		foreach ($class['subclassof'] as $subclassof){
 			/** @brief Name of a subclass of a particular class. */
-			$subclass_name=replace_namespace($subclassof);
+			$subclass_name=replaceNamespace($subclassof);
 			echo "        <a href=\"#".$subclass_name."\">".$suvclass_name."</a>";
 			if ($sc<sizeof($class['subclassof'])-1) echo ",\n";
 			$sc++;
@@ -286,8 +296,8 @@ foreach ($classes as $class_uri => $class){
 	$p=0;
 	if ($class['property']){
 		foreach ($class['property'] as $property){
-			$property_name=replace_namespace($property);
-			if (strpos($property,":")>0 && !myexp_namespace($property_name)) echo "        ".$property_name;
+			$property_name=replaceNamespace($property);
+			if (strpos($property,":")>0 && !isMyexperimentNamespace($property_name)) echo "        ".$property_name;
 	                else echo "        <a href=\"#$property_name\">".$property_name."</a>";
         	        if ($p<sizeof($class['property'])-1) echo ",\n";
                 	$p++;
@@ -300,14 +310,14 @@ foreach ($classes as $class_uri => $class){
 //Individual Properties
 echo "<h2>Properties</h2>\n";
 foreach ($properties as $pnoperty_uri => $property){
-	$property_name=replace_namespace($property_uri);
+	$property_name=replaceNamespace($property_uri);
 	$property_type_bits=explode("#",$property['property_type']);
  	echo "  <div class=\"green\">\n";
 	echo "    <a name=\"".$property_name."\"/>\n    <h3>".$property_name."</h3>\n    ";
 	echo "    <p>\n      <b>Type:</b> ".$property_type_bits[1]."<br/>\n      <b>Label:</b> ".$property['label']."</br/>\n      <b>Comment:</b> ".$property['comment']."\n      <br/>      <b>Used in classes:</b>\n";
 	$c=0;
 	foreach ($property['inclass'] as $class){
-		$class_name=replace_namespace($class);
+		$class_name=replaceNamespace($class);
                 echo "        <a href=\"#".$class_name."\">".$class_name."</a>";
                 if ($c<sizeof($property['inclass'])-1) echo ",\n";
                 $c++;

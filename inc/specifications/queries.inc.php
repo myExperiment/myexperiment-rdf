@@ -62,10 +62,12 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 select distinct ?myprop ?exprop where { {?myprop rdf:type owl:DatatypeProperty} UNION {?myprop rdf:type owl:ObjectProperty} UNION {?myprop rdf:type rdf:Property} .  ?myprop rdfs:subPropertyOf ?exprop . FILTER( !REGEX(STR(?exprop),'^$filteront') && REGEX(STR(?myprop),'^$filteront'))}";
 
-$filteront2=str_replace("#","",$filteront);
+/** @brief $filteront URI with all hashes (#) removed. */
+$filteront_nohash=str_replace("#","",$filteront);
+
 /** @brief Imported Ontologies query. */
 $queries[10]="PREFIX owl: <http://www.w3.org/2002/07/owl#>
-select distinct ?import_ont where { {<$filteront> owl:imports ?import_ont} union {<$url> owl:imports ?import_ont} union {<$filteront2>  owl:imports ?import_ont}}";
+select distinct ?import_ont where { {<$filteront> owl:imports ?import_ont} union {<$url> owl:imports ?import_ont} union {<$filteront_nohash>  owl:imports ?import_ont}}";
 
 /** @brief Ontology Information query. */
 $queries[11]="PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

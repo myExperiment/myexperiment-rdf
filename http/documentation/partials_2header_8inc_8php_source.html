@@ -60,7 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <a href="partials_2header_8inc_8php.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 &lt;?php
-<a name="l00011"></a><a class="code" href="partials_2header_8inc_8php.html#a1e521ace46e93912ccb390fd5611b396">00011</a> <a class="code" href="partials_2header_8inc_8php.html#a1e521ace46e93912ccb390fd5611b396" title="A sanitized version of the page title.">$sanitized_pagetitle</a> = preg_replace(<span class="stringliteral">&quot;/&lt;[^&gt;]+&gt;/&quot;</span>,<span class="stringliteral">&quot;&quot;</span>,$pagetitle);
+<a name="l00011"></a><a class="code" href="partials_2header_8inc_8php.html#a1e521ace46e93912ccb390fd5611b396">00011</a> <a class="code" href="partials_2header_8inc_8php.html#a1e521ace46e93912ccb390fd5611b396" title="A sanitized version of the page title.">$sanitized_pagetitle</a> = preg_replace(<span class="stringliteral">&quot;/&lt;[^&gt;]+&gt;/&quot;</span>,<span class="stringliteral">&quot;&quot;</span>,<a class="code" href="generic__spec_8php.html#af2582e2f620e4157097929da5cc0ed18" title="The page title to be displayed in an h1 tag and the title of the html header.">$pagetitle</a>);
 <a name="l00012"></a>00012 ?&gt;
 <a name="l00013"></a>00013 &lt;!DOCTYPE html PUBLIC <span class="stringliteral">&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;</span> <span class="stringliteral">&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;</span>&gt;
 <a name="l00014"></a>00014 &lt;html xmlns=<span class="stringliteral">&quot;http://www.w3.org/1999/xhtml&quot;</span> xml:lang=<span class="stringliteral">&quot;en&quot;</span> lang=<span class="stringliteral">&quot;en&quot;</span>&gt; 
@@ -71,8 +71,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00019"></a>00019   &lt;link rel=<span class="stringliteral">&quot;icon&quot;</span> href=<span class="stringliteral">&quot;/img/favicon.ico&quot;</span> type=<span class="stringliteral">&quot;image/x-icon&quot;</span> /&gt;
 <a name="l00020"></a>00020   &lt;meta http-equiv=<span class="stringliteral">&quot;Content-type&quot;</span> content=<span class="stringliteral">&quot;text/html;charset=UTF-8&quot;</span>/&gt;
 <a name="l00021"></a>00021 &lt;?php
-<a name="l00022"></a>00022         <span class="keywordflow">if</span> (isset($htmlheader) &amp;&amp; is_array($htmlheader)){
-<a name="l00023"></a>00023                 <span class="keywordflow">foreach</span> ($htmlheader as $line) echo <span class="stringliteral">&quot;  $line\n&quot;</span>;
+<a name="l00022"></a>00022         <span class="keywordflow">if</span> (isset(<a class="code" href="howtosparql_8php.html#a7f85920e5f567a88a8c90bcf20555aa1" title="An array for adding additional lines the the head entity of the HTML page, (e.g. CSS and Javascript f...">$htmlheader</a>) &amp;&amp; is_array(<a class="code" href="howtosparql_8php.html#a7f85920e5f567a88a8c90bcf20555aa1" title="An array for adding additional lines the the head entity of the HTML page, (e.g. CSS and Javascript f...">$htmlheader</a>)){
+<a name="l00023"></a>00023                 <span class="keywordflow">foreach</span> (<a class="code" href="howtosparql_8php.html#a7f85920e5f567a88a8c90bcf20555aa1" title="An array for adding additional lines the the head entity of the HTML page, (e.g. CSS and Javascript f...">$htmlheader</a> as <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>) echo <span class="stringliteral">&quot;  $line\n&quot;</span>;
 <a name="l00024"></a>00024         }
 <a name="l00025"></a>00025 ?&gt;
 <a name="l00026"></a>00026 &lt;/head&gt;
@@ -84,7 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00032"></a>00032 &lt;?php
 <a name="l00033"></a>00033 <span class="keywordflow">if</span> (isset($headerimg)){
 <a name="l00034"></a>00034         <span class="keywordflow">if</span> ($headerimg!=<span class="stringliteral">&quot;none&quot;</span>) echo <span class="stringliteral">&quot;    &lt;img src=\&quot;$headerimg\&quot; alt=\&quot;$headername Logo\&quot;/&gt;&quot;</span>;
-<a name="l00035"></a>00035         echo $pagetitle;
+<a name="l00035"></a>00035         echo <a class="code" href="generic__spec_8php.html#af2582e2f620e4157097929da5cc0ed18" title="The page title to be displayed in an h1 tag and the title of the html header.">$pagetitle</a>;
 <a name="l00036"></a>00036 }
 <a name="l00037"></a>00037 <span class="keywordflow">else</span>{
 <a name="l00038"></a>00038         echo <span class="stringliteral">&quot;    &lt;a href=\&quot;/\&quot;&gt;&lt;img src=\&quot;/img/logo.png\&quot; alt=\&quot;myExperiment Logo\&quot;/&gt;&lt;/a&gt;&amp;nbsp;$pagetitle&quot;</span>;
@@ -109,7 +109,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

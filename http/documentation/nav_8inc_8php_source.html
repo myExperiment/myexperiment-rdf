@@ -60,28 +60,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <a href="nav_8inc_8php.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 &lt;?php
-<a name="l00023"></a><a class="code" href="nav_8inc_8php.html#a13eddb315b386ed511a83bc13d1e8828">00023</a> function <a class="code" href="nav_8inc_8php.html#a13eddb315b386ed511a83bc13d1e8828" title="Prints the navigation bar for a specified How to SPARQL guide page.">nav_form</a>($name, $pageno, $pages) {
+<a name="l00023"></a><a class="code" href="nav_8inc_8php.html#a2dc3693f73d0c71bbfbafe769da0ac50">00023</a> function <a class="code" href="nav_8inc_8php.html#a2dc3693f73d0c71bbfbafe769da0ac50" title="Prints the navigation bar for a specified How to SPARQL guide page.">printHowToSPARQLNavigationForm</a>($name, $pageno, <a class="code" href="howtosparql_8php.html#a263621399c53f2952c2329ee13ad8e4e" title="An associative array mapping page numbers to title of each page in the How To SPARQL guide...">$pages</a>) {
 <a name="l00024"></a>00024         echo <span class="stringliteral">&quot;&lt;form name=\&quot;$name\&quot; action=\&quot;#\&quot; method=\&quot;get\&quot; /&gt;\n&quot;</span>;
 <a name="l00025"></a>00025         echo <span class="stringliteral">&quot;  &lt;table style=\&quot;margin: auto;\&quot;&gt;&lt;tr&gt;\n&quot;</span>;
 <a name="l00026"></a>00026         <span class="keywordflow">if</span> ($pageno==1) {
 <a name="l00027"></a>00027                 echo <span class="stringliteral">&quot;    &lt;td class=\&quot;nofirstpage\&quot;&gt;&lt;/td&gt;\n    &lt;td class=\&quot;noprevpage\&quot; width=\&quot;16px\&quot;&gt;&lt;/td&gt;\n&quot;</span>;
 <a name="l00028"></a>00028         }
 <a name="l00029"></a>00029         <span class="keywordflow">else</span> {
-<a name="l00030"></a>00030                 echo <span class="stringliteral">&quot;    &lt;td class=\&quot;firstpage\&quot;&gt;&lt;a href=\&quot;?page=&quot;</span>.$pages[1].<span class="stringliteral">&quot;\&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;\n    &lt;td class=\&quot;prevpage\&quot; width=\&quot;16px\&quot;&gt;&lt;a href=\&quot;?page=&quot;</span>.$pages[$pageno-1].<span class="stringliteral">&quot;\&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;\n&quot;</span>;
+<a name="l00030"></a>00030                 echo <span class="stringliteral">&quot;    &lt;td class=\&quot;firstpage\&quot;&gt;&lt;a href=\&quot;?page=&quot;</span>.$pages[1].<span class="stringliteral">&quot;\&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;\n    &lt;td class=\&quot;prevpage\&quot; width=\&quot;16px\&quot;&gt;&lt;a href=\&quot;?page=&quot;</span>.<a class="code" href="howtosparql_8php.html#a263621399c53f2952c2329ee13ad8e4e" title="An associative array mapping page numbers to title of each page in the How To SPARQL guide...">$pages</a>[$pageno-1].<span class="stringliteral">&quot;\&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;\n&quot;</span>;
 <a name="l00031"></a>00031         }
 <a name="l00032"></a>00032         echo <span class="stringliteral">&quot;    &lt;td&gt;\n      &lt;select name=\&quot;page\&quot; onChange=\&quot;document.$name.submit();\&quot;&gt;\n&quot;</span>;
-<a name="l00033"></a>00033         <span class="keywordflow">foreach</span> ($pages as $pno =&gt; $p) {
+<a name="l00033"></a>00033         <span class="keywordflow">foreach</span> (<a class="code" href="howtosparql_8php.html#a263621399c53f2952c2329ee13ad8e4e" title="An associative array mapping page numbers to title of each page in the How To SPARQL guide...">$pages</a> as $pno =&gt; <a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>) {
 <a name="l00034"></a>00034                 echo <span class="stringliteral">&quot;        &lt;option &quot;</span>;
 <a name="l00035"></a>00035                 <span class="keywordflow">if</span> ($pno==$pageno) echo <span class="stringliteral">&quot;selected=\&quot;selected\&quot; &quot;</span>;
 <a name="l00036"></a>00036                 echo <span class="stringliteral">&quot;value=\&quot;$p\&quot;&gt;$pno. $p&lt;/option&gt;\n&quot;</span>;
 <a name="l00037"></a>00037         }
 <a name="l00038"></a>00038         echo <span class="stringliteral">&quot;      &lt;/select&gt;\n&amp;nbsp;&lt;input type=\&quot;submit\&quot; name=\&quot;submit_button\&quot; value=\&quot;Go\&quot;/&gt;\n    &lt;/td&gt;\n&quot;</span>;
-<a name="l00039"></a>00039         <span class="keywordflow">if</span> ($pageno==<span class="keyword">sizeof</span>($pages)) {
+<a name="l00039"></a>00039         <span class="keywordflow">if</span> ($pageno==<span class="keyword">sizeof</span>(<a class="code" href="howtosparql_8php.html#a263621399c53f2952c2329ee13ad8e4e" title="An associative array mapping page numbers to title of each page in the How To SPARQL guide...">$pages</a>)) {
 <a name="l00040"></a>00040                 echo <span class="stringliteral">&quot;    &lt;td class=\&quot;nonextpage\&quot; width=\&quot;16px\&quot;&gt;&lt;/td&gt;\n    &lt;td class=\&quot;nolastpage\&quot;&gt;&lt;/td&gt;\n&quot;</span>;
 <a name="l00041"></a>00041         }
 <a name="l00042"></a>00042         <span class="keywordflow">else</span> {
 <a name="l00043"></a>00043                 $next=$pageno+1;
-<a name="l00044"></a>00044                 echo <span class="stringliteral">&quot;    &lt;td class=\&quot;nextpage\&quot; width=\&quot;16px\&quot;&gt;&lt;a href=\&quot;?page=&quot;</span>.$pages[$pageno+1].<span class="stringliteral">&quot;\&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;\n    &lt;td class=\&quot;lastpage\&quot;&gt;&lt;a href=\&quot;?page=&quot;</span>.$pages[<span class="keyword">sizeof</span>($pages)].<span class="stringliteral">&quot;\&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;\n&quot;</span>;
+<a name="l00044"></a>00044                 echo <span class="stringliteral">&quot;    &lt;td class=\&quot;nextpage\&quot; width=\&quot;16px\&quot;&gt;&lt;a href=\&quot;?page=&quot;</span>.$pages[$pageno+1].<span class="stringliteral">&quot;\&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;\n    &lt;td class=\&quot;lastpage\&quot;&gt;&lt;a href=\&quot;?page=&quot;</span>.<a class="code" href="howtosparql_8php.html#a263621399c53f2952c2329ee13ad8e4e" title="An associative array mapping page numbers to title of each page in the How To SPARQL guide...">$pages</a>[<span class="keyword">sizeof</span>(<a class="code" href="howtosparql_8php.html#a263621399c53f2952c2329ee13ad8e4e" title="An associative array mapping page numbers to title of each page in the How To SPARQL guide...">$pages</a>)].<span class="stringliteral">&quot;\&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;\n&quot;</span>;
 <a name="l00045"></a>00045         }
 <a name="l00046"></a>00046         echo <span class="stringliteral">&quot;    &lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;a href=\&quot;?\&quot;&gt;Back to Contents Page&lt;/a&gt;&lt;/td&gt;\n&quot;</span>;
 <a name="l00047"></a>00047         echo <span class="stringliteral">&quot;  &lt;/tr&gt;&lt;/table&gt;\n&quot;</span>;
@@ -103,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

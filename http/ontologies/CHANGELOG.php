@@ -7,14 +7,17 @@
  * @details Lists dated channges to the myExperiment Ontology modules over time.
  */
 
-include('../include.inc.php');
+include_once('../include.inc.php');
+/** @brief The page title to be displayed in an h1 tag and the title of the html header. */
 $pagetitle="Ontology Changelog";
 include('partials/header.inc.php');
-
 ?>
 <p><big>This page includes the changelog for the <a href=".">myExperiment Ontology</a> and consequently myExperiment's RDF data.</big></p>
 
 <ul class="changelog">
+  <li><b>23/04/2013</b> Ensured that RelationshipEntry's URI are consistent.  All now use relationship_entries rather than in some cases where pack_relationships was used in the URI.</li>
+  <li><b>23/04/2013</b> Removed the ambiguity of has-favourite, which had been used to refer to the Favourites of Users and the Favorite object of Contributions that had been favourited.  The latter now uses is-favourited property defined in the Annotations module.</li>
+  <li><b>23/04/2013</b> Removed Vocabulary from Contributions module.</li>
   <li><b>26/03/2013</b> Added Pack snapshotting similar to Workflow and File versioning with AbstractPack and PackSnapshot.  Added mebase:revision-comments for all entities of class Version.</li>
   <li><b>01/08/2012</b> Added File versioning similar to versioning for Workflows (i.e. with FileVersion and AbstractFile).</li>
   <li><b>24/04/2012</b> Fixed mismatch between sioc:User and sioc:UserAccount in the base ontology.</li>
@@ -48,4 +51,4 @@ include('partials/header.inc.php');
   <li><b>26/05/2009</b> Removed dcterms:type from Workflows, WorkflowVersions and Files to use mebase:has-content-type. ContentType contains dcterms:title as a human-readable label for the type and dcterms:format for the MIME type.</li>
 </ul>
 
-<?php include('footer.inc.php'); ?>
+<?php include('partials/footer.inc.php'); ?>

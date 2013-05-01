@@ -7,9 +7,10 @@
  * @details Web page explaining the purpose and structure of the myExperiment Ontology.
  */
 
-	include('../include.inc.php');
-	$pagetitle="Ontology";
-	include('header.inc.php');
+include('../include.inc.php');
+/** @brief The page title to be displayed in an h1 tag and the title of the html header. */
+$pagetitle="Ontology";
+include('partials/header.inc.php');
 ?>
 <p><a href="http://www.myexperiment.org/" title="myExperiment Homepage">myExperiment</a> is a collaborative environment where scientists can safely publish their workflows and experiment plans, share them with groups and find those of others.  (Please see <a href="http://wiki.myexperiment.org/index.php/Main_Page" title="myExperiment Wiki Homepage">the myExperiment Wiki</a> for more detailed information).  This results in the myExperiment data model having three main underlying features:</p>
 <ul>
@@ -163,4 +164,4 @@
 </ul>
 <p>Due to it being possible to nest one Dataflow within another each Workflow Component has a <a href="specification#mecomp:belongs-to-workflow">belongs-to-workflow</a> that makes its possible to execute a simple SPARQL query to find all the components of a paticular workflow.</p>
 
-<?php include('footer.inc.php'); ?>
+<?php include('partials/footer.inc.php'); ?>

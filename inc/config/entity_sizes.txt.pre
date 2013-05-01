@@ -17,9 +17,9 @@ local_pack_entries 1 180
 memberships 1 104
 messages 1 179
 packs 1 317
-pack_relationships 1 0
 policies 1 54
 ratings 1 147
+relationship_entries 1 0
 remote_pack_entries 1 152
 reviews 2 120
 runners 1 110

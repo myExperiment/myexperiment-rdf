@@ -72,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00011"></a>00011 cd $STORE4_PATH/code/
 <a name="l00012"></a>00012 wget -O $DATA_PATH/ontologies/remoteont/$3_$2.owl -q <span class="stringliteral">&quot;$1&quot;</span>
 <a name="l00013"></a>00013 lines=`wc -l $DATA_PATH/ontologies/remoteont/$3_$2.owl | awk <span class="stringliteral">&#39;{print $1}&#39;</span>`
-<a name="l00014"></a>00014 <span class="keywordflow">if</span> [ $lines -gt 2 ]; then
+<a name="l00014"></a>00014 <span class="keywordflow">if</span> [ <a class="code" href="ontent_8php.html#a470f99c17f2e6f0a5a7b96f44cfc46a5" title="An array containing every line of the ontology file requested.">$lines</a> -gt 2 ]; then
 <a name="l00015"></a>00015         echo <span class="stringliteral">&quot;[`date +%T`] Retrieved $1 and saved to $DATA_PATH/ontologies/remoteont/$3_$2.owl&quot;</span>
 <a name="l00016"></a>00016         $STORE4EXEC_PATH/4s-<span class="keyword">delete</span>-model $triplestore file:<span class="comment">//$DATA_PATH/ontologies/remoteont/$3_$2.owl</span>
 <a name="l00017"></a>00017         $STORE4EXEC_PATH/4s-<span class="keyword">import</span> $triplestore $DATA_PATH/ontologies/remoteont/$3_$2.owl
@@ -108,7 +108,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

@@ -61,38 +61,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <a href="testrdfgen_8php.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#!/usr/bin/php</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span>&lt;?php
-<a name="l00011"></a>00011 $entity_sizes=array();
-<a name="l00012"></a>00012 include(<span class="stringliteral">&#39;include.inc.php&#39;</span>);
-<a name="l00013"></a>00013 echo <span class="stringliteral">&quot;========= &quot;</span>.date(<span class="stringliteral">&#39;D M d H:i:s T Y&#39;</span>).<span class="stringliteral">&quot; =========\n&quot;</span>;
-<a name="l00014"></a>00014 <span class="keywordflow">if</span> (file_exists(<span class="stringliteral">&quot;${lddir}inc/config/entity_sizes.txt&quot;</span>)){
-<a name="l00015"></a>00015         $lines=file(<span class="stringliteral">&quot;${lddir}inc/config/entity_sizes.txt&quot;</span>);
-<a name="l00016"></a>00016         <span class="keywordflow">foreach</span> ($lines as $line){
-<a name="l00017"></a>00017                 $lbits=explode(<span class="stringliteral">&quot; &quot;</span>,$line);
-<a name="l00018"></a>00018                 $entity_sizes[$lbits[0]]=array(<span class="stringliteral">&#39;id&#39;</span>=&gt;$lbits[1],<span class="stringliteral">&#39;size&#39;</span>=&gt;trim($lbits[2]));
-<a name="l00019"></a>00019         }
-<a name="l00020"></a>00020 }
-<a name="l00021"></a>00021 <span class="keywordflow">else</span>{
-<a name="l00022"></a>00022         $argv[1]=<span class="stringliteral">&quot;Regenerate&quot;</span>;
-<a name="l00023"></a>00023         $lines=file(<span class="stringliteral">&quot;${lddir}inc/config/entity_sizes.txt.pre&quot;</span>);
-<a name="l00024"></a>00024         <span class="keywordflow">foreach</span> ($lines as $line){
-<a name="l00025"></a>00025                 $lbits=explode(<span class="stringliteral">&quot; &quot;</span>,$line);
-<a name="l00026"></a>00026                 $entity_sizes[$lbits[0]]=array(<span class="stringliteral">&#39;id&#39;</span>=&gt;$lbits[1],<span class="stringliteral">&#39;size&#39;</span>=&gt;trim($lbits[2]));
-<a name="l00027"></a>00027         }
-<a name="l00028"></a>00028 }
-<a name="l00029"></a>00029 <span class="keywordflow">if</span> (isset($argv[1]) &amp;&amp; $argv[1]==<span class="stringliteral">&quot;Regenerate&quot;</span>) $fh=fopen(<span class="stringliteral">&quot;${lddir}inc/config/entity_sizes.txt&quot;</span>,<span class="charliteral">&#39;w&#39;</span>);
-<a name="l00030"></a>00030 <span class="keywordflow">foreach</span> ($entity_sizes as $entity =&gt; $entsize){
-<a name="l00031"></a>00031         echo <span class="stringliteral">&quot;Checking $entity/$entsize[id]:\n&quot;</span>;
-<a name="l00032"></a>00032         $ph=popen(<span class="stringliteral">&quot;${lddir}rdfgen/rdfgencli.php $entity $entsize[id] | wc -l&quot;</span>,<span class="charliteral">&#39;r&#39;</span>);
-<a name="l00033"></a>00033         $entsize[<span class="stringliteral">&#39;newsize&#39;</span>]=trim(fgets($ph,8192));
-<a name="l00034"></a>00034         fclose($ph);
-<a name="l00035"></a>00035         <span class="keywordflow">if</span> ($entsize[<span class="stringliteral">&#39;newsize&#39;</span>]&lt;$entsize[<span class="stringliteral">&#39;size&#39;</span>]){
-<a name="l00036"></a>00036                 file_put_contents(<span class="stringliteral">&quot;php://stderr&quot;</span>,<span class="stringliteral">&quot;Current size of $entity/$entsize[id] is smaller than previous size ($entsize[newsize] v $entsize[size])\n&quot;</span>);
-<a name="l00037"></a>00037                 echo <span class="stringliteral">&quot;\nERROR: $entity/$entsize[id] - $entsize[newsize] &lt; $entsize[size]\n\n\n&quot;</span>;
-<a name="l00038"></a>00038         }
-<a name="l00039"></a>00039         echo <span class="stringliteral">&quot;\nOK: $entity/$entsize[id] - $entsize[newsize] &gt;= $entsize[size]\n\n\n&quot;</span>;
-<a name="l00040"></a>00040         <span class="keywordflow">if</span> (isset($argv[1]) &amp;&amp; $argv[1]==<span class="stringliteral">&quot;Regenerate&quot;</span>) fwrite($fh,<span class="stringliteral">&quot;$entity $entsize[id] $entsize[newsize]\n&quot;</span>);
-<a name="l00041"></a>00041 }
-<a name="l00042"></a>00042 <span class="keywordflow">if</span> (isset($argv[1]) &amp;&amp; $argv[1]==<span class="stringliteral">&quot;Regenerate&quot;</span>) fclose($fh);
+<a name="l00012"></a><a class="code" href="testrdfgen_8php.html#a73c7aa0d2522b5df6fe6ed3f1092a954">00012</a> <a class="code" href="testrdfgen_8php.html#a73c7aa0d2522b5df6fe6ed3f1092a954" title="An associative array mapping myExperiment entity types to the character length sizes of a particular ...">$entity_sizes</a>=array();
+<a name="l00013"></a>00013 include(<span class="stringliteral">&#39;include.inc.php&#39;</span>);
+<a name="l00014"></a>00014 echo <span class="stringliteral">&quot;========= &quot;</span>.date(<span class="stringliteral">&#39;D M d H:i:s T Y&#39;</span>).<span class="stringliteral">&quot; =========\n&quot;</span>;
+<a name="l00015"></a>00015 <span class="keywordflow">if</span> (file_exists(<span class="stringliteral">&quot;${lddir}inc/config/entity_sizes.txt&quot;</span>)){
+<a name="l00016"></a>00016         <a class="code" href="ontent_8php.html#a470f99c17f2e6f0a5a7b96f44cfc46a5" title="An array containing every line of the ontology file requested.">$lines</a>=file(<span class="stringliteral">&quot;${lddir}inc/config/entity_sizes.txt&quot;</span>);
+<a name="l00017"></a>00017         <span class="keywordflow">foreach</span> (<a class="code" href="ontent_8php.html#a470f99c17f2e6f0a5a7b96f44cfc46a5" title="An array containing every line of the ontology file requested.">$lines</a> as <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>){
+<a name="l00018"></a>00018                 $lbits=explode(<span class="stringliteral">&quot; &quot;</span>,$line);
+<a name="l00019"></a>00019                 <a class="code" href="testrdfgen_8php.html#a73c7aa0d2522b5df6fe6ed3f1092a954" title="An associative array mapping myExperiment entity types to the character length sizes of a particular ...">$entity_sizes</a>[$lbits[0]]=array(<span class="stringliteral">&#39;id&#39;</span>=&gt;$lbits[1],<span class="stringliteral">&#39;size&#39;</span>=&gt;trim($lbits[2]));
+<a name="l00020"></a>00020         }
+<a name="l00021"></a>00021 }
+<a name="l00022"></a>00022 <span class="keywordflow">else</span>{
+<a name="l00023"></a>00023         $argv[1]=<span class="stringliteral">&quot;Regenerate&quot;</span>;
+<a name="l00024"></a>00024         <a class="code" href="ontent_8php.html#a470f99c17f2e6f0a5a7b96f44cfc46a5" title="An array containing every line of the ontology file requested.">$lines</a>=file(<span class="stringliteral">&quot;${lddir}inc/config/entity_sizes.txt.pre&quot;</span>);
+<a name="l00025"></a>00025         <span class="keywordflow">foreach</span> (<a class="code" href="ontent_8php.html#a470f99c17f2e6f0a5a7b96f44cfc46a5" title="An array containing every line of the ontology file requested.">$lines</a> as $line){
+<a name="l00026"></a>00026                 $lbits=explode(<span class="stringliteral">&quot; &quot;</span>,$line);
+<a name="l00027"></a>00027                 <a class="code" href="testrdfgen_8php.html#a73c7aa0d2522b5df6fe6ed3f1092a954" title="An associative array mapping myExperiment entity types to the character length sizes of a particular ...">$entity_sizes</a>[$lbits[0]]=array(<span class="stringliteral">&#39;id&#39;</span>=&gt;$lbits[1],<span class="stringliteral">&#39;size&#39;</span>=&gt;trim($lbits[2]));
+<a name="l00028"></a>00028         }
+<a name="l00029"></a>00029 }
+<a name="l00030"></a>00030 <span class="keywordflow">if</span> (isset($argv[1]) &amp;&amp; $argv[1]==<span class="stringliteral">&quot;Regenerate&quot;</span>) <a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>=fopen(<span class="stringliteral">&quot;${lddir}inc/config/entity_sizes.txt&quot;</span>,<span class="charliteral">&#39;w&#39;</span>);
+<a name="l00031"></a>00031 <span class="keywordflow">foreach</span> (<a class="code" href="testrdfgen_8php.html#a73c7aa0d2522b5df6fe6ed3f1092a954" title="An associative array mapping myExperiment entity types to the character length sizes of a particular ...">$entity_sizes</a> as <a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a> =&gt; $entsize){
+<a name="l00032"></a>00032         echo <span class="stringliteral">&quot;Checking $entity/$entsize[id]:\n&quot;</span>;
+<a name="l00033"></a>00033         <a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>=popen(<span class="stringliteral">&quot;${lddir}rdfgen/rdfgencli.php $entity $entsize[id] | wc -l&quot;</span>,<span class="charliteral">&#39;r&#39;</span>);
+<a name="l00034"></a>00034         $entsize[<span class="stringliteral">&#39;newsize&#39;</span>]=trim(fgets(<a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>,8192));
+<a name="l00035"></a>00035         fclose(<a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>);
+<a name="l00036"></a>00036         <span class="keywordflow">if</span> ($entsize[<span class="stringliteral">&#39;newsize&#39;</span>]&lt;$entsize[<span class="stringliteral">&#39;size&#39;</span>]){
+<a name="l00037"></a>00037                 file_put_contents(<span class="stringliteral">&quot;php://stderr&quot;</span>,<span class="stringliteral">&quot;Current size of $entity/$entsize[id] is smaller than previous size ($entsize[newsize] v $entsize[size])\n&quot;</span>);
+<a name="l00038"></a>00038                 echo <span class="stringliteral">&quot;\nERROR: $entity/$entsize[id] - $entsize[newsize] &lt; $entsize[size]\n\n\n&quot;</span>;
+<a name="l00039"></a>00039         }
+<a name="l00040"></a>00040         echo <span class="stringliteral">&quot;\nOK: $entity/$entsize[id] - $entsize[newsize] &gt;= $entsize[size]\n\n\n&quot;</span>;
+<a name="l00041"></a>00041         <span class="keywordflow">if</span> (isset($argv[1]) &amp;&amp; $argv[1]==<span class="stringliteral">&quot;Regenerate&quot;</span>) fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<span class="stringliteral">&quot;$entity $entsize[id] $entsize[newsize]\n&quot;</span>);
+<a name="l00042"></a>00042 }
+<a name="l00043"></a>00043 <span class="keywordflow">if</span> (isset($argv[1]) &amp;&amp; $argv[1]==<span class="stringliteral">&quot;Regenerate&quot;</span>) fclose(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>);
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -109,7 +109,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

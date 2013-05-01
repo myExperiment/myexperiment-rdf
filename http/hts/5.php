@@ -77,6 +77,7 @@ WHERE{
 <div style="float: right; position: relative; top: -35px; text-align: right;">[<a href="/sparql?query=PREFIX+dcterms%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%3E%0D%0APREFIX+mebase%3A+%3Chttp%3A%2F%2Frdf.myexperiment.org%2Fontologies%2Fbase%2F%3E%0D%0APREFIX+meannot%3A+%3Chttp%3A%2F%2Frdf.myexperiment.org%2Fontologies%2Fannotations%2F%3E%0D%0APREFIX+mecontrib%3A+%3Chttp%3A%2F%2Frdf.myexperiment.org%2Fontologies%2Fcontributions%2F%3E%0D%0APREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0ASELECT+DISTINCT+%3Fworkflow+%3Fct_title%0D%0AWHERE%7B%0D%0A++%3Fworkflow+rdf%3Atype+mecontrib%3AWorkflow+%3B%0D%0A++++mebase%3Ahas-content-type+%3Fct+.%0D%0A++%3Fct+dcterms%3Atitle+%3Fct_title+.%0D%0A++%3Frating+rdf%3Atype+meannot%3ARating+%3B%0D%0A++++mebase%3Aannotates+%3Fworkflow+%3B%0D%0A++++meannot%3Arating-score+%3Fscore%0D%0A++FILTER+%28%3Fscore+%3E%3D+4%29%0D%0A%7D&amp;formatting=HTML Table">Run</a>]<br/><span id="results3_show" onclick="showResults('results3');" style="display: none;">[<span class="link">Show&nbsp;Example&nbsp;Results</span>]</span><span id="results3_hide" onclick="hideResults('results3');">[<span class="link">Hide&nbsp;Example&nbsp;Results</span>]</span></div></div>
 <div class="green" id="results3">
 <table class="listing">
+  <tr><th>workflow</th><th>ct_title</th></tr>
   <tr><td><?= $datauri ?>workflows/244</td><td>Taverna 1</td></tr>
   <tr><td class="shade"><?= $datauri ?>workflows/742</td><td class="shade">SimileXMLv3</td></tr>
   <tr><td><?= $datauri ?>workflows/19</td><td>Taverna 1</td></tr>

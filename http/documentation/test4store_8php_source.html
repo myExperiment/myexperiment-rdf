@@ -63,11 +63,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00002"></a>00002 <span class="preprocessor"></span>&lt;?php
 <a name="l00011"></a>00011 include(<span class="stringliteral">&#39;include.inc.php&#39;</span>);
 <a name="l00012"></a>00012 include(<span class="stringliteral">&#39;functions/4store.inc.php&#39;</span>);
-<a name="l00013"></a>00013 <span class="keywordflow">if</span> ($argv[1]==$triplestore){
-<a name="l00014"></a>00014         <span class="keywordflow">if</span> (modularizedFullTestSparqlQueryClient($argv[1])) exit(0);
+<a name="l00013"></a>00013 <span class="keywordflow">if</span> ($argv[1]==<a class="code" href="defaultsettings_8inc_8php.html#a497549f57f9e3b6185f1b37078f04bef" title="A string specifying the name of the myExperiment knowledge base.">$myexp_kb</a>){
+<a name="l00014"></a>00014         <span class="keywordflow">if</span> (<a class="code" href="4store_8inc_8php.html#a51247133c7f116b384e92ec0a45593d8" title="Perform a full test (with query) on a myExperiment SPARQL endpoint for a specified knowledge base...">myexperimentFullTestSPARQLQueryClient</a>(<a class="code" href="defaultsettings_8inc_8php.html#a497549f57f9e3b6185f1b37078f04bef" title="A string specifying the name of the myExperiment knowledge base.">$myexp_kb</a>)) exit(0);
 <a name="l00015"></a>00015 }
-<a name="l00016"></a>00016 elseif($argv[1]==<span class="stringliteral">&quot;ontologies&quot;</span>){
-<a name="l00017"></a>00017         <span class="keywordflow">if</span> (ontologiesFullTestSparqlQueryClient($argv[1])) exit(0);
+<a name="l00016"></a>00016 elseif($argv[1]==<a class="code" href="defaultsettings_8inc_8php.html#a4841501b2110b100d640c4671140fa9b" title="A string specifying the name of the ontologies knowledge base.">$onto_kb</a>){
+<a name="l00017"></a>00017         <span class="keywordflow">if</span> (<a class="code" href="4store_8inc_8php.html#aedd930ceb4fdf7fd84ff9c8280d130ae" title="Perform a full test (with query) on an ontologies SPARQL endpoint for a specified knowledge base...">ontologiesFullTestSPARQLQueryClient</a>(<a class="code" href="defaultsettings_8inc_8php.html#a4841501b2110b100d640c4671140fa9b" title="A string specifying the name of the ontologies knowledge base.">$onto_kb</a>)) exit(0);
 <a name="l00018"></a>00018 }
 <a name="l00019"></a>00019 exit(1);
 <a name="l00020"></a>00020 ?&gt;
@@ -87,7 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

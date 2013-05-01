@@ -24,6 +24,7 @@ WHERE{
 <div style="float: right; position: relative; top: -35px; text-align: right;">[<a href="/sparql?query=PREFIX+sioc%3A+%3Chttp%3A%2F%2Frdfs.org%2Fsioc%2Fns%23%3E%0D%0APREFIX+mecontrib%3A+%3Chttp%3A%2F%2Frdf.myexperiment.org%2Fontologies%2Fcontributions%2F%3E%0D%0APREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0A%0D%0ASELECT+%3Fuser+%28COUNT%28%3Fworkflow%29+AS+%3Fno_workflows%29%0D%0AWHERE%7B%0D%0A++%3Fworkflow+rdf%3Atype+mecontrib%3AWorkflow+.%0D%0A++%3Fworkflow+sioc%3Ahas_owner+%3Fuser+.%0D%0A%7D%0D%0AGROUP+BY+%3Fuser%0D%0A&amp;formatting=HTML Table">Run</a>]<br/><span id="results1_show" onclick="showResults('results1');" style="display: none;">[<span class="link">Show&nbsp;Example&nbsp;Results</span>]</span><span id="results1_hide" onclick="hideResults('results1');">[<span class="link">Hide&nbsp;Example&nbsp;Results</span>]</span></div></div>
 <div class="green" id="results1">
 <table class="listing">
+  <tr><th>user</th><th>no_workflows</th></tr>
   <tr><td class="shade">http://www.myexperiment.org/users/6890</td><td class="shade">3</td></tr>
   <tr><td>http://www.myexperiment.org/users/36</td><td>2</td></tr>
   <tr><td class="shade">http://www.myexperiment.org/users/10173</td><td class="shade">1</td></tr>

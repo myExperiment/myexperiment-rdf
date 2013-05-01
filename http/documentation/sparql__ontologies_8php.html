@@ -65,6 +65,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>Web interface for the SPARQL endpoint to the 4Store ontologies knowledge base.  
 <a href="#_details">More...</a></p>
+
+<p><a href="sparql__ontologies_8php_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -72,14 +74,12 @@ Variables</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>$pagetitle</b> = &quot;Ontologies SPARQL Endpoint&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e3a6fe786966755a25be116fa294b80"></a><!-- doxytag: member="sparql_ontologies.php::$htmlheader" ref="a6e3a6fe786966755a25be116fa294b80" args="[]" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$htmlheader</b> [] = '&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/css/style.css&quot;/&gt;'</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3984cdc176ac1917376aaa9e16827e5c"></a><!-- doxytag: member="sparql_ontologies.php::$ts" ref="a3984cdc176ac1917376aaa9e16827e5c" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$ts</b> = 'ontologies'</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace97946c7c1b2df3a281a74028219dbe"></a><!-- doxytag: member="sparql_ontologies.php::$notriples" ref="ace97946c7c1b2df3a281a74028219dbe" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$notriples</b> = getNoTriples($ts)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>$notriples</b> = getNoTriples($onto_kb)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09e8cf95b9d29955a0bfabca9b420edc"></a><!-- doxytag: member="sparql_ontologies.php::$prefix" ref="a09e8cf95b9d29955a0bfabca9b420edc" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$prefix</b> = &quot;&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c367b7c6213d8d7815ecf85532225ca"></a><!-- doxytag: member="sparql_ontologies.php::$lmdate" ref="a2c367b7c6213d8d7815ecf85532225ca" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$lmdate</b> = date('r',strtotime(date('Y-m-d',getLastUpdated($ts)))-60)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>$lmdate</b> = date('r',strtotime(date('Y-m-d',getLastUpdated($onto_kb)))-60)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab66c76805539b5e9fb40d32fc101e565"></a><!-- doxytag: member="sparql_ontologies.php::$softlimit" ref="ab66c76805539b5e9fb40d32fc101e565" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$softlimit</b> = 1</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01073c8908865aef234ed3d5b04ea0cc"></a><!-- doxytag: member="sparql_ontologies.php::$reasoning" ref="a01073c8908865aef234ed3d5b04ea0cc" args="" -->
@@ -100,6 +100,8 @@ Variables</h2></td></tr>
 <dl class="version"><dt><b>Version:</b></dt><dd>beta </dd></dl>
 <dl class="author"><dt><b>Author:</b></dt><dd>David R Newman</dd></dl>
 <p>Web interface for the SPARQL endpoint to the 4Store ontologies knowledge base. Allows queries on the ontologies uploaded into the specification document generator to be made. </p>
+
+<p>Definition in file <a class="el" href="sparql__ontologies_8php_source.html">sparql_ontologies.php</a>.</p>
 </div></div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -115,7 +117,7 @@ Variables</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 9 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 17 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

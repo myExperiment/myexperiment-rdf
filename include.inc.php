@@ -7,4 +7,10 @@
  * @details Includes settings file and symlinked so it can be used in multiple directories.
  */
 
+ /*
+ * @mainpage myExperiment RDF Documentation
+ * Allows the generation of myExperiment RDF. 
+ */
+
+
 include('inc/config/settings.inc.php');

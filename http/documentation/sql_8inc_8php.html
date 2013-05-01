@@ -70,14 +70,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7646029f0171e8228f9763e5b2913b3"></a><!-- doxytag: member="sql.inc.php::setUserAndGroups" ref="ab7646029f0171e8228f9763e5b2913b3" args="($sql, $userid=0, $ingroups=0)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>setUserAndGroups</b> ($sql, $userid=0, $ingroups=0)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade9c0895d0fd8cb0fbcfff298629c24a"></a><!-- doxytag: member="sql.inc.php::setRestrict" ref="ade9c0895d0fd8cb0fbcfff298629c24a" args="($type, $wclause=array(), $userid=0, $ingroups=0)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>setRestrict</b> ($type, $wclause=array(), $userid=0, $ingroups=0)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23178aec7094ea4ec918b397d8a87605"></a><!-- doxytag: member="sql.inc.php::addWhereClause" ref="a23178aec7094ea4ec918b397d8a87605" args="($sql, $whereclause)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>addWhereClause</b> ($sql, $whereclause)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a00ddd0954f953e4c9506244a686c8b3b"></a><!-- doxytag: member="sql.inc.php::getAggregatedResourceSQL" ref="a00ddd0954f953e4c9506244a686c8b3b" args="($type, $id, $version=null)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>getAggregatedResourceSQL</b> ($type, $id, $version=null)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sql_8inc_8php.html#ab7646029f0171e8228f9763e5b2913b3">setUserAndGroups</a> ($sql, $userid=0, $ingroups=0)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the user ID and group IDs the user is part of to a SQL query to find all entities viewable by a particular user.  <a href="#ab7646029f0171e8228f9763e5b2913b3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sql_8inc_8php.html#ade9c0895d0fd8cb0fbcfff298629c24a">setRestrict</a> ($type, $wclause=array(), $userid=0, $ingroups=0)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an SQL query for a particular type of entity restricted by specified where subclauses and which user/groups instances of this entity are shared with.  <a href="#ade9c0895d0fd8cb0fbcfff298629c24a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sql_8inc_8php.html#a23178aec7094ea4ec918b397d8a87605">addWhereClause</a> ($sql, $whereclause)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the first or an additional sub-clause to the where clause of an SQL query.  <a href="#a23178aec7094ea4ec918b397d8a87605"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sql_8inc_8php.html#a00ddd0954f953e4c9506244a686c8b3b">getAggregatedResourceSQL</a> ($type, $id, $version=null)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an SQL query to find the aggregated resources for a particular Experiment, Pack or PackSnapshot.  <a href="#a00ddd0954f953e4c9506244a686c8b3b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sql_8inc_8php.html#ab92965af5447b6e41955b0306706ac80">getAnnotationSQL</a> ($type, $p1, $p2)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate an SQL query that will find all annotations of a specified type for a specified entity.  <a href="#ab92965af5447b6e41955b0306706ac80"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Functions to help build SQL queries to retrieve data from the myExperiment database. </p>
@@ -86,7 +88,238 @@ Functions</h2></td></tr>
 <p>Functions to help build SQL queries to retrieve data from the myExperiment database. </p>
 
 <p>Definition in file <a class="el" href="sql_8inc_8php_source.html">sql.inc.php</a>.</p>
-</div></div>
+</div><hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a23178aec7094ea4ec918b397d8a87605"></a><!-- doxytag: member="sql.inc.php::addWhereClause" ref="a23178aec7094ea4ec918b397d8a87605" args="($sql, $whereclause)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">addWhereClause </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>sql</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>whereclause</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add the first or an additional sub-clause to the where clause of an SQL query. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$sql</td><td>A string containing the SQL query for which a sub-clause is to the where clause is to be added.</td></tr>
+    <tr><td class="paramname">$whereclause</td><td>The where sub-clause to be added to the SQL query.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A string representing the SQL query with the specified where sub-clause added. </dd></dl>
+
+<p>Definition at line <a class="el" href="sql_8inc_8php_source.html#l00081">81</a> of file <a class="el" href="sql_8inc_8php_source.html">sql.inc.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a00ddd0954f953e4c9506244a686c8b3b"></a><!-- doxytag: member="sql.inc.php::getAggregatedResourceSQL" ref="a00ddd0954f953e4c9506244a686c8b3b" args="($type, $id, $version=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getAggregatedResourceSQL </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>version</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generates an SQL query to find the aggregated resources for a particular Experiment, Pack or PackSnapshot. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$type</td><td>The type of entity for which an SQL query to find its aggregated resources is to be generated.</td></tr>
+    <tr><td class="paramname">$id</td><td>The ID of the entity for which an SQL query to find its aggregated resources is to be generated.</td></tr>
+    <tr><td class="paramname">$version</td><td>The version (where appropriate) of the entity for which an SQL query to find its aggregated resources is to be generated.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A string containing the SQL query to find the aggregated resources for a particular entity. </dd></dl>
+
+<p>Definition at line <a class="el" href="sql_8inc_8php_source.html#l00101">101</a> of file <a class="el" href="sql_8inc_8php_source.html">sql.inc.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab92965af5447b6e41955b0306706ac80"></a><!-- doxytag: member="sql.inc.php::getAnnotationSQL" ref="ab92965af5447b6e41955b0306706ac80" args="($type, $p1, $p2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getAnnotationSQL </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>p2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generate an SQL query that will find all annotations of a specified type for a specified entity. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$type</td><td>A string containing the type of annotation for which the SQL query should instances.</td></tr>
+    <tr><td class="paramname">$p1</td><td>The parameter to swap for the first unknown of annotation_where_clause for the specified type of anotation.</td></tr>
+    <tr><td class="paramname">$p2</td><td>The parameter to swap for the second unknown of annotation_where_clause for the specified type of anotation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A string containing an SQL query that will find all annotations of a specified type for a specified entity. </dd></dl>
+
+<p>Definition at line <a class="el" href="sql_8inc_8php_source.html#l00134">134</a> of file <a class="el" href="sql_8inc_8php_source.html">sql.inc.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ade9c0895d0fd8cb0fbcfff298629c24a"></a><!-- doxytag: member="sql.inc.php::setRestrict" ref="ade9c0895d0fd8cb0fbcfff298629c24a" args="($type, $wclause=array(), $userid=0, $ingroups=0)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">setRestrict </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>wclause</em> = <code>array()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>userid</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>ingroups</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generates an SQL query for a particular type of entity restricted by specified where subclauses and which user/groups instances of this entity are shared with. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$type</td><td>A string containing the type of entity for which an SQL query is to be generated.</td></tr>
+    <tr><td class="paramname">$wclause</td><td>An array containing triplets (field-equal/like/in-value) to build restrictions in the where clause of the SQL query.</td></tr>
+    <tr><td class="paramname">$userid</td><td>An integer representing he user ID which is to be added to the SQL query.</td></tr>
+    <tr><td class="paramname">$ingroups</td><td>An array containing the group IDs which are to be added to the the SQL query.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>An SQL query for a particular type of entity with restrictions specified (including whether the entity is viewable to either the user or groups specified). </dd></dl>
+
+<p>Definition at line <a class="el" href="sql_8inc_8php_source.html#l00047">47</a> of file <a class="el" href="sql_8inc_8php_source.html">sql.inc.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab7646029f0171e8228f9763e5b2913b3"></a><!-- doxytag: member="sql.inc.php::setUserAndGroups" ref="ab7646029f0171e8228f9763e5b2913b3" args="($sql, $userid=0, $ingroups=0)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">setUserAndGroups </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>sql</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>userid</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>ingroups</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Set the user ID and group IDs the user is part of to a SQL query to find all entities viewable by a particular user. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$sql</td><td>The SQL query for which the user ID and group IDs are to be added.</td></tr>
+    <tr><td class="paramname">$userid</td><td>An integer representing he user ID which is to be added to the SQL query.</td></tr>
+    <tr><td class="paramname">$ingroups</td><td>An array containing the group IDs which are to be added to the the SQL query.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The SQL query provided with the specified user ID and group IDs added. </dd></dl>
+
+<p>Definition at line <a class="el" href="sql_8inc_8php_source.html#l00025">25</a> of file <a class="el" href="sql_8inc_8php_source.html">sql.inc.php</a>.</p>
+
+</div>
+</div>
+</div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -101,7 +334,7 @@ Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

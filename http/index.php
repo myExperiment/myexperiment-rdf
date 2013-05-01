@@ -7,10 +7,10 @@
  * @details Index page for myExperiment Linked Data, Ontology, SPARQL endpoint, etc.
  */
 
-	include('include.inc.php');
-	$pagetitle="Linked Data";
-	include('header.inc.php');
-	include('settings.inc.php');
+include('include.inc.php');
+/** @brief The page title to be displayed in an h1 tag and the title of the html header. */
+$pagetitle="Linked Data";
+include('partials/header.inc.php');
 ?>
   <p>myExperiment's RDF is delivered following the principles of <a href="http://linkeddata.org/">Linked Data</a>.  Linked Data is a way of interconnecting data published on the web that has not been previously linked.</p>
 
@@ -36,4 +36,4 @@ Object Reuse and Exchange Homepage">OAI-ORE</a>, that can be assembled to build 
   <p>A <a href="void.rdf">description of myExperiment RDF</a> is specified in <a href="http://vocab.deri.ie/void" title="voiD Homepage">voiD</a>.  One thing voiD encourages is the publication of RDF datasets so they can easily be reused by others rather than having to crawl each NIR for its RDF.</p>
 
  <br/>
-<?php include('footer.inc.php'); ?>
+<?php include('partials/footer.inc.php'); ?>

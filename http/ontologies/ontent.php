@@ -7,16 +7,18 @@
  * @details Displays RDF/XML for individual class or property in one of the modules of the myExperiment Ontology.  E.g. ontent.php?ontology=contributions&entity=Workflow display the RDF/XML for the Workflow class.
  */
 
-$domain='public';
 include('../include.inc.php');
 include('functions/rdf.inc.php');
+/** @brief A string containing the URL subpath of the myExperiment ontology module the entity is in. */
 $ontology="$ontopath$_GET[ontology]/";
+/** @brief An array containing every line of the ontology file requested. */
 $lines = file($ontology);
+/** @brief An integer containing the current line number that is being look in the ontology file. */
 $l=0;
-$match = 'rdf:about="'.$_GET['entity'].'"';
-while (strpos($lines[$l],$match)==0 and $l<sizeof($lines)){
+while (strpos($lines[$l],'rdf:about="'.$_GET['entity'].'"') ==0 and $l < sizeof($lines)){
         $l++;   
 }
+/** @brief A string containing the full URI for the ontology entity that has been requested. */
 $entity=str_replace($_GET['entity'],$ontology.$_GET['entity'],$lines[$l]);
 $l++;
 while (strlen(trim($lines[$l]))>0 and $l<sizeof($lines)){
@@ -30,9 +32,9 @@ while (strlen(trim($lines[$l]))>0 and $l<sizeof($lines)){
 }
 if (!empty($entity)) {
 	header('Content-type: application/rdf+xml');
-	echo pageheader();
+	echo generateGenericRDFHeader();
 	echo $entity;
-	echo pagefooter(); 
+	echo generateRDFFooter(); 
 }
 else {
 	header("HTTP/1.1 404 Not Found");

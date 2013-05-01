@@ -83,7 +83,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00022"></a>00022         touch <span class="stringliteral">&quot;${TRIPLESTORE}_triples.log&quot;</span>
 <a name="l00023"></a>00023         touch <span class="stringliteral">&quot;${TRIPLESTORE}_update_time.log&quot;</span>
 <a name="l00024"></a>00024         touch <span class="stringliteral">&quot;${TRIPLESTORE}_datadump_triples.log&quot;</span>
-<a name="l00025"></a>00025 fi
+<a name="l00025"></a>00025         touch <span class="stringliteral">&quot;ontologies_triples.log&quot;</span>
+<a name="l00026"></a>00026         touch <span class="stringliteral">&quot;ontologies_update_time.log&quot;</span>
+<a name="l00027"></a>00027         chmod -R ug+w *
+<a name="l00028"></a>00028         chown -R $USER:$HTTPGROUP *
+<a name="l00029"></a>00029 fi
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -100,7 +104,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

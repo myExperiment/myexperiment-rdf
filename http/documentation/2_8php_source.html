@@ -93,14 +93,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00039"></a>00039 &lt;p&gt;The &lt;em&gt;BASE&lt;/em&gt; clause is similar to the PREFIX clause but a name is not required, just the URI path needs be defined.  If you wish to use the BASE clause it must proceed any PREFIX clauses.  A common use of the BASE clause is to define the path <span class="keywordflow">for</span> data that is being queried. E.g.
 <a name="l00040"></a>00040 &lt;div <span class="keyword">class</span>=<span class="stringliteral">&quot;yellow&quot;</span>&gt;&lt;pre&gt;SELECT ?p ?o
 <a name="l00041"></a>00041 WHERE{
-<a name="l00042"></a>00042   &amp;lt;&lt;b&gt;&lt;?= $datauri ?&gt;&lt;/b&gt;workflows/12&amp;gt; ?p ?o
+<a name="l00042"></a>00042   &amp;lt;&lt;b&gt;&lt;?= <a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a> ?&gt;&lt;/b&gt;workflows/12&amp;gt; ?p ?o
 <a name="l00043"></a>00043 }&lt;/pre&gt;&lt;div style=<span class="stringliteral">&quot;text-align: right; float: right; position: relative; top: -35px;&quot;</span>&gt;[&lt;a href=<span class="stringliteral">&quot;/sparql?query=SELECT+%3Fp+%3Fo%0D%0AWHERE%7B%0D%0A++%3C&lt;?= urlencode($datauri) ?&gt;workflows%2F12%3E+%3Fp+%3Fo%0D%0A%7D&amp;amp;formatting=HTML Table&quot;</span>&gt;Run&lt;/a&gt;]&lt;br/&gt;&lt;span <span class="keywordtype">id</span>=<span class="stringliteral">&quot;results3_show&quot;</span> onclick=<span class="stringliteral">&quot;showResults(&#39;results3&#39;);&quot;</span> style=<span class="stringliteral">&quot;display: none;&quot;</span>&gt;[&lt;span <span class="keyword">class</span>=<span class="stringliteral">&quot;link&quot;</span>&gt;Show&amp;nbsp;Example&amp;nbsp;Results&lt;/span&gt;]&lt;/span&gt;&lt;span <span class="keywordtype">id</span>=<span class="stringliteral">&quot;results3_hide&quot;</span> onclick=<span class="stringliteral">&quot;hideResults(&#39;results3&#39;);&quot;</span>&gt;[&lt;span <span class="keyword">class</span>=<span class="stringliteral">&quot;link&quot;</span>&gt;Hide&amp;nbsp;Example&amp;nbsp;Results&lt;/span&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
 <a name="l00044"></a>00044 &lt;div <span class="keyword">class</span>=<span class="stringliteral">&quot;green&quot;</span> <span class="keywordtype">id</span>=<span class="stringliteral">&quot;results3&quot;</span> style=<span class="stringliteral">&quot;clear: both; position: relative; top: -26px;&quot;</span>&gt;
 <a name="l00045"></a>00045   &lt;?php include(<span class="stringliteral">&#39;hts/workflow12.inc.php&#39;</span>); ?&gt;
 <a name="l00046"></a>00046 &lt;/div&gt;
 <a name="l00047"></a>00047 &lt;div style=<span class="stringliteral">&quot;clear:both&quot;</span>/&gt;
 <a name="l00048"></a>00048 &lt;p&gt;Could be rewritten:&lt;/p&gt;
-<a name="l00049"></a>00049 &lt;div <span class="keyword">class</span>=<span class="stringliteral">&quot;yellow&quot;</span>&gt;&lt;pre&gt;&lt;b&gt;BASE &amp;lt;&lt;?= $datauri ?&gt;&amp;gt;&lt;/b&gt;
+<a name="l00049"></a>00049 &lt;div <span class="keyword">class</span>=<span class="stringliteral">&quot;yellow&quot;</span>&gt;&lt;pre&gt;&lt;b&gt;BASE &amp;lt;&lt;?= <a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a> ?&gt;&amp;gt;&lt;/b&gt;
 <a name="l00050"></a>00050 SELECT ?p ?o
 <a name="l00051"></a>00051 WHERE{
 <a name="l00052"></a>00052   &amp;lt;workflows/12&amp;gt; ?p ?o
@@ -132,7 +132,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

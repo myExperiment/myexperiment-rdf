@@ -14,7 +14,14 @@ $sanitized_pagetitle = preg_replace("/<[^>]+>/","",$pagetitle);
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-  <title><?php if (!$headername) echo 'myExperiment'; else echo $headername ?> <?= $sanitized_pagetitle; ?></title>
+  <title><?php 
+if (!$headername) {
+	echo 'myExperiment'; 
+}
+else {
+	echo $headername; 
+}
+?> <?= $sanitized_pagetitle; ?></title>
   <link rel="stylesheet" type="text/css" href="/css/style.css"/>
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
 </head>

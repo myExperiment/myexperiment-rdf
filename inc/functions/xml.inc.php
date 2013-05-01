@@ -7,7 +7,19 @@
  * @details Functions for parsing, generating and examining XML. Including myExperiment RDF/XML and SPARQL results in application/sparql-results+xml format and XML representations of workflows including Taverna, Taverna 2, Galaxy and RapidMiner.
  */
 
-function parseXML($xmldata,$localns=""){
+/**
+ * @brief Parses and XML string an returns an array-based representation of the XML. (Reverse of generateXML function).
+ *
+ * @param $xmldata
+ * A string containing the XML to be parsed.
+ *
+ * @param $localns
+ * A string containing the local namespace for the XML string provided.  Allowing xmlns and xml:base attributes to be set correctly.
+ *
+ * @return
+ * An array representation of the XML string provided.
+ */
+function parseXML($xmldata, $localns=""){
 	global $x2ans;
 	if (!$xmldata) return array();
 	$x2ans=array();
@@ -22,24 +34,46 @@ function parseXML($xmldata,$localns=""){
 	while ($reader->next()){
 		$domnode[0]=$reader->expand();
 	}
-	foreach($domnode as $dn) $array[]=xml2array($dn,true);
+	foreach($domnode as $dn) $array[]=convertXMLToArray($dn,true);
 	if ($localns){
 		if (!$array[0]['attrs']['xmlns']) $array[0]['attrs']['xmlns']=$localns;
 		if (!$array[0]['attrs']['xml:base']) $array[0]['attrs']['xml:base']=$localns;
 	}
 	return $array;
 }
+
+/**
+ * @brief Generate an XML string from the XML array representation provided. (Reverse of parseXML function).
+ * 
+ * @param $array
+ * Array-based version of some XML.
+ *
+ * @return
+ * A string containing the XML represented by the array provided.
+ */
 function generateXML($array){
 	if (!$array['encoding']) $array['encoding']="UTF-8";
 	if (!$array['version']) $array['version']="1.0";
 	$xml="<?xml version=\"$array[version]\" encoding=\"$array[encoding]\" ?>\n\n";
 	unset($array['encoding']);
 	unset($array['version']);
-	foreach($array as $arr)$xml.=array2xml($arr);
+	foreach($array as $arr)$xml.=convertArrayToXML($arr);
 	return $xml;
 }
 
-function xml2array($domnode,$topelement=false){
+/**
+ * @brief Takes a DOM node created by an XMLReader's conversion of an XML string into a DOM document and populates a multidimensional array representation of the original XML string (recursively).
+ * 
+ * @param $domnode
+ * The DOM node that is to be used to populate part multidimensional array representation of the original XML string.
+ *
+ * @param $topelement
+ * Is the DOM node provided the top element in the DOM document.
+ *
+ * @return
+ * An multidimensional array representation of the current DOM node and all of its descendants.
+ */
+function convertXMLToArray($domnode,$topelement=false){
 	global $x2ans;
 	$nodearray = array();
 	if (!$topelement){
@@ -79,18 +113,14 @@ function xml2array($domnode,$topelement=false){
          		break;
 		}
 		if($domnode->hasChildNodes()){
-		        // $nodearray[$currentnode][] = xml2array($domnode);
-			//$tmparr=xml2array($domnode);
-			//$tmparr['name']=$currentnode;
 			$nodeind['name']=$currentnode;
 			if(isset($elementarray)){
-          			// $nodearray[$currentnode][$currnodeindex]['attrs'] = $elementarray;
 	  			$nodeind['attrs']=$elementarray;
           		}
 			$nodeind['name']=$currentnode;
 			if (is_object($domnode->firstChild) && !is_object($domnode->firstChild->nextSibling) && $domnode->firstChild->nodeValue) $nodeind['tagData']=$domnode->firstChild->nodeValue;
 			elseif ($domnode->firstChild->nodeValue == '0') $nodeind['tagData']=$domnode->firstChild->nodeValue;
-			else $nodeind['children']=xml2array($domnode);
+			else $nodeind['children']=convertXMLToArray($domnode);
 
         	}
        		else{
@@ -115,7 +145,16 @@ function xml2array($domnode,$topelement=false){
     	return $nodearray;
 }
 
-function array2xml($array){
+/**
+ * @brief Converts a potentially multidimensional array representation of XML into a string (recursively).
+ * 
+ * @param $array
+ * The (multidimensional) array representation of XML that is to be converted into a string.
+ *
+ * @return
+ * An string of XML generated from the multidimensional array representation of some XML.
+ */
+function convertArrayToXML($array){
 	if ($array['name']) $xml="<$array[name]";
 	if (is_array($array['attrs'])){
 		foreach ($array['attrs'] as $attr => $val){
@@ -123,12 +162,12 @@ function array2xml($array){
 		}
 	}
 	if ($array['tagData']){
-		$xml.=">".xmlentities($array['tagData'])."</$array[name]>";
+		$xml.=">".convertToXMLEntities($array['tagData'])."</$array[name]>";
 	}
 	elseif (sizeof($array['children'])>0){
 		if ($array['name']) $xml.=">\n";
 		foreach( $array['children'] as $k => $v){
-			$subxml=explode("\n",array2xml($v));
+			$subxml=explode("\n", convertArrayToXML($v));
 			if (sizeof($subxml)==1 && !preg_match("/>$/",$subxml[0])){
 				$xml=rtrim($xml);
 				$xml.=$subxml[0];
@@ -145,67 +184,47 @@ function array2xml($array){
 	return $xml;
 }
 
-$uris = array("","http://purl.org/dc/elements/1.1/", "http://purl.org/dc/terms/","http://rdfs.org/sioc/ns#","http://creativecommons.org/ns#","http://xmlns.com/foaf/0.1/", "http://dbpedia.org/ontology/", $ontopath."base/", $ontopath."attrib_credit/",$ontopath."annotations/",$ontopath."packs/",$ontopath."experiments/",$ontopath."snarm/",$ontopath."viewings_downloads/",$ontopath."contributions/",$ontopath."specific/",$ontopath."testing_specific/","http://www.openarchives.org/ore/terms/",$ontopath."wordnet/",$ontopath."questions/","http://www.w3.org/1999/02/22-rdf-syntax-ns#","http://www.w3.org/2000/01/rdf-schema#","http://www.w3.org/2002/07/owl#","http://www.w3.org/2001/XMLSchema#","http://xmlns.com/wot/0.1/",$ontopath."components/","http://www.w3.org/2004/02/skos/core#",$datauri);
-$xmlpents = array("","dc:", "dcterms:","sioc:","cc:","foaf:","dbpedia:","mebase:","meac:","meannot:","mepack:","meexp:","snarm:","mevd:","mecontrib:","mespec:","mespec:","ore:","mewn:","meq:","rdf:","rdfs:","owl:","xsd:","wot:","mecomp:","skos:","medata:");
-
-function formatXML($parsedxml,$level=0){
-	$formattedxml="";
-	for ($i=0; $i<sizeof($parsedxml); $i++){
-		for ($s=0; $s<$level; $s++) $formattedxml.="  ";
-		$formattedxml.="&lt;".$parsedxml[$i]['name'];
-		$attrkeys=array_keys($parsedxml[$i]['attrs']);
-		for ($j=0; $j<sizeof($attrkeys); $j++){
-			$formattedxml.=" ".$attrkeys[$j]."=\"".$parsedxml[$i]['attrs'][$attrkeys[$j]]."\"";
-		}
-		if (sizeof($parsedxml[$i]['children'])>0){
-			$formattedxml.="&gt;\n";
-			$formattedxml.=formatXML($parsedxml[$i]['children'],$level+1);
-			for ($s=0; $s<$level; $s++) $formattedxml.="  ";
-			$formattedxml.="&lt;/".$parsedxml[$i]['name']."&gt;\n";
-		}
-		elseif ($parsedxml[$i]['tagData']) $formattedxml.="&gt;".$parsedxml[$i]['tagData']."&lt;/".$parsedxml[$i]['name']."&gt;\n";
-		else $formattedxml.=" /&gt;\n";
+/**
+ * @brief Convert the array-based representation of the SPARQL results XML into a tabular form. So it is amongst other things, easy to render as an HTML table of results.
+ *
+ * @param $parsedxml
+ * A array-based representation of some SPARQL results XML.
+ *
+ * @return
+ * A tabular form of the array-based SPARQL results XML.
+ */
+function tabulateSPARQLResults($parsedxml){
+	$table = array();
+	if (isset($parsedxml[0]['children'][0]['children'])) {
+	  	$vars=$parsedxml[0]['children'][0]['children'];
+        	for ($v=0; $v<sizeof($vars); $v++){
+                	$table['vars'][$v]=$vars[$v]['attrs']['name'];
+        	}
+	        $recs=$parsedxml[0]['children'][1]['children'];
+        	for ($r=0; $r<sizeof($recs); $r++){
+                	for ($v=0; $v<sizeof($vars); $v++){
+                        	$varname=$recs[$r]['children'][$v]['attrs']['name'];
+				if ($varname){
+		                	$varnum=array_search($varname,$table['vars']);
+                	        	$table[$r][$varnum]=$recs[$r]['children'][$v]['tagData'];
+				}
+                	}
+        	}
 	}
-	return $formattedxml;
-}
-function tabulateSparqlResults($parsedxml){
-  	$vars=$parsedxml[0]['children'][0]['children'];
-        for ($v=0; $v<sizeof($vars); $v++){
-                $table['vars'][$v]=$vars[$v]['attrs']['name'];
-        }
-        $recs=$parsedxml[0]['children'][1]['children'];
-        for ($r=0; $r<sizeof($recs); $r++){
-                for ($v=0; $v<sizeof($vars); $v++){
-                        $varname=$recs[$r]['children'][$v]['attrs']['name'];
-			if ($varname){
-	                	$varnum=array_search($varname,$table['vars']);
-                        	$table[$r][$varnum]=$recs[$r]['children'][$v]['tagData'];
-			}
-                }
-        }
-        return $table;
-}
-function tabulateJenaSparqlResults($parsedxml){
-        $vars=$parsedxml[0]['children'][0]['children'];
-        for ($v=0; $v<sizeof($vars); $v++){
-                $table['vars'][$v]=$vars[$v]['attrs']['name'];
-        }
-        $recs=$parsedxml[0]['children'][1]['children'];
-        for ($r=0; $r<sizeof($recs); $r++){
-                for ($v=0; $v<sizeof($vars); $v++){
-                        $varname=$recs[$r]['children'][$v]['attrs']['name'];
-                        if ($varname){
-                                $varnum=array_search($varname,$table['vars']);
-                                $table[$r][$varnum]=$recs[$r]['children'][$v]['children'][0]['tagData'];
-                        }
-                }
-        }
         return $table;
 }
 
-
-function convertTableToCSV($tab){
-	foreach ($tab as $rname => $row){	
+/**
+ * @brief Convert a tabular representation of SPARQL results into a CSV representation.
+ *
+ * @param $table
+ * Some SPARQL results represented in tabular form.
+ * 
+ * @return
+ * A CSV representation of the SPARQL results provided in tabular form.
+ */
+function convertTableToCSV($table){
+	foreach ($table as $rname => $row){	
 		$csvline="";
 		for ($i=0; $i<sizeof($row); $i++){
 			$csvline.='"'.str_replace('"','"""',$row[$i]).'",';
@@ -214,9 +233,19 @@ function convertTableToCSV($tab){
 	}
 	return $csv;
 }
-function convertTableToCSVMatrix($tab){
-	if (sizeof($tab['vars'])!=2) return "ERROR: Query must select exactly two variables to draw a CSV matrix";
-	$tabnn=array_slice($tab,1);
+
+/**
+ * @brief Convert a tabular representation of SPARQL results into a two dimensional CSV matrix representation.  E.g. Convert a table of users and the groups that they belong to into a two dimenesional matrix (encoded in CSV) with the user on one axis and the group on the other.
+ *
+ * @param $table
+ * A set of SPARQL results in tabular form.
+ * 
+ * @return
+ * A string representing a CSV-encoded two dimensionsal matrix of results where the first column of results provides one axis of the matrix and the second column provides the other axis.
+ */
+function convertTableToCSVMatrix($table) {
+	if (sizeof($table['vars'])!=2) return "ERROR: Query must select exactly two variables to draw a CSV matrix";
+	$tabnn=array_slice($table,1);
 	$uniqx=array();
 	$uniqy=array();
 	foreach ($tabnn as $row){
@@ -246,27 +275,48 @@ function convertTableToCSVMatrix($tab){
 	return $csvmatrix;
 }
 
-
-function drawSparqlResultsTable($table){
-	$tablehtml="<table class=\"listing\">\n  <tr>";
-	for ($v=0; $v<sizeof($table['vars']); $v++){
-		$tablehtml.="<th>".$table['vars'][$v]."</th>";
-	}
-	$shade=" class=\"shade\"";
-	$tablehtml.="</tr>\n";
-	for ($r=0; $r<sizeof($table)-1; $r++){
-		$tablehtml.="  <tr>";
-		for($v=0; $v<sizeof($table['vars']); $v++){
-			$tablehtml.="<td$shade>".$table[$r][$v]."</td>";
+/**
+ * @brief Generates an HTML table, allowing SPARQL results in tabular form to be displayed on a web page.
+ *
+ * @param $table
+ * A set of SPARQL results in tabular form.
+ *
+ * @return
+ * An HTML table representation of a set of SPARQL results.
+ */
+function drawSPARQLResultsTable($table){
+	$tablehtml = "";
+	if (!empty($table['vars'])) {
+		$tablehtml.="<table class=\"listing\">\n  <tr>";
+		for ($v=0; $v<sizeof($table['vars']); $v++){
+			$tablehtml.="<th>".$table['vars'][$v]."</th>";
 		}
+		$shade=" class=\"shade\"";
 		$tablehtml.="</tr>\n";
-		if (!$shade) $shade=" class=\"shade\"";
-		else $shade="";
+		for ($r=0; $r<sizeof($table)-1; $r++){
+			$tablehtml.="  <tr>";
+			for($v=0; $v<sizeof($table['vars']); $v++){
+				$tablehtml.="<td$shade>".$table[$r][$v]."</td>";
+			}
+			$tablehtml.="</tr>\n";
+			if (!$shade) $shade=" class=\"shade\"";
+			else $shade="";
+		}
+		$tablehtml.="</table>\n";
 	}
-	$tablehtml.="</table>\n";
 	return $tablehtml;
 }
-function xmlentities($data){
+
+/**
+ * @brief Sanitizes and string so that it render as a value within some XML markup.
+ *
+ * @param $data
+ * A string which needs to be sanitized so it can be renders as a value within some XML markup.
+ * 
+ * @return
+ * The sanitized version of the string provided that can now be rendered as a value in some XML markup.
+ */
+function convertToXMLEntities($data){
 	$find=array("&#xD;","&","<",">","'",'"',"\x0b","\x0c","\x09","\x0a","\x0d","\x1d","\x1e","\xa0");
 	$replace=array(" ","&amp;","&lt;","&gt;","&apos;","&quot;"," ","","\t","\n","\t","-","-","&#160;");
 	$replaced=str_replace($find, $replace, $data);
@@ -277,88 +327,17 @@ function xmlentities($data){
 	return $replaced;
 }
 
-function array_multiunique($arr){
-	$jarr=array();
-	foreach ($arr as $k => $v){
-		$jarr[$k]=json_encode($v);
-	}
-	$ujarr=array_unique($jarr);
-	$uarr=array();
-	foreach ($ujarr as $k => $v){
-		$uarr[$k]=object_2_array(json_decode($v));
-	}
-	return $uarr;
-}
-function object_2_array($result){
-    $array = array();
-    foreach ($result as $key=>$value){
-        if (is_object($value)){
-            $array[$key]=object_2_array($value);
-        }
-        if (is_array($value)){
-            $array[$key]=object_2_array($value);
-        }
-        else{
-            $array[$key]=$value;
-        }
-    }
-    return $array;
-} 
+/**
+ * @brief Convert the array-based representation of the SPARQL results XML into a tabular form.  Like tabulateSPARQLResults but using the field names as the key for it column in the tabular array rather than as the first entry of each column sub-array.
+ *
+ * @param $parsedxml
+ * A array-based representation of some SPARQL results XML.
+ *
+ * @return
+ * A tabular form of the array-based SPARQL results XML. Using the field names of the results as the keys of the sub-arrays.
+ */
 
-function replace_namespaces($arr,$hasfilter=""){
-	global $uris, $xmlpents;
-	$luris=$uris;
-        $lents=$xmlpents;
-	$pos=array_search($hasfilter,$luris);
-	if ($pos>0){
-		$lents[$pos]="";
-	}
-	else{
-		$luris[]=$hasfilter;
-		$lents[]="";
-	}
-//	print_r($luris);
-//	print_r($lents);
-	foreach ($arr as $res => $vals){
-		foreach ($vals as $k => $v){
-			$arr[$res][$k]=str_replace($luris, $lents, $v);
-		}			 
-	}
-	return $arr;
-}
-function replace_namespace($uri,$hasfilter=""){
-	global $uris, $xmlpents;
-        $luris=$uris;
-        $lents=$xmlpents;
-        $pos=array_search($hasfilter,$luris);
-        if ($pos>0){
-                $lents[$pos]="";
-        }
-        else{
-                $luris[]=$hasfilter;
-                $lents[]="";
-        }
-	return str_replace($luris, $lents, $uri);
-}
-function reinstate_namespace($ent,$nspath=""){
-	global $uris,$xmlpents;
-	$luris=$uris;
-        $lents=$xmlpents;
-	$ebits=explode(":",$ent);
-	if (sizeof($ebits)>1) return str_replace($lents,$luris,$ent);	
-	return $nspath.$ent;
-}
-	
-function myexp_namespace($ent){
-	$ebits=explode(":",$ent);
-	$namespaces=array("","snarm","mebase","meac","meannot","mecontrib","mepack","meexp","mevd","mespec","mecomp");
-	return in_array($ebits[0],$namespaces);
-}
-function current_namespace($ns){
-	global $filterns;
-	return $filterns==$ns;
-}
-function tabulateSparqlResultsAssoc($parsedxml){
+function tabulateSPARQLResultsAssoc($parsedxml){
 	$vararray=$parsedxml[0]['children'][0]['children'];
         for ($v=0; $v<sizeof($vararray); $v++){
                 $vars[$v]=$vararray[$v]['attrs']['name'];
@@ -374,101 +353,33 @@ function tabulateSparqlResultsAssoc($parsedxml){
         }
         return $table;
 }
-function tabulateSparqlResultsJenaAssoc($parsedxml){
-        $vararray=$parsedxml[0]['children'][0]['children'];
-        for ($v=0; $v<sizeof($vararray); $v++){
-                $vars[$v]=$vararray[$v]['attrs']['name'];
-        }
-        $table=array();
-        $recs=$parsedxml[0]['children'][1]['children'];
-        for ($r=0; $r<sizeof($recs); $r++){
-                for ($v=0; $v<sizeof($vars); $v++){
-                        $bname=$recs[$r]['children'][$v]['attrs']['name'];
-                        $table[$r][$bname]=$recs[$r]['children'][$v]['children'][0]['tagData'];
-                }
-        }
-        return $table;
-}
 
-function tabulateSparqlResultsAsColumns($parsedxml){
-	$vararray=$parsedxml[0]['children'][0]['children'];
-        for ($v=0; $v<sizeof($vararray); $v++){
-                $vars[$v]=$vararray[$v]['attrs']['name'];
-        }
-        $table=array();
-        $recs=$parsedxml[0]['children'][1]['children'];
-        for ($r=0; $r<sizeof($recs); $r++){
-                for ($v=0; $v<sizeof($vars); $v++){
-                        $bname=$recs[$r]['children'][$v]['attrs']['name'];
-                        $table[$bname][$r]=$recs[$r]['children'][$v]['tagData'];
-                }
-        }
-        return $table;
-}
-function tabulateSparqlResultsJenaAsColumns($parsedxml){
-        $vararray=$parsedxml[0]['children'][0]['children'];
-        for ($v=0; $v<sizeof($vararray); $v++){
-                $vars[$v]=$vararray[$v]['attrs']['name'];
-        }
-        $table=array();
-        $recs=$parsedxml[0]['children'][1]['children'];
-        for ($r=0; $r<sizeof($recs); $r++){
-                for ($v=0; $v<sizeof($vars); $v++){
-                        $bname=$recs[$r]['children'][$v]['attrs']['name'];
-                        $table[$bname][$r]=$recs[$r]['children'][$v]['children'][0]['tagData'];
-                }
-        }
-        return $table;
-}
-function generateDataflowMappings($dataflows){
-	$dfmap=array();
-	foreach($dataflows as $dfuri => $df) $dfmap[$df['id']]=$dfuri;
-	return $dfmap;
-}
-function generateDataflows($dataflows,$ent_uri){
-	$dtstr=array('dcterms:title','dcterms:description','dcterms:identifier','mecomp:processor-type','mecomp:processor-script','mecomp:service-name','mecomp:authority-name','mecomp:service-category','mecomp:example-value');
-	$dturi=array('mecomp:processor-uri');
-	$rdf="";
-	$dfmap=array();
-	$components="";
-	foreach($dataflows as $dfuri => $dataflow){
-		$rdf.="  <mecomp:Dataflow rdf:about=\"$dfuri\">\n";
-		if (isset($dataflow['id'])){
-			if (sizeof($dfmap)==0) $dfmap=generateDataflowMappings($dataflows);
-			$rdf.="    <dcterms:identifier rdf:datatype=\"&xsd;string\">$dataflow[id]</dcterms:identifier>\n";
-			unset($dataflow['id']);
-		}	
-	        foreach ($dataflow as $cnum => $comp){
-		        $comptype=$comp['type'];
-                	$rdf.="    <mecomp:has-component>\n      <mecomp:$comptype rdf:about=\"".$dfuri."/components/$cnum\">\n";
-	                foreach ($comp['props'] as $prop){
-                		if (in_array($prop['type'],$dtstr) && isset($prop['value'])){
-	                	       $rdf.="        <".$prop['type']." rdf:datatype=\"&xsd;string\">".xmlentities($prop['value'])."</".$prop['type'].">\n";
-                        	}
-				elseif (in_array($prop['type'],$dturi)){
-					if (isset($prop['value'])) $rdf.="        <".$prop['type']." rdf:resource=\"".xmlentities($prop['value'])."\"/>\n";
-				}
-				elseif ($prop['type']=="mecomp:executes-dataflow"){
-					if (substr($prop['value'],0,7)!="http://") $prop['value']=$dfmap[$prop['value']];
-					$rdf.="        <".$prop['type']." rdf:resource=\"$prop[value]\"/>\n";
-				}
-                       		elseif (isset($prop['value'])) $rdf.="        <".$prop['type']." rdf:resource=\"$dfuri/components/".urlencode($prop['value'])."\"/>\n";
-                	}
-                	$rdf.="        <mecomp:belongs-to-workflow rdf:resource=\"$ent_uri\"/>\n      </mecomp:$comptype>\n    </mecomp:has-component>\n";          
-        	}
-		$rdf.="  </mecomp:Dataflow>\n\n";
-	}
-        return $rdf;
-}
-
-function tabulateDataflowComponents($allcomponents,$ent_uri,$content_type,$nested=0){
+/**
+ * @brief Generates a table of Dataflow components extracted from the following MIME type of Workflows application/vnd.taverna.scufl+xml, application/vnd.taverna.t2flow+xml, application/vnd.galaxy.workflow+xml, application/vnd.galaxy.workflow+json, application/vnd.rapidminer.rmp+zip.
+ * 
+ * @param $allcomponents
+ * The XML for the Dataflow transformed into an array-based representation.
+ * 
+ * @param $ent_uri
+ * A string containing the entity URI of the Dataflow for which components are to be extracted.
+ *
+ * @param $mime_type
+ * A string containing the MIME type of the Dataflow of which components are to be extracted.
+ * 
+ * @param $nested
+ * A boolean specifying whether the Dataflow for which components are to be extracted is a part of another Dataflow or the top-level Dataflow of a Workflow.
+ *
+ * @return
+ * A table of Dataflow components that have be extracted from Dataflow specified.
+ */
+function tabulateDataflowComponents($allcomponents, $ent_uri, $mime_type, $nested=0){
 	global $dfs;
 	$d=2;
 	if (!$nested) $dfs=array();
-	switch($content_type){
+	switch($mime_type){
 		case 'application/vnd.taverna.scufl+xml':
-			if (strpos($ent_uri,'dataflow') > 0) $dfs[$ent_uri."/dataflow"]=processTavernaComponents($allcomponents,$ent_uri."/dataflow/",$content_type,$nested);
-	                else $dfs[$ent_uri."#dataflow"]=processTavernaComponents($allcomponents,$ent_uri."#dataflow/",$content_type,$nested);
+			if (strpos($ent_uri,'dataflow') > 0) $dfs[$ent_uri."/dataflow"]=processTavernaComponents($allcomponents,$ent_uri."/dataflow/",$mime,$nested);
+	                else $dfs[$ent_uri."#dataflow"]=processTavernaComponents($allcomponents,$ent_uri."#dataflow/",$mime_type,$nested);
 			break;
 		case 'application/vnd.taverna.t2flow+xml':
 			foreach ($allcomponents[0]['children'] as $dataflow){
@@ -478,7 +389,7 @@ function tabulateDataflowComponents($allcomponents,$ent_uri,$content_type,$neste
                         	                $id=$d;
                                 	        $d++;
 	                                }
-        	                        $dfs[$ent_uri."#dataflows/$id"]=processTavernaComponents($dataflow['children'],$ent_uri."#dataflows/$d/",$content_type,$nested);
+        	                        $dfs[$ent_uri."#dataflows/$id"]=processTavernaComponents($dataflow['children'],$ent_uri."#dataflows/$d/",$mime_type,$nested);
                 	                $dfs[$ent_uri."#dataflows/$id"]['id']=$dataflow['attrs']['id'];
 	                        }
         	        }
@@ -488,8 +399,8 @@ function tabulateDataflowComponents($allcomponents,$ent_uri,$content_type,$neste
 			$dfs[$ent_uri."/dataflow"]=processGalaxyComponents($allcomponents,$ent_uri."/dataflow/",$nested); 
 			break;
 		case 'application/vnd.rapidminer.rmp+zip':
-			if (strpos($ent_uri,'dataflow') > 0) $dfs[$ent_uri."/dataflow"]=processRapidMinerComponents($allcomponents,$ent_uri."/dataflow/",$content_type,$nested);
-                        else $dfs[$ent_uri."#dataflow"]=processRapidMinerComponents($allcomponents,$ent_uri."#dataflow/",$content_type,$nested);
+			if (strpos($ent_uri,'dataflow') > 0) $dfs[$ent_uri."/dataflow"]=processRapidMinerComponents($allcomponents,$ent_uri."/dataflow/",$mime_type,$nested);
+                        else $dfs[$ent_uri."#dataflow"]=processRapidMinerComponents($allcomponents,$ent_uri."#dataflow/",$mime_type,$nested);
                         break;
 	}
 	if (!$nested){
@@ -497,6 +408,19 @@ function tabulateDataflowComponents($allcomponents,$ent_uri,$content_type,$neste
 		return $dfs;
 	}
 }
+
+/**
+ * @brief Extracts Dataflow components from a Galaxy workflow.
+ * 
+ * @param $allcomponents
+ * The XML for the Galaxy Dataflow transformed into an array-based representation.
+ *
+ * @param $ent_uri
+ * A string containing the entity URI of the Galaxy Dataflow for which components are to be extracted.
+ *
+ * @return
+ * A table of Dataflow components that have be extracted from Galaxy Dataflow specified.
+ */
 function processGalaxyComponents($allcomponents,$ent_uri){
 	$comps=array();
 	$components=array();
@@ -553,7 +477,26 @@ function processGalaxyComponents($allcomponents,$ent_uri){
 	return $components;
 		
 }
-function processRapidMinerComponents($allcomponents,$ent_uri,$content_type,$nested=0){
+
+/**
+ * @brief Extracts Dataflow components from a RapidMiner workflow.
+ * 
+ * @param $allcomponents
+ * The XML for the RapidMiner Dataflow transformed into an array-based representation.
+ *
+ * @param $ent_uri
+ * A string containing the entity URI of the RapidMiner Dataflow for which components are to be extracted.
+ * 
+ * @param $mime_type
+ * A string containing the MIME type of the RapidMiner Dataflow of which components are to be extracted.
+ * 
+ * @param $nested
+ * A boolean specifying whether the RapidMiner Dataflow for which components are to be extracted is a part of another Dataflow or the top-level Dataflow of a Workflow.
+ * 
+ * @return
+ * A table of Dataflow components that have be extracted from RapidMiner Dataflow specified.
+ */
+function processRapidMinerComponents($allcomponents,$ent_uri,$mime_type,$nested=0){
 	$components=array();
 	if ($nested==0) $mainprocesscomps=$allcomponents[0]['children'][0]['children'][0]['children'];
 	elseif (isset($allcomponents[0]['children'])) $mainprocesscomps=$allcomponents[0]['children'];
@@ -564,7 +507,7 @@ function processRapidMinerComponents($allcomponents,$ent_uri,$content_type,$nest
 		$props[]=array("type"=>"dcterms:title","value"=>$mpcomp['attrs']['name']);
 		if (isset($mpcomp['children']) && sizeof($mpcomp['children'])>0){
 			$classtype="DataflowProcessor";
-			tabulateDataflowComponents($mpcomp['children'],$ent_uri."components/$c",$content_type,$nested+1);
+			tabulateDataflowComponents($mpcomp['children'],$ent_uri."components/$c",$mime_type,$nested+1);
                         $props[]=array('type'=>'mecomp:executes-dataflow','value'=>$ent_uri."components/$c/dataflow");
 		}
 		else{
@@ -576,8 +519,25 @@ function processRapidMinerComponents($allcomponents,$ent_uri,$content_type,$nest
 	return $components;
 }
 
-		
-function processTavernaComponents($allcomponents,$ent_uri,$content_type,$nested=0){
+/**
+ * @brief Extracts Dataflow components from a Taverna (version 1 or 2) Workflow.
+ * 
+ * @param $allcomponents
+ * The XML for the Taverna Dataflow transformed into an array-based representation.
+ *
+ * @param $ent_uri
+ * A string containing the entity URI of the Taverna Dataflow for which components are to be extracted.
+ * 
+ * @param $mime_type
+ * A string containing the MIME type of the Taverna Dataflow of which components are to be extracted.
+ * 
+ * @param $nested
+ * A boolean specifying whether the Taverna Dataflow for which components are to be extracted is a part of another Dataflow or the top-level Dataflow of a Workflow.
+ * 
+ * @return
+ * A table of Dataflow components that have be extracted from Taverna Dataflow specified.
+ */
+function processTavernaComponents($allcomponents,$ent_uri,$mime_type,$nested=0){
 	$components=array();
         $ptmappings=array("wsdl"=>"WSDLProcessor","arbitrarywsdl"=>"WSDLProcessor","soaplabwsdl"=>"WSDLProcessor","biomobywsdl"=>"WSDLProcessor","beanshell"=>"BeanshellProcessor","workflow"=>"DataflowProcessor");
         $c=1;
@@ -615,7 +575,7 @@ function processTavernaComponents($allcomponents,$ent_uri,$content_type,$nested=
 						else $props[]=array('type'=>'mecomp:processor-script');
 						break;
 					  case 'model':
-						tabulateDataflowComponents($property['children'],$ent_uri."components/$c",$content_type,$nested+1);
+						tabulateDataflowComponents($property['children'],$ent_uri."components/$c",$mime_type,$nested+1);
 						$props[]=array('type'=>'mecomp:executes-dataflow','value'=>$ent_uri."components/$c/dataflow");
                                                 break;
 					  case 'dataflow-id':
@@ -677,30 +637,20 @@ function processTavernaComponents($allcomponents,$ent_uri,$content_type,$nested=
 	}
 	return $components;		
 }
-function extractRDF($id,$wfid,$version,$posthash){
-	global $datapath,$datauri;
-	//print_r($params);
-	$uri=$datauri."workflows/$wfid/versions/$version#$posthash";
-//	echo $uri."\n";
-        $filename=$datapath."dataflows/$id";
-//	echo $filename."\n"; exit;
-	//echo "$filename = $uri\n";
-        return implode('',file($filename));
-}
 
-
-function setKey($arr,$key){
-	$assocarr=array();
-	foreach($arr as $rec => $data){
-		$assocarr[$data[$key]]=$data;
-	}
-	return $assocarr;
-}
-function queryFailed($res){
-	if (preg_match("/^Query Failed:/",$res)) return true;
-	return false;
-}
-function processRDFDescription($filename,$ontnames){
+/**
+ * @brief Extracts information about an OWL ontology / RDF Schema from an rdf:Description entity.
+ *
+ * @param $filename
+ * The filename which should be parsed to extract information about the ontology / schema from an rdf:Description entity.
+ *
+ * @param $ontnames
+ * An array containing a set of URI strings for ontologies / schemas which property-value pairs need to be found for.
+ * 
+ * @return
+ * An associative array containing key values pairs of the information about the ontology / schema extracted for the rdf:Description entity.
+ */
+function processRDFDescription($filename, $ontnames){
 	$props=array();
 	if (file_exists($filename)){
 		$fh=fopen($filename,'r');
@@ -715,6 +665,19 @@ function processRDFDescription($filename,$ontnames){
 	else echo "$filename does not exists";
 	return $props;
 }
+
+/**
+ * @brief Extracts information about an OWL ontology from its owl:Ontology entity.
+ *
+ * @param $filename
+ * The filename which should be parsed to extract information about the ontology form its owl:Ontology entity.
+ *
+ * @param $ontnames
+ * An array containing a set of URI strings for ontologies / schemas which property-value pairs need to be found for.
+ * 
+ * @return
+ * An associative array containing key values pairs of the information about the ontology from its owl:Ontology entity.
+ */
 function processOWLInfo($filename,$ontnames){
 	 $props=array();
         if (file_exists($filename)){
@@ -738,9 +701,22 @@ function processOWLInfo($filename,$ontnames){
         return $props;	
 }
 
+/**
+ * @brief Extracts property-value pairs from an entity used to describe an OWL ontology or RDF schema.
+ *
+ * @param $ontent
+ * An array-based representation of the XML for the entity that describes the ontology / schema.
+ *
+ * @param $ontnames
+ * An array containing a set of URI strings for ontologies / schemas which property-value pairs need to be found for.
+ *
+ * @return
+ * An associative array containing key values pairs of the information about the ontology / schema extracted for entity provided.
+ */
 function getOntologyProperties($ontent,$ontnames){
 	global $ontimports;
 	$props=array();
+        // If the entity either does not have an rdf:about property or specifies one of a defined set of ontologies and there is at least one property-value pair
 	if ((!$ontent['attrs']['rdf:about'] || in_array($ontent['attrs']['rdf:about'],$ontnames)) && sizeof($ontent['children'])>0){
 		foreach ($ontent['children'] as $prop){
         		if ($prop['name']=="owl:imports"){

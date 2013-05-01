@@ -5,7 +5,7 @@
 ## @version beta
 ## @details This script allows SPARQL queries to be made against a specified knowledge base using the 4s-query command line utility.  This will be deprecated a replaced with PHP functions that can query knowledge bases using the 4Store's HTTP interface.  The current usage of this script is as follows:
 ##
-## ./runquery.sh <knowledge_base> <quoted_sparql_query> <soft_limit> <output_file> <quoted_reasoning_parameters> 
+## ./runquery.sh &lt;knowledge_base&gt; &lt;quoted_sparql_query&gt; &lt;soft_limit&gt; &lt;output_file&gt; &lt;quoted_reasoning_parameters&gt;
 
 bashsource=`dirname $BASH_SOURCE`
 if [ "${bashsource:0:1}" == "/" ]; then

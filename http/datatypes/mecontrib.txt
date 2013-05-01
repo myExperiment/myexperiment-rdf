@@ -1,4 +1,0 @@
-mecontrib:preview anyURI
-mecontrib:svg anyURI
-mecontrib:thumbnail anyURI
-mecontrib:thumbnail-big anyURI

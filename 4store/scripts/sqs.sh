@@ -5,85 +5,85 @@
 ## @version beta
 ## @details Init.d style script that supports myExperiment RDF generation; starting, stopping and restarting of 4Store knowledge base interfaces; the adding and removing of graphs from 4Store knowledge bases; generation of linkset and VoiD specifications.  And overall the whole process of updating the myExperiment 4Store knowledge base so the SPARQL endpoint can query the latest available version of the myExperiment database.  The following help instructions are provided:
 ##
-## Usage: triplestore <triplestore_name> {start|stop|restart|status|update|import|add|remove|test|list-graphs|count-triples|generate-spec|graph-size|data-dump|generate-linksets|generate-voidspec|run-diagnostic|check-versions|help} [OPTIONS]
+## Usage: triplestore &lt;triplestore_name&gt; {start|stop|restart|status|update|import|generate-dataflows-rdf|add|remove|test|list-graphs|count-triples|generate-spec|graph-size|data-dump|generate-linksets|generate-voidspec|run-diagnostic|check-versions|help} [OPTIONS]
 ## 
 ## Examples
 ## 
-## ./sqs.sh <triplestore> start
-##   <triplestore> = [ myexp_public, ontologies ]
+## ./sqs.sh &lt;triplestore&gt; start
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
 ## 
-## ./sqs.sh <triplestore> stop
-##   <triplestore> = [ myexp_public, ontologies ]
+## ./sqs.sh &lt;triplestore&gt; stop
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
 ## 
-## ./sqs.sh <triplestore> restart
-##   <triplestore> = [ myexp_public, ontologies ]
+## ./sqs.sh &lt;triplestore&gt; restart
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
 ## 
-## ./sqs.sh <triplestore> test
-##   <triplestore> = [ myexp_public, ontologies ]
+## ./sqs.sh &lt;triplestore&gt; test
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
 ## 
-## ./sqs.sh <triplestore> update [ no-cache ]
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; update [ no-cache ]
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> import
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; import
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> manage-dataflows
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; generate-dataflows-rdf
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> add <filename> 
-##   <triplestore> = [ myexp_public, ontologies ]
-##   E.g. <filename> = /home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+## ./sqs.sh &lt;triplestore&gt; add &lt;filename&gt; 
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
+##   E.g. &lt;filename&gt; = /home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
 ## 
-## ./sqs.sh <triplestore> add-list <filename>
-##   <triplestore> = [ myexp_public, ontologies ]
-##   E.g. <filename> = /tmp/graphs_to_add.txt
+## ./sqs.sh &lt;triplestore&gt; add-list &lt;filename&gt;
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
+##   E.g. &lt;filename&gt; = /tmp/graphs_to_add.txt
 ## 
-## ./sqs.sh <triplestore> remove <filename> <option>
-##   <triplestore> = [ myexp_public, ontologies ]
-##   E.g. <filename> = /home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
-##   <option> = [ delete, NULL ]
+## ./sqs.sh &lt;triplestore&gt; remove &lt;filename&gt; &lt;option&gt;
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
+##   E.g. &lt;filename&gt; = /home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+##   &lt;option&gt; = [ delete, NULL ]
 ## 
-## ./sqs.sh <triplestore> remove-list <filename> <option>
-##   <triplestore> = [ myexp_public, ontologies ]
-##   E.g. <filename> = /tmp/graphs_to_remove.txt
-##   <option> = [ delete, NULL ]
+## ./sqs.sh &lt;triplestore&gt; remove-list &lt;filename&gt; &lt;option&gt;
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
+##   E.g. &lt;filename&gt; = /tmp/graphs_to_remove.txt
+##   &lt;option&gt; = [ delete, NULL ]
 ## 
-## ./sqs.sh <triplestore> list-graphs
-##   <triplestore> = [ myexp_public, ontologies ]
+## ./sqs.sh &lt;triplestore&gt; list-graphs
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
 ## 
-## ./sqs.sh <triplestore> count-triples
-##   <triplestore> = [ myexp_public, ontologies ]
+## ./sqs.sh &lt;triplestore&gt; count-triples
+##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
 ## 
-## ./sqs.sh <triplestore> generate-spec
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; generate-spec
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> graph-size <graphuri>
-##   <triplestore> = [ myexp_public ]
-##   E.g. <graphuri> = file:///home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+## ./sqs.sh &lt;triplestore&gt; graph-size &lt;graphuri&gt;
+##   &lt;triplestore&gt; = [ myexp_public ]
+##   E.g. &lt;graphuri&gt; = file:///home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
 ## 
-## ./sqs.sh <triplestore> data-dump
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; data-dump
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> generate-data-and-ontologies-zip
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; generate-data-and-ontologies-zip
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> generate-linksets
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; generate-linksets
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> generate-voidspec
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; generate-voidspec
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> run-diagnostic
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; run-diagnostic
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> check-versions
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; check-versions
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> check-entity-sizes
-##   <triplestore> = [ myexp_public ]
+## ./sqs.sh &lt;triplestore&gt; check-entity-sizes
+##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
-## ./sqs.sh <triplestore> help
-##   <triplestore> = [ myexp_public ontologies ]
+## ./sqs.sh &lt;triplestore&gt; help
+##   &lt;triplestore&gt; = [ myexp_public ontologies ]
 ## 
 
 d=`dirname $0`
@@ -349,7 +349,7 @@ update-database(){
                 mysqlparams="-h ${MYSQL_HOST} ${mysqlparams}"
         fi
 	
-	zcat /tmp/$filename | egrep -v '^INSERT INTO `(activity_limits|downloads|key_permissions|oauth_|picture|previews|service|topic|viewings|workflow_processors)' | mysql -u $MYSQL_USERNAME $mysqlparams m2_production
+	zcat /tmp/$filename | egrep -v '^INSERT INTO `(activity_limits|downloads|key_permissions|oauth_|picture|previews|topic|viewings|workflow_processors)' | mysql -u $MYSQL_USERNAME $mysqlparams m2_production
 	echo "[`date +%T`] Uploaded SQL File ($filename) to MySQL"
 	rm -f /tmp/$filename
 }
@@ -393,9 +393,6 @@ case "$2" in
 	;;
   import)
 	import $1
-	;;
-  reason-ontology)
-	reason-ontology $1
 	;;
   generate-dataflows-rdf)
         generate-dataflows-rdf $1
@@ -477,6 +474,6 @@ case "$2" in
 	;;
   *)
 	$STORE4_PATH/scripts/sqs_help.sh
+	exit 1
 	;;
 esac
-exit 1

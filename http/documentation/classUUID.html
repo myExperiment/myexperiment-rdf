@@ -51,61 +51,851 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a>  </div>
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a>  </div>
   <div class="headertitle">
 <h1>UUID Class Reference</h1>  </div>
 </div>
 <div class="contents">
 <!-- doxytag: class="UUID" -->
+<p><a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> (RFC4122) Generator, see <a href="http://tools.ietf.org/html/rfc4122.">http://tools.ietf.org/html/rfc4122.</a> Implements versiona 1, 3, 4 and 5.  
+<a href="#_details">More...</a></p>
+
 <p><a href="classUUID-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ef8f3ffa41de2d4f6f8025720184944"></a><!-- doxytag: member="UUID::generate" ref="a8ef8f3ffa41de2d4f6f8025720184944" args="($type, $fmt=self::FMT_BYTE, $node=&quot;&quot;, $ns=&quot;&quot;)" -->
-static&#160;</td><td class="memItemRight" valign="bottom"><b>generate</b> ($type, $fmt=self::FMT_BYTE, $node=&quot;&quot;, $ns=&quot;&quot;)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a307f40cb92be97ac8183d9ab690c0783"></a><!-- doxytag: member="UUID::convert" ref="a307f40cb92be97ac8183d9ab690c0783" args="($uuid, $from, $to)" -->
-static&#160;</td><td class="memItemRight" valign="bottom"><b>convert</b> ($uuid, $from, $to)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab55d4561421fd2385a0e636bcd69edb2"></a><!-- doxytag: member="UUID::conv_byte2string" ref="ab55d4561421fd2385a0e636bcd69edb2" args="($src)" -->
-static&#160;</td><td class="memItemRight" valign="bottom"><b>conv_byte2string</b> ($src)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a8ef8f3ffa41de2d4f6f8025720184944">generate</a> ($type, $fmt=self::FMT_BYTE, $node=&quot;&quot;, $ns=&quot;&quot;)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Public API, generate a <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> of 'type' in format 'fmt' for the given namespace 'ns' and node 'node'.  <a href="#a8ef8f3ffa41de2d4f6f8025720184944"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a307f40cb92be97ac8183d9ab690c0783">convert</a> ($uuid, $from, $to)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Public API, convert a <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from one format to another.  <a href="#a307f40cb92be97ac8183d9ab690c0783"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#ab55d4561421fd2385a0e636bcd69edb2">conv_byte2string</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> form byte to string format.  <a href="#ab55d4561421fd2385a0e636bcd69edb2"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f0261832d813145892da6e6858c6ace"></a><!-- doxytag: member="UUID::UUID_TIME" ref="a6f0261832d813145892da6e6858c6ace" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>UUID_TIME</b> = 1</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a6f0261832d813145892da6e6858c6ace">UUID_TIME</a> = 1</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Time based <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1839d37bcecbc4729b235c08a25ffbc"></a><!-- doxytag: member="UUID::UUID_NAME_MD5" ref="af1839d37bcecbc4729b235c08a25ffbc" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>UUID_NAME_MD5</b> = 3</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#af1839d37bcecbc4729b235c08a25ffbc">UUID_NAME_MD5</a> = 3</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Name based (MD5) <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a054428414e1a55f4f3cfefe7b8d43fb0"></a><!-- doxytag: member="UUID::UUID_RANDOM" ref="a054428414e1a55f4f3cfefe7b8d43fb0" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>UUID_RANDOM</b> = 4</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a054428414e1a55f4f3cfefe7b8d43fb0">UUID_RANDOM</a> = 4</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Random <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e17a0852f6194b41b2b9338684720bc"></a><!-- doxytag: member="UUID::UUID_NAME_SHA1" ref="a4e17a0852f6194b41b2b9338684720bc" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>UUID_NAME_SHA1</b> = 5</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a4e17a0852f6194b41b2b9338684720bc">UUID_NAME_SHA1</a> = 5</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Name based (SHA1) <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02e63fa3e4bd86f98d511907313bd76c"></a><!-- doxytag: member="UUID::FMT_FIELD" ref="a02e63fa3e4bd86f98d511907313bd76c" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_FIELD</b> = 100</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a02e63fa3e4bd86f98d511907313bd76c">FMT_FIELD</a> = 100</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Field format. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b27d1bd637e4ee9342651a4a1fbca08"></a><!-- doxytag: member="UUID::FMT_STRING" ref="a6b27d1bd637e4ee9342651a4a1fbca08" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_STRING</b> = 101</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a6b27d1bd637e4ee9342651a4a1fbca08">FMT_STRING</a> = 101</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">String format. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21002d811dd5471517331b71ee1d3389"></a><!-- doxytag: member="UUID::FMT_BINARY" ref="a21002d811dd5471517331b71ee1d3389" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_BINARY</b> = 102</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a21002d811dd5471517331b71ee1d3389">FMT_BINARY</a> = 102</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary format. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad950748f0918362807d3815ea4ba788b"></a><!-- doxytag: member="UUID::FMT_QWORD" ref="ad950748f0918362807d3815ea4ba788b" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_QWORD</b> = 1</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#ad950748f0918362807d3815ea4ba788b">FMT_QWORD</a> = 1</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Quad-word format, 128-bit (not impl.) <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23716985f4b4078a1a0bfe699fc0ee0b"></a><!-- doxytag: member="UUID::FMT_DWORD" ref="a23716985f4b4078a1a0bfe699fc0ee0b" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_DWORD</b> = 2</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a23716985f4b4078a1a0bfe699fc0ee0b">FMT_DWORD</a> = 2</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Double-word format, 64-bit (not impl.) <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5087b6eb95e560be30f1a7296441f3b3"></a><!-- doxytag: member="UUID::FMT_WORD" ref="a5087b6eb95e560be30f1a7296441f3b3" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_WORD</b> = 4</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a5087b6eb95e560be30f1a7296441f3b3">FMT_WORD</a> = 4</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Word format, 32-bit (not impl.) <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42f3b0893368772f7c75dad56c3e4b3c"></a><!-- doxytag: member="UUID::FMT_SHORT" ref="a42f3b0893368772f7c75dad56c3e4b3c" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_SHORT</b> = 8</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a42f3b0893368772f7c75dad56c3e4b3c">FMT_SHORT</a> = 8</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Short format (not impl.) <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa13b5836fbed8979b86eaabd9e9505df"></a><!-- doxytag: member="UUID::FMT_BYTE" ref="aa13b5836fbed8979b86eaabd9e9505df" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_BYTE</b> = 16</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#aa13b5836fbed8979b86eaabd9e9505df">FMT_BYTE</a> = 16</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte format. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9dbda60da92f39354a70e5c490075a5c"></a><!-- doxytag: member="UUID::FMT_DEFAULT" ref="a9dbda60da92f39354a70e5c490075a5c" args="" -->
-const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_DEFAULT</b> = 16</td></tr>
+const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a9dbda60da92f39354a70e5c490075a5c">FMT_DEFAULT</a> = 16</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default format (byte) <br/></td></tr>
+<tr><td colspan="2"><h2><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#aea78744f867c4950f15ec8bfd4b71c5b">swap32</a> ($x)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap byte order of a 32-bit number.  <a href="#aea78744f867c4950f15ec8bfd4b71c5b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a27282c88cc7d2d64ee348aa31552347a">swap16</a> ($x)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap byte order of a 16-bit number.  <a href="#a27282c88cc7d2d64ee348aa31552347a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a732429230a46ad2b47855d0ce35d591f">detectFormat</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Auto-detect <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> format.  <a href="#a732429230a46ad2b47855d0ce35d591f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a54e3c2b17b5c89eff624e86320f759d7">generateRandom</a> ($ns, $node)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate an <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> version 4 (pseudo random).  <a href="#a54e3c2b17b5c89eff624e86320f759d7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#aab3fedc0e55478bd8f64b96e08058d27">generateName</a> ($ns, $node, $hash, $version)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> version 3 and 5 (name based).  <a href="#aab3fedc0e55478bd8f64b96e08058d27"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#aae0250c71a62dc886059a638c6d58f8a">generateNameMD5</a> ($ns, $node)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a named-based <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> using an MD5 hash.  <a href="#aae0250c71a62dc886059a638c6d58f8a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a5eed50462afc9ff6eebd909e69bddd3b">generateNameSHA1</a> ($ns, $node)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a named-based <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> using an SHA1 hash.  <a href="#a5eed50462afc9ff6eebd909e69bddd3b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#ad77da967d7fcde16324cd8646dbdb3e0">generateTime</a> ($ns, $node)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> version 1 (time based)  <a href="#ad77da967d7fcde16324cd8646dbdb3e0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#af37277f045b5df786d54aa5b41877f53">conv_field2byte</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from field to byte format. Assumes correct byte order.  <a href="#af37277f045b5df786d54aa5b41877f53"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a44b898f57370ec8088a8350b94a09018">conv_field2string</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from field to string format.  <a href="#a44b898f57370ec8088a8350b94a09018"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a616f7f524b3883bd6cfbb3cda33f419f">conv_field2binary</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from field to binary format.  <a href="#a616f7f524b3883bd6cfbb3cda33f419f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#af3ed6ee51b6f33d9b688df91e507729f">conv_byte2field</a> ($uuid)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from byte to field format.  <a href="#af3ed6ee51b6f33d9b688df91e507729f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#ab9f7a8fecbcccbc2c7aca977a869e362">conv_byte2binary</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from byte to binary format.  <a href="#ab9f7a8fecbcccbc2c7aca977a869e362"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#ace38736fc6e76af612548ca923fb7865">conv_string2field</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from string to field format.  <a href="#ace38736fc6e76af612548ca923fb7865"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a4662c36c588600a49b02754f25e68d41">conv_string2byte</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from string to byte format.  <a href="#a4662c36c588600a49b02754f25e68d41"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a48e6c88ecbd407fdd96533f9a83d8404">conv_string2binary</a> ($src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> form string to binary format.  <a href="#a48e6c88ecbd407fdd96533f9a83d8404"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#aa94cdfbceb065aa5e505ff5e3b31c2c3">$m_uuid_field</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Field <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> representation.  <a href="#aa94cdfbceb065aa5e505ff5e3b31c2c3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a5dd5fe8cb6d9ebda727ab2d755df8053">$m_generate</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Array associating versions of <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> with functions to generate them.  <a href="#a5dd5fe8cb6d9ebda727ab2d755df8053"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUUID.html#a82ecfb86957ca2baffbce9b96aa4b8b7">$m_convert</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-dimensional array associating format with the formats it can be converted to and the functions required to do it.  <a href="#a82ecfb86957ca2baffbce9b96aa4b8b7"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00042">42</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<div class="textblock"><p><a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> (RFC4122) Generator, see <a href="http://tools.ietf.org/html/rfc4122.">http://tools.ietf.org/html/rfc4122.</a> Implements versiona 1, 3, 4 and 5. </p>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00040">40</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+</div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ab9f7a8fecbcccbc2c7aca977a869e362"></a><!-- doxytag: member="UUID::conv_byte2binary" ref="ab9f7a8fecbcccbc2c7aca977a869e362" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_byte2binary </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from byte to binary format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in byte format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in binary format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00479">479</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af3ed6ee51b6f33d9b688df91e507729f"></a><!-- doxytag: member="UUID::conv_byte2field" ref="af3ed6ee51b6f33d9b688df91e507729f" args="($uuid)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_byte2field </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>uuid</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from byte to field format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$uuid</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in byte format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in field format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00442">442</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab55d4561421fd2385a0e636bcd69edb2"></a><!-- doxytag: member="UUID::conv_byte2string" ref="ab55d4561421fd2385a0e636bcd69edb2" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_byte2string </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> form byte to string format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in byte format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in string format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00465">465</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a616f7f524b3883bd6cfbb3cda33f419f"></a><!-- doxytag: member="UUID::conv_field2binary" ref="a616f7f524b3883bd6cfbb3cda33f419f" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_field2binary </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from field to binary format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in field format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in binary format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00428">428</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af37277f045b5df786d54aa5b41877f53"></a><!-- doxytag: member="UUID::conv_field2byte" ref="af37277f045b5df786d54aa5b41877f53" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_field2byte </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from field to byte format. Assumes correct byte order. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in field format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in byte format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00382">382</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a44b898f57370ec8088a8350b94a09018"></a><!-- doxytag: member="UUID::conv_field2string" ref="a44b898f57370ec8088a8350b94a09018" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_field2string </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from field to string format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in field format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in string format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00409">409</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a48e6c88ecbd407fdd96533f9a83d8404"></a><!-- doxytag: member="UUID::conv_string2binary" ref="a48e6c88ecbd407fdd96533f9a83d8404" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_string2binary </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> form string to binary format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in string format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in binary format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00532">532</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4662c36c588600a49b02754f25e68d41"></a><!-- doxytag: member="UUID::conv_string2byte" ref="a4662c36c588600a49b02754f25e68d41" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_string2byte </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from string to byte format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in string format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in byte format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00518">518</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ace38736fc6e76af612548ca923fb7865"></a><!-- doxytag: member="UUID::conv_string2field" ref="ace38736fc6e76af612548ca923fb7865" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::conv_string2field </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from string to field format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in string format.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in field format. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00495">495</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a307f40cb92be97ac8183d9ab690c0783"></a><!-- doxytag: member="UUID::convert" ref="a307f40cb92be97ac8183d9ab690c0783" args="($uuid, $from, $to)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::convert </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>uuid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>to</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Public API, convert a <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> from one format to another. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$uuid</td><td>A string representing the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a></td></tr>
+    <tr><td class="paramname">$from</td><td>An integer representing the format from which to be converted.</td></tr>
+    <tr><td class="paramname">$to</td><td>An integer representing the format to which to be converted.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The converted <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> in the format specified in $to parameter. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00206">206</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a732429230a46ad2b47855d0ce35d591f"></a><!-- doxytag: member="UUID::detectFormat" ref="a732429230a46ad2b47855d0ce35d591f" args="($src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::detectFormat </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Auto-detect <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> format. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$src</td><td>The source (raw) representation of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A constant integer representing the format of <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> to be generated. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00148">148</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8ef8f3ffa41de2d4f6f8025720184944"></a><!-- doxytag: member="UUID::generate" ref="a8ef8f3ffa41de2d4f6f8025720184944" args="($type, $fmt=self::FMT_BYTE, $node=&quot;&quot;, $ns=&quot;&quot;)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::generate </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>fmt</em> = <code>self::FMT_BYTE</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>node</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>ns</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Public API, generate a <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> of 'type' in format 'fmt' for the given namespace 'ns' and node 'node'. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$type</td><td>An integer representing the type/version of <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> to be generated.</td></tr>
+    <tr><td class="paramname">$fmt</td><td>An integer representing the format of the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> to be generated.</td></tr>
+    <tr><td class="paramname">$node</td><td>The node for which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is being generated.</td></tr>
+    <tr><td class="paramname">$ns</td><td>The namespace of the node for which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> generated based on the parameters provided. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00181">181</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aab3fedc0e55478bd8f64b96e08058d27"></a><!-- doxytag: member="UUID::generateName" ref="aab3fedc0e55478bd8f64b96e08058d27" args="($ns, $node, $hash, $version)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::generateName </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>ns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generate <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> version 3 and 5 (name based). </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$ns</td><td>The namespace from which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated.</td></tr>
+    <tr><td class="paramname">$node</td><td>The node from which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated.</td></tr>
+    <tr><td class="paramname">$hash</td><td>The type of hash (MD5 or SHA1) to use to generate the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>.</td></tr>
+    <tr><td class="paramname">$version</td><td>An integer representing the version (3 or 5) of <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> to be generated.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The generated <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00257">257</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aae0250c71a62dc886059a638c6d58f8a"></a><!-- doxytag: member="UUID::generateNameMD5" ref="aae0250c71a62dc886059a638c6d58f8a" args="($ns, $node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::generateNameMD5 </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>ns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>node</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generate a named-based <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> using an MD5 hash. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$ns</td><td>The namespace from which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated.</td></tr>
+    <tr><td class="paramname">$node</td><td>The node from which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The generated <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00304">304</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5eed50462afc9ff6eebd909e69bddd3b"></a><!-- doxytag: member="UUID::generateNameSHA1" ref="a5eed50462afc9ff6eebd909e69bddd3b" args="($ns, $node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::generateNameSHA1 </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>ns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>node</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generate a named-based <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> using an SHA1 hash. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$ns</td><td>The namespace from which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated.</td></tr>
+    <tr><td class="paramname">$node</td><td>The node from which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The generated <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00321">321</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a54e3c2b17b5c89eff624e86320f759d7"></a><!-- doxytag: member="UUID::generateRandom" ref="a54e3c2b17b5c89eff624e86320f759d7" args="($ns, $node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::generateRandom </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>ns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>node</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generate an <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> version 4 (pseudo random). </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$ns</td><td>The namespace for which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated. (Not used on version 4).</td></tr>
+    <tr><td class="paramname">$node</td><td>The node for which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated. (Not used in version 4).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The generated <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00226">226</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad77da967d7fcde16324cd8646dbdb3e0"></a><!-- doxytag: member="UUID::generateTime" ref="ad77da967d7fcde16324cd8646dbdb3e0" args="($ns, $node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::generateTime </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>ns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>node</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generate <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> version 1 (time based) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$ns</td><td>The namespace for which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated. (Not used for version 1).</td></tr>
+    <tr><td class="paramname">$node</td><td>The node from which the <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> is to be generated.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The generated <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a>. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00338">338</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a27282c88cc7d2d64ee348aa31552347a"></a><!-- doxytag: member="UUID::swap16" ref="a27282c88cc7d2d64ee348aa31552347a" args="($x)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::swap16 </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Swap byte order of a 16-bit number. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$x</td><td>16-bit number to have its byte order swapped.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The 16-bit number passed as a parameter with its byet order swapped. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00135">135</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aea78744f867c4950f15ec8bfd4b71c5b"></a><!-- doxytag: member="UUID::swap32" ref="aea78744f867c4950f15ec8bfd4b71c5b" args="($x)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UUID::swap32 </td>
+          <td>(</td>
+          <td class="paramtype">$&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td><code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Swap byte order of a 32-bit number. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$x</td><td>32-bit number to have its byte order swapped.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The 32-bit number passed as a parameter with its byet order swapped. </dd></dl>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00120">120</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a82ecfb86957ca2baffbce9b96aa4b8b7"></a><!-- doxytag: member="UUID::$m_convert" ref="a82ecfb86957ca2baffbce9b96aa4b8b7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UUID::$m_convert<code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Initial value:</b><div class="fragment"><pre class="fragment"> array(
+        self::FMT_FIELD =&gt; array(
+            self::FMT_BYTE =&gt; <span class="stringliteral">&quot;conv_field2byte&quot;</span>,
+            self::FMT_STRING =&gt; <span class="stringliteral">&quot;conv_field2string&quot;</span>,
+            self::FMT_BINARY =&gt; <span class="stringliteral">&quot;conv_field2binary&quot;</span>
+        ),
+        self::FMT_BYTE =&gt; array(
+            self::FMT_FIELD =&gt; <span class="stringliteral">&quot;conv_byte2field&quot;</span>,
+            self::FMT_STRING =&gt; <span class="stringliteral">&quot;conv_byte2string&quot;</span>,
+            self::FMT_BINARY =&gt; <span class="stringliteral">&quot;conv_byte2binary&quot;</span>
+        ),
+        self::FMT_STRING =&gt; array(
+            self::FMT_BYTE =&gt; <span class="stringliteral">&quot;conv_string2byte&quot;</span>,
+            self::FMT_FIELD =&gt; <span class="stringliteral">&quot;conv_string2field&quot;</span>,
+            self::FMT_BINARY =&gt; <span class="stringliteral">&quot;conv_string2binary&quot;</span>
+        ),
+    )
+</pre></div>
+<p>Multi-dimensional array associating format with the formats it can be converted to and the functions required to do it. </p>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00092">92</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5dd5fe8cb6d9ebda727ab2d755df8053"></a><!-- doxytag: member="UUID::$m_generate" ref="a5dd5fe8cb6d9ebda727ab2d755df8053" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UUID::$m_generate<code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Initial value:</b><div class="fragment"><pre class="fragment"> array(
+        self::UUID_TIME =&gt; <span class="stringliteral">&quot;generateTime&quot;</span>,
+        self::UUID_RANDOM =&gt; <span class="stringliteral">&quot;generateRandom&quot;</span>,
+        self::UUID_NAME_MD5 =&gt; <span class="stringliteral">&quot;generateNameMD5&quot;</span>,
+        self::UUID_NAME_SHA1 =&gt; <span class="stringliteral">&quot;generateNameSHA1&quot;</span>
+    )
+</pre></div>
+<p>Array associating versions of <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> with functions to generate them. </p>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00084">84</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa94cdfbceb065aa5e505ff5e3b31c2c3"></a><!-- doxytag: member="UUID::$m_uuid_field" ref="aa94cdfbceb065aa5e505ff5e3b31c2c3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UUID::$m_uuid_field<code> [static, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Initial value:</b><div class="fragment"><pre class="fragment"> array(
+        <span class="stringliteral">&#39;time_low&#39;</span> =&gt; 0,        
+        <span class="stringliteral">&#39;time_mid&#39;</span> =&gt; 0,        
+        <span class="stringliteral">&#39;time_hi&#39;</span> =&gt; 0,            
+        <span class="stringliteral">&#39;clock_seq_hi&#39;</span> =&gt; 0,        
+        <span class="stringliteral">&#39;clock_seq_low&#39;</span> =&gt; 0,        
+        <span class="stringliteral">&#39;node&#39;</span> =&gt; array()        
+    )
+</pre></div>
+<p>Field <a class="el" href="classUUID.html" title="UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1...">UUID</a> representation. </p>
+
+<p>Definition at line <a class="el" href="class_8uuid_8php_source.html#l00074">74</a> of file <a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>inc/functions/<a class="el" href="class_8uuid_8php_source.html">class.uuid.php</a></li>
 </ul>
 </div>
@@ -123,7 +913,7 @@ const&#160;</td><td class="memItemRight" valign="bottom"><b>FMT_DEFAULT</b> = 16
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

@@ -7,27 +7,30 @@
  * @details Coose a particular myExperiment entity to examine in one of a number of Semantic Web browsers.  Including Graphite, Disco, Marbles, Zitgist RDF browser and SIOC browser.
  */
 
-	include('include.inc.php');
-	$pagetitle="<small>Semantic Web Browsers</small>";
-	include('partials/header.inc.php');
-	require('functions/utility.inc.php');
-	include('config/data.inc.php');
-	$swbrowsers=array("Raw myExperiment RDF/XML"=>"","Graphite"=>"http://graphite.ecs.soton.ac.uk/browser/?uri=","Disco"=>"http://www4.wiwiss.fu-berlin.de/rdf_browser/?browse_uri=","Marbles"=>"http://beckr.org/marbles?uri=", "Zitgist RDF Browser"=>"http://dataviewer.zitgist.com/?uri=", "SIOC Browser"=>"http://sparql.captsolo.net/browser/browser.py?url=");
-	$types=array("announcements","content_types","files","experiments","groups","licenses","messages","packs","policies","users","workflows");
-	if ($_POST){
-		$type=$_POST['type'];
-		$id=$_POST['id'];
-		if ($type && $id){
-			$uri=$datauri.$type."/".$id;
-			$swbrowser=$_POST['swbrowser'];
-			if ($swbrowsers[$swbrowser]){
-				$url=$swbrowsers[$swbrowser].urlencode($uri);	
-			}
-			else $url=$uri;	
-			if ($_POST['currentpage']) header("Location: $url");
+include('include.inc.php');
+/** @brief The page title to be displayed in an h1 tag and the title of the html header. */
+$pagetitle="<small>Semantic Web Browsers</small>";
+include('partials/header.inc.php');
+require('functions/utility.inc.php');
+include('config/data.inc.php');
+/** @brief An associative array mapping labels for Semantic Web browsers to the URLs that can be used to parse a chosen myExperiment RDF entity. */
+$swbrowsers=array("Raw myExperiment RDF/XML"=>"","Graphite"=>"http://graphite.ecs.soton.ac.uk/browser/?uri=","Disco"=>"http://www4.wiwiss.fu-berlin.de/rdf_browser/?browse_uri=","Marbles"=>"http://beckr.org/marbles?uri=", "Zitgist RDF Browser"=>"http://dataviewer.zitgist.com/?uri=", "SIOC Browser"=>"http://sparql.captsolo.net/browser/browser.py?url=");
+/** @brief An array containing a list of the myExperinment entities that can be parsed by the Semantic Web browsers. */
+$types=array("announcements","content_types","files","experiments","groups","licenses","messages","packs","policies","users","workflows");
+if (!empty($_POST)){
+	$type=$_POST['type'];
+	$id=$_POST['id'];
+	if ($type && $id){
+		$uri=$datauri.$type."/".$id;
+		$swbrowser=$_POST['swbrowser'];
+		if ($swbrowsers[$swbrowser]){
+			$url=$swbrowsers[$swbrowser].urlencode($uri);	
 		}
-		else $err="ERROR: No Type or ID";
+		else $url=$uri;	
+		if ($_POST['currentpage']) header("Location: $url");
 	}
+	else $err="ERROR: No Type or ID";
+}
 ?>
 <p>There is now a fair amount of clients around for browsing the Semantic Web.  This page allows you to send myExperiment RDF to this browsers to see how it renders it.</p>
 <?php if ($url){ ?>
@@ -43,7 +46,7 @@
 <?php 
 } 
 else if ($err){
-	print_error($err);
+	printError($err);
 	echo "<br/>";
 }
 ?>
