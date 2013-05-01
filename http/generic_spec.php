@@ -1,27 +1,35 @@
 <?php
 /**
- * @file http/generate_spec.php
- * @brief Generates HTML specification of any RDFS schema / OWL ontology.
+ * @file http/generic_spec.php
+ * @brief Generates and displays the HTML specification of any RDFS schema / OWL ontology.
  * @version beta
  * @author David R Newman
  * @details Generates HTML specification of any RDFS schema / OWL ontology using SPARQL queries to the 4Store SPARQL endpoint.
  */
 
-include('include.inc.php');
-include_once('ontoconnect.inc.php');
-$query="select * from ontologies order by name, namespace";
+include_once('include.inc.php');
+include_once('connect/ontologies.inc.php');
+/** @brief A string containg the SQL query to retrieve the details about all registered ontologies in the HTML Document Specification generator system. */
+$onto_query="select * from ontologies order by name, namespace";
+/** @brief The page title to be displayed in an h1 tag and the title of the html header. */
 $pagetitle="Ontology Specifications";
+/** @brief An array listing all the ontologies imported by the current ontology specified in the HTML Specification Document generator system.  */
 $ontimports=array();
-require_once('4storefunc.inc.php');
-$ts="ontologies";
-if ($_GET['ontology']) $ontology=$_GET['ontology'];
-else{
-	$ontology=$_POST['ontology'];
-	include_once('header.inc.php');
+require_once('functions/4store.inc.php');
+require_once('functions/utility.inc.php');
+/** @brief A string specifying the ID of the current ontology specified in the HTML Specification Document generator system. */
+$ontology="";
+if (!empty($_GET['ontology'])) $ontology=$_GET['ontology'];
+else {
+	if(!empty($_POST['ontology'])) {
+		$ontology=$_POST['ontology'];
+	}
+	include('partials/header.inc.php');
 }
-$res=mysql_query($query);
-for ($i=0; $i<mysql_num_rows($res); $i++){
-	$ontologies[]=mysql_fetch_assoc($res);
+/** @brief The result from the $onto_query SQL query to retrieve details about all registered ontologies in the HTML Document Specification generator system. */
+$onto_res=mysql_query($onto_query);
+for ($i=0; $i<mysql_num_rows($onto_res); $i++){
+	$ontologies[]=mysql_fetch_assoc($onto_res);
         if ($ontology==$ontologies[$i]['id']){
         	$headername=$ontologies[$i]['name'];
                 $url=$ontologies[$i]['url'];
@@ -32,7 +40,7 @@ for ($i=0; $i<mysql_num_rows($res); $i++){
 		$remoteont="file://".$datapath."ontologies/remoteont/".$ontology."_".$headername.".owl";
         }
 }
-if (!$_GET['ontology']){
+if (empty($_GET['ontology'])){
 ?>
 <form name="ontologyselect" method="post" action="">
 <p style="text-align: center; font-weight: bold;">Ontology:&nbsp;&nbsp;
@@ -53,43 +61,47 @@ if (!$_GET['ontology']){
 <div class="hr"></div>
 <?php
 }
-if (!$_GET['uncached'] && $headername){
-	if ($_GET['ontology']) $print=1;
-	$lines=file($datapath.'ontologies/cachedspec/'.$ontology.'_'.$headername.'_spec.html');
-	foreach ($lines as $line){
-		if (preg_match('!</body>!',$line)) $print=0;
-		if ($print) echo $line;
-		if (preg_match('/<body>/',$line)) $print=1;
+if (empty($_GET['uncached']) && !empty($headername)){
+	if (!empty($_GET['ontology'])) $print=1;
+	$spec_doc_path = $datapath.'ontologies/cachedspec/';
+	$spec_doc_name = $ontology.'_'.$headername.'_spec.html';
+	if (file_exists($spec_doc_path.$spec_doc_name)) {
+		$lines=file($spec_doc_path.$spec_doc_name);
 	}
-	if (!$_GET['ontology']) include('footer.inc.php');
+	if (!empty($lines) && is_array($lines)) {
+		foreach ($lines as $line){
+			if (preg_match('!</body>!',$line)) $print=0;
+			if ($print) echo $line;
+			if (preg_match('/<body>/',$line)) $print=1;
+		}
+	}
+	else printError("Specification document '{$spec_doc_name}' could not be found.");
+	if (empty($_GET['ontology'])) include('partials/footer.inc.php');
 }
 else{
 if ($ontology){
-	include_once('xmlfunc.inc.php');
-	require_once('4storefunc.inc.php');
-	if ($queryset=="OWL Ontology") include('owl_specqueries.inc.php');
-	elseif ($queryset=="RDFS Schema") include('rdfs_specqueries.inc.php');
-	else include('specqueries.inc.php');
-//	print_r($queries);
-	//exit;
-	$res=sparqlQueryClientMultiple($ts,$queries,10000,$timeout,true);
-//	print_r($res);	
+	require_once('functions/property.inc.php');
+	require_once('functions/4store.inc.php');
+	if ($queryset=="OWL Ontology") include_once('specifications/owl_queries.inc.php');
+	elseif ($queryset=="RDFS Schema") include_once('specifications/rdfs_queries.inc.php');
+	else include_once('specifications/queries.inc.php');
+	$res=callSPARQLQueryClientMultiple($onto_kb,$queries,10000,$timeout,true);
 	//Retrieve Class Property Relations
 	$tableres1=array();
 	if (isset($res[1])){
 		if (queryFailed($res[1])){
 			$errs[]="Property Domain Class-Property Relations Query Failed";
 		}
-		else $tableres1=tabulateSparqlResultsAssoc(parseXML($res[1]));
+		else $tableres1=tabulateSPARQLResultsAssoc(parseXML($res[1]));
 	}
 	$tableres2=array();
 	if (isset($res[2])){
 		if (queryFailed($res[2])){
 			$errs[]="Class Property Restictions Class-Property Relations Query Failed";
 		}
-		else $tableres2=tabulateSparqlResultsAssoc(parseXML($res[2]));
+		else $tableres2=tabulateSPARQLResultsAssoc(parseXML($res[2]));
 	}
-	$classprops=array_multiunique(array_merge($tableres1,$tableres2));
+	$classprops=multidimensionalArrayUnique(array_merge($tableres1,$tableres2));
 	
 	//Retrieve Class Labels and Comments
 	$classes=array();
@@ -98,7 +110,7 @@ if ($ontology){
                 	$errs[]="Label and Comment for Classes Query Failed";
         	}
 		else{
-			$classes=tabulateSparqlResultsAssoc(parseXML($res[3]));
+			$classes=tabulateSPARQLResultsAssoc(parseXML($res[3]));
 			$classes=setKey($classes,'class');
 		}
 	}
@@ -110,7 +122,7 @@ if ($ontology){
 		if (queryFailed($res[4])){
         	        $errs[]="Superclasses for Classes Query Failed";
        		}
-		else $tableres4=tabulateSparqlResultsAssoc(parseXML($res[4]));
+		else $tableres4=tabulateSPARQLResultsAssoc(parseXML($res[4]));
 	}
 	foreach ($tableres4 as $sclass){
 		$classes[$sclass['class']]['subclassof'][]=$sclass['superclass'];
@@ -124,7 +136,7 @@ if ($ontology){
 			$errs="Class Instances Query Failed";
 			echo "ERROR";
 		}
-		else $tableres12=tabulateSparqlResultsAssoc(parseXML($res[12]));
+		else $tableres12=tabulateSPARQLResultsAssoc(parseXML($res[12]));
 	}
 	foreach ($tableres12 as $instance){
                 $classes[$instance['class']]['instance'][]=$instance['instance'];
@@ -138,7 +150,7 @@ if ($ontology){
 	  		$errs[]="Labels, Comments, Types and Values for Properties Query Failed";
         	}
 	        else{
-			$properties=tabulateSparqlResultsAssoc(parseXML($res[5]));
+			$properties=tabulateSPARQLResultsAssoc(parseXML($res[5]));
 			$properties=setkey($properties,'property');
 			foreach ($properties as $k => $v){
 				if ($v['range']) $properties[$k]['range']=array($v['range']);
@@ -150,7 +162,7 @@ if ($ontology){
 	//Add Properties to Classes and vice-versa
 	foreach ($classprops as $classprop){
         	$classes[$classprop['class']]['property'][]=$classprop['property'];
-		$pebits=explode(":",replace_namespace($classprop['property'],$filteront));
+		$pebits=explode(":",replaceNamespace($classprop['property'],$filteront));
 		if (sizeof($pebits)==1) $properties[$classprop['property']]['inclass'][]=$classprop['class'];
 	}
 
@@ -160,14 +172,14 @@ if ($ontology){
 			$errs[]="Listed Domain and Range Query Failed";
 		}
 		else{
-			$dandrs=tabulateSparqlResultsAssoc(parseXML($res[13]));
+			$dandrs=tabulateSPARQLResultsAssoc(parseXML($res[13]));
 	                $drqueries=array();
         	        foreach ($dandrs as $dandr){
                 	        $drqueries[$dandr['property']]="DESCRIBE ?x where {<$dandr[property]> <$dandr[dorr]> ?x}";
 				$dorr[$dandr['property']]=$dandr['dorr'];
         	        }
 	                if (sizeof($drres>0)){
-        	                $drres=sparqlQueryClientMultiple($useport,$drqueries,"DESCRIBE","sparql");
+        	                $drres=callSPARQLQueryClientMultiple($useport,$drqueries,"DESCRIBE","sparql");
                 	        foreach ($drres as $prop => $drr){
 	                                $drxml=parseXML($drr);
         	                        $lists=$drxml[0]['children'];
@@ -206,7 +218,7 @@ if ($ontology){
 		if (queryFailed($res[6])){
                 	$errs[]="Equivalent Classes Query Failed";
 	        }
-        	else $tab6=tabulateSparqlResultsAssoc(parseXML($res[6]));
+        	else $tab6=tabulateSPARQLResultsAssoc(parseXML($res[6]));
 	}
 
 	//Retrieve Borrowed Equivalent Properties
@@ -215,7 +227,7 @@ if ($ontology){
   		if (queryFailed($res[7])){
                 	$errs[]="Equivalent Properties Query Failed";
        		}
-		else $tab7=tabulateSparqlResultsAssoc(parseXML($res[7]));
+		else $tab7=tabulateSPARQLResultsAssoc(parseXML($res[7]));
 	}
 
 	//Retrieve Borrowed SubClasses
@@ -224,7 +236,7 @@ if ($ontology){
 	        if (queryFailed($res[8])){
         	        $errs[]="SubClass Classes Query Failed";
 	        }
-       		$tab8=tabulateSparqlResultsAssoc(parseXML($res[8]));
+       		$tab8=tabulateSPARQLResultsAssoc(parseXML($res[8]));
 	}
 
 	//Retrieve Borrowed SubProperties
@@ -233,7 +245,7 @@ if ($ontology){
 	        if (queryFailed($res[9])){
         	        $errs[]="SubProperty Properties Query Failed";
         	}
-       		$tab9=tabulateSparqlResultsAssoc(parseXML($res[9]));
+       		$tab9=tabulateSPARQLResultsAssoc(parseXML($res[9]));
 	}
 
 	//Retrieve Ontology Info
@@ -243,8 +255,7 @@ if ($ontology){
 
 	//Display Page
 	$pagetitle="$filteront Specification";
-//	if ($_GET['ontology']) include_once('header.inc.php');
-	include('specheader.inc.php');
+	include('specifications/header.inc.php');
 	if (sizeof($errs)>0){
 		echo "    <!-- Errors -->\n";
 		echo "    <div style=\"background-color: LightCoral; border: 2px solid red; padding: 10px; margin: 0;\">\n";
@@ -263,7 +274,7 @@ if ($ontology){
 	$donotshow=array("http://www.w3.org/1999/02/22-rdf-syntax-ns#type","http://www.w3.org/2002/07/owl#imports");
 	foreach ($tab11 as $propval){
 		if (!in_array($propval['prop'],$donotshow)){
-			$descfield="<b>".replace_namespace($propval['prop']).": </b>";
+			$descfield="<b>".replaceNamespace($propval['prop']).": </b>";
 			foreach($tab11 as $propval2){
 				if ($propval['prop']==$propval2['prop']){
 					if (preg_match("/b[0-9]+/",$propval2['val']) ) $descfield.=$propval2['label'].", ";
@@ -284,7 +295,7 @@ if ($ontology){
 	$oldns="";
 	$text="  \n";
 	foreach ($classes as $cname => $class){
-		$caname=replace_namespace($cname,$filteront);
+		$caname=replaceNamespace($cname,$filteront);
 		echo $text;
 		$text="";
 		$text.="      <a href=\"#".$caname."\">".$caname."</a>, \n";
@@ -304,7 +315,7 @@ if ($ontology){
 	foreach ($properties as $pname => $property){
 		if (strpos($pname,"#")>0) $pbits=explode("#",$pname);
 	        else $pbits=explode("/",$pname);
-		$paname=replace_namespace($pname,$filteront);
+		$paname=replaceNamespace($pname,$filteront);
 	        echo $text;
         	$text="";
 		$text.="      <a href=\"#".$paname."\">".$paname."</a>, \n";
@@ -330,26 +341,26 @@ if ($ontology){
 	if (sizeof($ontimports)==0) echo "none";
 	echo "    <h4>Equivalent Classes</h4>\n    <p>\n";
 	foreach ($tab6 as $eqclass){
-		$myclass=replace_namespace($eqclass['myclass'],$filteront);
-	        echo "<a href=\"#$myclass\">$myclass</a> - ".replace_namespace($eqclass['exclass'],$filteront)."<br/>\n";
+		$myclass=replaceNamespace($eqclass['myclass'],$filteront);
+	        echo "<a href=\"#$myclass\">$myclass</a> - ".replaceNamespace($eqclass['exclass'],$filteront)."<br/>\n";
 	}
 	if (sizeof($tab6)==0) echo "none";
 	echo "    </p>\n      <h4>Equivalent Properties</h4>\n    <p>\n";
 	foreach ($tab7 as $eqprop){
-		$myprop=replace_namespace($eqprop['myprop'],$filteront);
-	        echo "<a href=\"#$myprop\">$myprop</a> - ".replace_namespace($eqprop['exprop'],$filteront)."<br/>\n";
+		$myprop=replaceNamespace($eqprop['myprop'],$filteront);
+	        echo "<a href=\"#$myprop\">$myprop</a> - ".replaceNamespace($eqprop['exprop'],$filteront)."<br/>\n";
 	}
 	if (sizeof($tab7)==0) echo "none";
 	echo "    </p>\n      <h4>Subclasses of</h4>\n    <p>\n";
 	foreach ($tab8 as $subclass){
-		$myclass=replace_namespace($subclass['myclass'],$filteront);
-        	echo "<a href=\"#$myclass\">$myclass</a> - ".replace_namespace($subclass['exclass'],$filteront)."<br/>\n";
+		$myclass=replaceNamespace($subclass['myclass'],$filteront);
+        	echo "<a href=\"#$myclass\">$myclass</a> - ".replaceNamespace($subclass['exclass'],$filteront)."<br/>\n";
 	}
 	if (sizeof($tab8)==0) echo "none";
 	echo "    </p>\n      <h4>Subproperties of</h4>\n    <p>\n";
 	foreach ($tab9 as $subprop){
-		$myprop=replace_namespace($subprop['myprop'],$filteront);
-	        echo "<a href=\"#$myprop\">$myprop</a> - ".replace_namespace($subprop['exprop'],$filteront)."<br/>\n";
+		$myprop=replaceNamespace($subprop['myprop'],$filteront);
+	        echo "<a href=\"#$myprop\">$myprop</a> - ".replaceNamespace($subprop['exprop'],$filteront)."<br/>\n";
 	}
 	if (sizeof($tab9)==0) echo "none";
 	echo "    </p>\n  </div>\n  <br/>\n";
@@ -357,14 +368,14 @@ if ($ontology){
 	//Individual Classes
 	echo "  <h2>Classes</h2>\n";
 	foreach ($classes as $cname => $class){
-	 	$caname=replace_namespace($cname,$filteront);
+	 	$caname=replaceNamespace($cname,$filteront);
 		$class['shortclass']=str_replace($filteront,'',$class['class']);
 		echo "  <div class=\"yellow\">\n";
 		echo "  <a name=\"".$caname."\"/>\n    <h3>".$class['shortclass']."</h3>\n    <p><b>Label:</b> ".$class['label']."\n      <br/>\n      <b>Comment:</b> ".$class['comment']."\n      <br/>\n      <b>Subclass of:</b>\n";
 		$sc=0;
 		if ($class['subclassof']){
 			foreach ($class['subclassof'] as $subclassof){
-				$scaname=replace_namespace($subclassof,$filteront);
+				$scaname=replaceNamespace($subclassof,$filteront);
 				if (strpos($subclassof,"#")>0) $scbits=explode("#",$subclassof);
 			        else $scbits=explode("/",$subclassof);
 				echo "        <a href=\"#".$scaname."\">".$scaname."</a>";
@@ -376,7 +387,7 @@ if ($ontology){
 			$sc=0;
 			echo "\n      <br/>\n      <b>Subclasses:</b>\n";
                         foreach ($class['subclass'] as $subclass){
-                                $scaname=replace_namespace($subclass,$filteront);
+                                $scaname=replaceNamespace($subclass,$filteront);
                                 if (strpos($subclass,"#")>0) $scbits=explode("#",$subclass);
                                 else $scbits=explode("/",$subclass);
                                 echo "        <a href=\"#".$scaname."\">".$scaname."</a>";
@@ -388,7 +399,7 @@ if ($ontology){
 		$p=0;
 		if ($class['property']){	
 			foreach ($class['property'] as $property){
-				$paname=replace_namespace($property,$filteront);
+				$paname=replaceNamespace($property,$filteront);
 				if (strpos($property,"#")>0) $pbits=explode("#",$property);
 	                        else $pbits=explode("/",$property);		
 		                if (strpos($paname,":")>0) echo "        ".$paname;
@@ -401,7 +412,7 @@ if ($ontology){
                 if ($class['instance']){
 			echo "\n      <br/>\n      <b>Instances:</b>\n";
                         foreach ($class['instance'] as $instance){
-                                $ianame=replace_namespace($instance,$filteront);
+                                $ianame=replaceNamespace($instance,$filteront);
                                 echo "        ".$ianame;
                                 if ($i<sizeof($class['instance'])-1) echo ",\n";
                                 $i++;
@@ -417,7 +428,7 @@ if ($ontology){
 	foreach ($properties as $pname => $property){
 		if (strpos($pname,"#")>0) $pbits=explode("#",$pname);
 	        else $pbits=explode("/",$pname);
-		$paname=replace_namespace($pname,$filteront);
+		$paname=replaceNamespace($pname,$filteront);
   		if (strpos($property['type'],"#")>0) $ptbits=explode("#",$property['type']);
        		else $ptbits=explode("/",$property['type']);
 		$pnameshort=str_replace($filteront,"",$pname);
@@ -429,7 +440,7 @@ if ($ontology){
 			foreach ($property['inclass'] as $class){
 				if (strpos($class,"#")>0) $cbits=explode("#",$class);
 			        else $cbits=explode("/",$class);
-				$caname=replace_namespace($class,$filteront);
+				$caname=replaceNamespace($class,$filteront);
         		        echo "        <a href=\"#".$caname."\">".$caname."</a>";
 		                if ($c<sizeof($property['inclass'])-1) echo ",\n";
         		        $c++;
@@ -440,7 +451,7 @@ if ($ontology){
 		echo "    <br/>\n      <b>Value: </b> ";
 		if (sizeof($property['range'])>0){
 			foreach ($property['range'] as $arange){
-				$pvalue=replace_namespace($arange,$filteront);
+				$pvalue=replaceNamespace($arange,$filteront);
 				if (strpos($pvalue,":")==0) echo "<a href=\"#$pvalue\">$pvalue</a>";
 				else echo $pvalue;
 				if ($p<sizeof($property['range'])-1) echo ",\n";
@@ -450,9 +461,9 @@ if ($ontology){
 		else echo "Unspecified";
 		echo "\n    </p>\n  </div>\n  <br/>\n";
 	}
-	include('specfooter.inc.php');
+	include('specifications/footer.inc.php');
 }
-else include('footer.inc.php');
+else include('partials/footer.inc.php');
 }
 ?>
 

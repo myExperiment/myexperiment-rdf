@@ -7,9 +7,10 @@
  * @details Documengtation page explaining how the SNARM ontology works.  Explains how entities in the ontology can be put together to define the policy for using a particular myExperiment Contribution.
  */
 
-	include('include.inc.php');
-	$pagetitle="SNARM Explained";
-	include('header.inc.php');
+/** @brief The page title to be displayed in an h1 tag and the title of the html header. */
+include_once('include.inc.php');
+$pagetitle="SNARM Explained";
+include('partials/header.inc.php');
 ?>
 The Simple Network Access Rights Management (SNARM) Ontology is a very simple ontology that allows additive policies to be defined to specify who can perform certain actions on particular objects.  It is defined from perspective that those who can perform action are related to each other within a network framework such as a social network with friends and groups...
   
@@ -20,4 +21,4 @@ The Simple Network Access Rights Management (SNARM) Ontology is a very simple on
 </div>
 <p><b>To Be Finished</b></p>
 
-<?php include('footer.inc.php'); ?>
+<?php include('partials/footer.inc.php'); ?>

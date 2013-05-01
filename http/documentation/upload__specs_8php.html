@@ -65,23 +65,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>Web interface for uploading ontologies to the HTML specification generator.  
 <a href="#_details">More...</a></p>
+
+<p><a href="upload__specs_8php_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2582e2f620e4157097929da5cc0ed18"></a><!-- doxytag: member="upload_specs.php::$pagetitle" ref="af2582e2f620e4157097929da5cc0ed18" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$pagetitle</b> = &quot;Ontology Uploader&quot;</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="upload__specs_8php.html#af2582e2f620e4157097929da5cc0ed18">$pagetitle</a> = &quot;Ontology Uploader&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The page title to be displayed in an h1 tag and the title of the html header. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92d70a97331cc6fc0a79d9da50895be8"></a><!-- doxytag: member="upload_specs.php::$types" ref="a92d70a97331cc6fc0a79d9da50895be8" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$types</b> = array(&quot;OWL Ontology&quot;,&quot;RDFS Schema&quot;,&quot;Unsure&quot;)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc1a543ba63f964f7f272183724f30d7"></a><!-- doxytag: member="upload_specs.php::$query" ref="acc1a543ba63f964f7f272183724f30d7" args="" -->
-if($_POST['addedit']||$_POST['cache']||$_POST['uploadcache'])&#160;</td><td class="memItemRight" valign="bottom"><b>$query</b> = &quot;select * from ontologies order by name, namespace&quot;</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49a8a4009b02e49717caa88b128affc5"></a><!-- doxytag: member="upload_specs.php::$res" ref="a49a8a4009b02e49717caa88b128affc5" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$res</b> = mysql_query($query)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="upload__specs_8php.html#a92d70a97331cc6fc0a79d9da50895be8">$types</a> = array(&quot;OWL Ontology&quot;,&quot;RDFS Schema&quot;,&quot;Unsure&quot;)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An array containing the options for which type of Ontology/Schema is being uploaded/cached. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11f807f1da4519410a8ef3c491054e40"></a><!-- doxytag: member="upload_specs.php::$onto_query" ref="a11f807f1da4519410a8ef3c491054e40" args="" -->
+if($_POST['addedit']||$_POST['cache']||$_POST['uploadcache'])&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="upload__specs_8php.html#a11f807f1da4519410a8ef3c491054e40">$onto_query</a> = &quot;select * from ontologies order by name, namespace&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string containg the SQL query to retrieve the details about all registered ontologies in the HTML Document Specification generator system. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8a63e48396c801258606664299b4016"></a><!-- doxytag: member="upload_specs.php::$onto_res" ref="ae8a63e48396c801258606664299b4016" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="upload__specs_8php.html#ae8a63e48396c801258606664299b4016">$onto_res</a> = mysql_query($onto_query)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The result from the $onto_query SQL query to retrieve details about all registered ontologies in the HTML Document Specification generator system. <br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Web interface for uploading ontologies to the HTML specification generator. </p>
 <dl class="version"><dt><b>Version:</b></dt><dd>beta </dd></dl>
 <dl class="author"><dt><b>Author:</b></dt><dd>David R Newman</dd></dl>
 <p>Web interface for uploading ontologies to the HTML specification generator. Restricted by an .htaccess with local password. </p>
+
+<p>Definition in file <a class="el" href="upload__specs_8php_source.html">upload_specs.php</a>.</p>
 </div></div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -97,7 +105,7 @@ if($_POST['addedit']||$_POST['cache']||$_POST['uploadcache'])&#160;</td><td clas
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 9 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

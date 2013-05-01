@@ -33,31 +33,44 @@
  *
  */
 
-/*
- * UUID (RFC4122) Generator
- * http://tools.ietf.org/html/rfc4122
- *
- * Implements version 1, 3, 4 and 5
+/**
+ * @class UUID
+ * @brief UUID (RFC4122) Generator, see http://tools.ietf.org/html/rfc4122. Implements versiona 1, 3, 4 and 5.
  */
 class UUID {
     /* UUID versions */
-    const UUID_TIME     = 1;    /* Time based UUID */
-    const UUID_NAME_MD5     = 3;    /* Name based (MD5) UUID */
-    const UUID_RANDOM     = 4;    /* Random UUID */
-    const UUID_NAME_SHA1     = 5;    /* Name based (SHA1) UUID */
+
+    /** @brief Time based UUID */
+    const UUID_TIME     = 1;    
+    /** @brief Name based (MD5) UUID */
+    const UUID_NAME_MD5     = 3;
+    /** @brief Random UUID */
+    const UUID_RANDOM     = 4;   
+    /** @brief Name based (SHA1) UUID */
+    const UUID_NAME_SHA1     = 5;
 
     /* UUID formats */
+     
+    /** @brief Field format */
     const FMT_FIELD     = 100;
+    /** @brief String format */
     const FMT_STRING     = 101;
+    /** @brief Binary format */
     const FMT_BINARY     = 102;
-    const FMT_QWORD     = 1;    /* Quad-word, 128-bit (not impl.) */
-    const FMT_DWORD     = 2;    /* Double-word, 64-bit (not impl.) */
-    const FMT_WORD         = 4;    /* Word, 32-bit (not impl.) */
-    const FMT_SHORT        = 8;    /* Short (not impl.) */
-    const FMT_BYTE        = 16;    /* Byte */
+    /** @brief Quad-word format, 128-bit (not impl.) */
+    const FMT_QWORD     = 1;
+    /** @brief Double-word format, 64-bit (not impl.) */
+    const FMT_DWORD     = 2;   
+    /** @brief Word format, 32-bit (not impl.) */
+    const FMT_WORD         = 4; 
+    /** @brief Short format (not impl.) */
+    const FMT_SHORT        = 8;
+    /** @brief Byte format */
+    const FMT_BYTE        = 16;
+    /** @brief Default format (byte) */
     const FMT_DEFAULT     = 16;
 
-    /* Field UUID representation */
+    /** @brief Field UUID representation. */
     static private $m_uuid_field = array(
         'time_low' => 0,        /* 32-bit */
         'time_mid' => 0,        /* 16-bit */
@@ -67,6 +80,7 @@ class UUID {
         'node' => array()        /* 48-bit */
     );
 
+    /** @brief Array associating versions of UUID with functions to generate them. */
     static private $m_generate = array(
         self::UUID_TIME => "generateTime",
         self::UUID_RANDOM => "generateRandom",
@@ -74,6 +88,7 @@ class UUID {
         self::UUID_NAME_SHA1 => "generateNameSHA1"
     );
 
+    /** @brief Multi-dimensional array associating format with the formats it can be converted to and the functions required to do it. */
     static private $m_convert = array(
         self::FMT_FIELD => array(
             self::FMT_BYTE => "conv_field2byte",
@@ -92,18 +107,44 @@ class UUID {
         ),
     );
 
-    /* Swap byte order of a 32-bit number */
+    /**
+     * @brief Swap byte order of a 32-bit number.
+     *
+     * @param $x
+     * 32-bit number to have its byte order swapped.
+     * 
+     * @return
+     * The 32-bit number passed as a parameter with its byet order swapped.
+     *
+     */
     static private function swap32($x) {
         return (($x & 0x000000ff) << 24) | (($x & 0x0000ff00) << 8) |
             (($x & 0x00ff0000) >> 8) | (($x & 0xff000000) >> 24);
     }
 
-    /* Swap byte order of a 16-bit number */
+    /**
+     * @brief Swap byte order of a 16-bit number.
+     *
+     * @param $x
+     * 16-bit number to have its byte order swapped.
+     * 
+     * @return
+     * The 16-bit number passed as a parameter with its byet order swapped.
+     *
+     */
     static private function swap16($x) {
         return (($x & 0x00ff) << 8) | (($x & 0xff00) >> 8);
     }
 
-    /* Auto-detect UUID format */
+    /** 
+     * @brief Auto-detect UUID format 
+     * 
+     * @param $src
+     * The source (raw) representation of the UUID.
+     *
+     * @return
+     * A constant integer representing the format of UUID to be generated.
+     */
     static private function detectFormat($src) {
         if (is_string($src))
             return self::FMT_STRING;
@@ -118,12 +159,26 @@ class UUID {
             return self::FMT_BINARY;
     }
 
-    /*
-     * Public API, generate a UUID of 'type' in format 'fmt' for
+    /**
+     * @brief Public API, generate a UUID of 'type' in format 'fmt' for
      * the given namespace 'ns' and node 'node'
+     *
+     * @param $type
+     * An integer representing the type/version of UUID to be generated.
+     *
+     * @param $fmt
+     * An integer representing the format of the UUID to be generated.
+     * 
+     * @param $node
+     * The node for which the UUID is being generated.
+     *
+     * @param $ns
+     * The namespace of the node for which the UUID is to be generated.
+     *
+     * @return
+     * The UUID generated based on the parameters provided.
      */
-    static public function generate($type, $fmt = self::FMT_BYTE,
-        $node = "", $ns = "") {
+    static public function generate($type, $fmt = self::FMT_BYTE, $node = "", $ns = "") {
         $func = self::$m_generate[$type];
         if (!isset($func))
             return null;
@@ -133,8 +188,20 @@ class UUID {
         return self::$conv($uuid);
     }
 
-    /*
-     * Public API, convert a UUID from one format to another
+    /**
+     * @brief Public API, convert a UUID from one format to another.
+     * 
+     * @param $uuid
+     * A string representing the UUID
+     *
+     * @param $from
+     * An integer representing the format from which to be converted.
+     *
+     * @param $to
+     * An integer representing the format to which to be converted.
+     *
+     * @return
+     * The converted UUID in the format specified in $to parameter.
      */
     static public function convert($uuid, $from, $to) {
         $conv = self::$m_convert[$from][$to];
@@ -144,8 +211,17 @@ class UUID {
         return (self::$conv($uuid));
     }
 
-    /*
-     * Generate an UUID version 4 (pseudo random)
+    /**
+     * @brief Generate an UUID version 4 (pseudo random).
+     *
+     * @param $ns
+     * The namespace for which the UUID is to be generated. (Not used on version 4).
+     * 
+     * @param $node
+     * The node for which the UUID is to be generated. (Not used in version 4).
+     * 
+     * @return
+     * The generated UUID.
      */
     static private function generateRandom($ns, $node) {
         $uuid = self::$m_uuid_field;
@@ -160,8 +236,23 @@ class UUID {
         return ($uuid);
     }
 
-    /*
-     * Generate UUID version 3 and 5 (name based)
+    /**
+     * @brief Generate UUID version 3 and 5 (name based).
+     *
+     * @param $ns
+     * The namespace from which the UUID is to be generated.
+     * 
+     * @param $node
+     * The node from which the UUID is to be generated.
+     *
+     * @param $hash
+     * The type of hash (MD5 or SHA1) to use to generate the UUID.
+     *
+     * @param $version
+     * An integer representing the version (3 or 5) of UUID to be generated.
+     *
+     * @return
+     * The generated UUID.
      */
     static private function generateName($ns, $node, $hash, $version) {
         $ns_fmt = self::detectFormat($ns);
@@ -197,17 +288,52 @@ class UUID {
 
         return ($field);    
     }
+
+    /**
+     * @brief Generate a named-based UUID using an MD5 hash 
+     * 
+     * @param $ns
+     * The namespace from which the UUID is to be generated.
+     * 
+     * @param $node
+     * The node from which the UUID is to be generated.
+     *
+     * @return 
+     * The generated UUID.
+     */
     static private function generateNameMD5($ns, $node) {
         return self::generateName($ns, $node, "md5",
             self::UUID_NAME_MD5);
     }
+
+    /**
+     * @brief Generate a named-based UUID using an SHA1 hash
+     *
+     * @param $ns
+     * The namespace from which the UUID is to be generated.
+     * 
+     * @param $node
+     * The node from which the UUID is to be generated.
+     *
+     * @return 
+     * The generated UUID.
+     */
     static private function generateNameSHA1($ns, $node) {
         return self::generateName($ns, $node, "sha1",
             self::UUID_NAME_SHA1);
     }
 
-    /*
-     * Generate UUID version 1 (time based)
+    /**
+     * @brief Generate UUID version 1 (time based)
+     *
+     * @param $ns
+     * The namespace for which the UUID is to be generated. (Not used for version 1).
+     * 
+     * @param $node
+     * The node from which the UUID is to be generated.
+     *
+     * @return 
+     * The generated UUID.
      */
     static private function generateTime($ns, $node) {
         $uuid = self::$m_uuid_field;
@@ -244,7 +370,15 @@ class UUID {
         return ($uuid);
     }
 
-    /* Assumes correct byte order */
+    /** 
+     * @brief Converts UUID from field to byte format. Assumes correct byte order.
+     * 
+     * @param $src
+     * The source (raw) representation of the UUID in field format.
+     * 
+     * @return
+     * The UUID in byte format.
+     */
     static private function conv_field2byte($src) {
         $uuid[0] = ($src['time_low'] & 0xff000000) >> 24;
         $uuid[1] = ($src['time_low'] & 0x00ff0000) >> 16;
@@ -263,6 +397,15 @@ class UUID {
         return ($uuid);
     }
 
+    /**
+     * @brief Converts UUID from field to string format.
+     *
+     * @param $src
+     * The source (raw) representation of the UUID in field format.
+     * 
+     * @return
+     * The UUID in string format.
+     */
     static private function conv_field2string($src) {
         $str = sprintf(
             '%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x',
@@ -273,11 +416,29 @@ class UUID {
         return ($str);
     }
 
+    /**
+     * @brief Converts UUID from field to binary format.
+     *
+     * @param $src
+     * The source (raw) representation of the UUID in field format.
+     * 
+     * @return
+     * The UUID in binary format.
+     */
     static private function conv_field2binary($src) {
         $byte = self::conv_field2byte($src);
         return self::conv_byte2binary($byte);
     }
 
+    /** 
+     * @brief Converts UUID from byte to field format.
+     *
+     * @param $uuid
+     * The source (raw) representation of the UUID in byte format.
+     * 
+     * @return
+     * The UUID in field format.
+     */
     static private function conv_byte2field($uuid) {
         $field = self::$m_uuid_field;
         $field['time_low'] = ($uuid[0] << 24) | ($uuid[1] << 16) |
@@ -292,11 +453,29 @@ class UUID {
         return ($field);
     }
 
+    /**
+     * @brief Converts UUID form byte to string format.
+     *
+     * @param $src
+     * The source (raw) representation of the UUID in byte format.
+     * 
+     * @return
+     * The UUID in string format.
+     */
     static public function conv_byte2string($src) {
         $field = self::conv_byte2field($src);
         return self::conv_field2string($field);
     }
 
+    /**
+     * @brief Converts UUID from byte to binary format.
+     *
+     * @param $src
+     * The source (raw) representation of the UUID in byte format.
+     * 
+     * @return
+     * The UUID in binary format.
+     */
     static private function conv_byte2binary($src) {
         $raw = pack('C16', $src[0], $src[1], $src[2], $src[3],
             $src[4], $src[5], $src[6], $src[7], $src[8], $src[9],
@@ -304,6 +483,15 @@ class UUID {
         return ($raw);
     }
 
+    /**
+     * @brief Converts UUID from string to field format.
+     *
+     * @param $src
+     * The source (raw) representation of the UUID in string format.
+     * 
+     * @return
+     * The UUID in field format.
+     */
     static private function conv_string2field($src) {
         $parts = sscanf($src, '%x-%x-%x-%x-%02x%02x%02x%02x%02x%02x');
         $field = self::$m_uuid_field;
@@ -318,11 +506,29 @@ class UUID {
         return ($field);
     }
 
+    /**
+     * @brief Converts UUID from string to byte format.
+     *
+     * @param $src
+     * The source (raw) representation of the UUID in string format.
+     * 
+     * @return
+     * The UUID in byte format.
+     */
     static private function conv_string2byte($src) {
         $field = self::conv_string2field($src);
         return self::conv_field2byte($field);
     }
 
+    /**
+     * @brief Converts UUID form string to binary format.
+     *
+     * @param $src
+     * The source (raw) representation of the UUID in string format.
+     * 
+     * @return
+     * The UUID in binary format.
+     */
     static private function conv_string2binary($src) {
         $byte = self::conv_string2byte($src);
         return self::conv_byte2binary($byte);

@@ -70,19 +70,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef9cf198312d2f89238a8e8e2f0f67f3"></a><!-- doxytag: member="ontent.php::$domain" ref="aef9cf198312d2f89238a8e8e2f0f67f3" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$domain</b> = 'public'</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2121a20e6bac58d008dc60ae13902c12"></a><!-- doxytag: member="ontent.php::$ontology" ref="a2121a20e6bac58d008dc60ae13902c12" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$ontology</b> = &quot;$ontopath$_GET[ontology]/&quot;</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ontent_8php.html#a2121a20e6bac58d008dc60ae13902c12">$ontology</a> = &quot;$ontopath$_GET[ontology]/&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string containing the URL subpath of the myExperiment ontology module the entity is in. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a470f99c17f2e6f0a5a7b96f44cfc46a5"></a><!-- doxytag: member="ontent.php::$lines" ref="a470f99c17f2e6f0a5a7b96f44cfc46a5" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$lines</b> = file($ontology)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ontent_8php.html#a470f99c17f2e6f0a5a7b96f44cfc46a5">$lines</a> = file($ontology)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An array containing every line of the ontology file requested. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fc62fd062300c58c188533cbe23e1e5"></a><!-- doxytag: member="ontent.php::$l" ref="a3fc62fd062300c58c188533cbe23e1e5" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$l</b> = 0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a640ddca7cd0457b524948887ff2529e8"></a><!-- doxytag: member="ontent.php::$match" ref="a640ddca7cd0457b524948887ff2529e8" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$match</b> = 'rdf:about=&quot;'.$_GET['entity'].'&quot;'</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7fde9e60d731f817362b706b21f255ee"></a><!-- doxytag: member="ontent.php::$entity" ref="a7fde9e60d731f817362b706b21f255ee" args="" -->
-while(strpos($lines[$l], <br class="typebreak"/>
-$match)==0 and $l&lt; sizeof($lines))&#160;</td><td class="memItemRight" valign="bottom"><b>$entity</b> = str_replace($_GET['entity'],$ontology.$_GET['entity'],$lines[$l])</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ontent_8php.html#a3fc62fd062300c58c188533cbe23e1e5">$l</a> = 0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An integer containing the current line number that is being look in the ontology file. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ace0ad85fd80fca062f2bf7e166ee47"></a><!-- doxytag: member="ontent.php::$entity" ref="a7ace0ad85fd80fca062f2bf7e166ee47" args="" -->
+while(strpos($lines[$l],'rdf:about=&quot;'.$_GET['entity'].'&quot;')==0 <br class="typebreak"/>
+and $l&lt; sizeof($lines))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47">$entity</a> = str_replace($_GET['entity'],$ontology.$_GET['entity'],$lines[$l])</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string containing the full URI for the ontology entity that has been requested. <br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>RDF for single class/property in myExperiment Ontology. </p>
@@ -106,7 +106,7 @@ $match)==0 and $l&lt; sizeof($lines))&#160;</td><td class="memItemRight" valign=
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

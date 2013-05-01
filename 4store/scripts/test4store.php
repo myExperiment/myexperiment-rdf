@@ -10,11 +10,11 @@
 
 include('include.inc.php');
 include('functions/4store.inc.php');
-if ($argv[1]==$triplestore){
-	if (modularizedFullTestSparqlQueryClient($argv[1])) exit(0);
+if ($argv[1]==$myexp_kb){
+	if (myexperimentFullTestSPARQLQueryClient($myexp_kb)) exit(0);
 }
-elseif($argv[1]=="ontologies"){
-	if (ontologiesFullTestSparqlQueryClient($argv[1])) exit(0);
+elseif($argv[1]==$onto_kb){
+	if (ontologiesFullTestSPARQLQueryClient($onto_kb)) exit(0);
 }
 exit(1);
 ?>

@@ -1,4 +1,9 @@
 #!/bin/bash
+## @file install.sh
+## @brief A script to help install myExperiment RDF generation.
+## @author David R Newman
+## @version beta
+## @details
 d=`dirname $0`
 basedir=`cd $d; pwd`
 BANG='$'

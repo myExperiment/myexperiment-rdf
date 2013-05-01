@@ -91,8 +91,9 @@ Variables</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">SubClass Classes query.  <a href="#a66a55edc83a33e27a5aa06a9fe69d677"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queries_8inc_8php.html#adaaf726186792afa0d7bcb149e0448c5">$queries</a> [9]</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">SubProperty Properties query.  <a href="#adaaf726186792afa0d7bcb149e0448c5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac46c0d7345aeb0e1dce35c9ad0b68f6a"></a><!-- doxytag: member="queries.inc.php::$filteront2" ref="ac46c0d7345aeb0e1dce35c9ad0b68f6a" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$filteront2</b> = str_replace(&quot;#&quot;,&quot;&quot;,$filteront)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa801896e647ab019974518e0d7de246c"></a><!-- doxytag: member="queries.inc.php::$filteront_nohash" ref="aa801896e647ab019974518e0d7de246c" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queries_8inc_8php.html#aa801896e647ab019974518e0d7de246c">$filteront_nohash</a> = str_replace(&quot;#&quot;,&quot;&quot;,$filteront)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">$filteront URI with all hashes (#) removed. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queries_8inc_8php.html#a604802c3597dc5147c013fc547c41568">$queries</a> [10]</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Imported Ontologies query.  <a href="#a604802c3597dc5147c013fc547c41568"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queries_8inc_8php.html#a189841e1b56c9db32426cc9fe2848fdf">$queries</a> [11]</td></tr>
@@ -127,7 +128,7 @@ Variables</h2></td></tr>
 </pre></div>
 <p>Listed Domains and Ranges query. </p>
 
-<p>Definition at line <a class="el" href="queries_8inc_8php_source.html#l00082">82</a> of file <a class="el" href="queries_8inc_8php_source.html">queries.inc.php</a>.</p>
+<p>Definition at line <a class="el" href="queries_8inc_8php_source.html#l00084">84</a> of file <a class="el" href="queries_8inc_8php_source.html">queries.inc.php</a>.</p>
 
 </div>
 </div>
@@ -148,7 +149,7 @@ Variables</h2></td></tr>
 </pre></div>
 <p>Instances of Classes query. </p>
 
-<p>Definition at line <a class="el" href="queries_8inc_8php_source.html#l00076">76</a> of file <a class="el" href="queries_8inc_8php_source.html">queries.inc.php</a>.</p>
+<p>Definition at line <a class="el" href="queries_8inc_8php_source.html#l00078">78</a> of file <a class="el" href="queries_8inc_8php_source.html">queries.inc.php</a>.</p>
 
 </div>
 </div>
@@ -168,7 +169,7 @@ Variables</h2></td></tr>
 </pre></div>
 <p>Ontology Information query. </p>
 
-<p>Definition at line <a class="el" href="queries_8inc_8php_source.html#l00071">71</a> of file <a class="el" href="queries_8inc_8php_source.html">queries.inc.php</a>.</p>
+<p>Definition at line <a class="el" href="queries_8inc_8php_source.html#l00073">73</a> of file <a class="el" href="queries_8inc_8php_source.html">queries.inc.php</a>.</p>
 
 </div>
 </div>
@@ -183,11 +184,11 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 <b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;</span>
-<span class="stringliteral">select distinct ?import_ont where { {&lt;$filteront&gt; owl:imports ?import_ont} union {&lt;$url&gt; owl:imports ?import_ont} union {&lt;$filteront2&gt;  owl:imports ?import_ont}}&quot;</span>
+<span class="stringliteral">select distinct ?import_ont where { {&lt;$filteront&gt; owl:imports ?import_ont} union {&lt;$url&gt; owl:imports ?import_ont} union {&lt;$filteront_nohash&gt;  owl:imports ?import_ont}}&quot;</span>
 </pre></div>
 <p>Imported Ontologies query. </p>
 
-<p>Definition at line <a class="el" href="queries_8inc_8php_source.html#l00067">67</a> of file <a class="el" href="queries_8inc_8php_source.html">queries.inc.php</a>.</p>
+<p>Definition at line <a class="el" href="queries_8inc_8php_source.html#l00069">69</a> of file <a class="el" href="queries_8inc_8php_source.html">queries.inc.php</a>.</p>
 
 </div>
 </div>
@@ -393,7 +394,7 @@ Variables</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

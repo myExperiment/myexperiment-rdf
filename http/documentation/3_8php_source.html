@@ -99,7 +99,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00045"></a>00045 PREFIX mebase: &amp;lt;http:<span class="comment">//rdf.myexperiment.org/ontologies/base/&amp;gt;</span>
 <a name="l00046"></a>00046 SELECT &lt;b&gt;DISTINCT&lt;/b&gt; ?annotator_name
 <a name="l00047"></a>00047 WHERE {
-<a name="l00048"></a>00048   ?comment mebase:annotates &amp;lt;&lt;?= $datauri ?&gt;workflows/52&amp;gt; .
+<a name="l00048"></a>00048   ?comment mebase:annotates &amp;lt;&lt;?= <a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a> ?&gt;workflows/52&amp;gt; .
 <a name="l00049"></a>00049   ?comment rdf:type meannot:Comment .
 <a name="l00050"></a>00050   ?comment mebase:has-annotator ?annotator .
 <a name="l00051"></a>00051   ?annotator sioc:name ?annotator_name
@@ -236,7 +236,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

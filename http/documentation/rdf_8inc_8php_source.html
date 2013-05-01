@@ -67,383 +67,381 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00019"></a>00019 require_once(<span class="stringliteral">&#39;functions/sql.inc.php&#39;</span>);
 <a name="l00020"></a>00020 require_once(<span class="stringliteral">&#39;functions/xml.inc.php&#39;</span>);
 <a name="l00021"></a>00021                 
-<a name="l00022"></a>00022 function setTypeIDandParams($args,$noexit=0){
-<a name="l00023"></a>00023         global $entities, $path_entity_mappings, $rdfgen_userid;
-<a name="l00024"></a>00024         $params = array();
-<a name="l00025"></a>00025         $rdfgen_userid = 0;
-<a name="l00026"></a>00026         $primary_id = 0;
-<a name="l00027"></a>00027         <span class="keywordflow">if</span> (isset($args[2])){
-<a name="l00028"></a>00028                 $type=$path_entity_mappings[$args[1]];
-<a name="l00029"></a>00029                 $id=$args[2];
-<a name="l00030"></a>00030         }
-<a name="l00031"></a>00031         <span class="keywordflow">else</span> exit(<span class="stringliteral">&quot;Not enough arguments!\n&quot;</span>);
-<a name="l00032"></a>00032         <span class="keywordflow">if</span> (isset($args[4])){
-<a name="l00033"></a>00033                 $rdfgen_userid = $args[4];
-<a name="l00034"></a>00034                 $params = explode(<span class="stringliteral">&quot;/&quot;</span>,$args[3]);
-<a name="l00035"></a>00035         }
-<a name="l00036"></a>00036         elseif (isset($args[3])) {
-<a name="l00037"></a>00037                 $paramstemp = explode(<span class="stringliteral">&quot;/&quot;</span>,$args[3]);
-<a name="l00038"></a>00038                 <span class="keywordflow">if</span> (<span class="keyword">sizeof</span>($paramstemp) &gt; 1) $params = $paramstemp;
-<a name="l00039"></a>00039                 <span class="keywordflow">else</span> $rdfgen_userid = $args[3];
-<a name="l00040"></a>00040         }
-<a name="l00041"></a>00041         <span class="keywordflow">if</span> (!empty($params[0])){
-<a name="l00042"></a>00042                 $sub_entity = $params[<span class="keyword">sizeof</span>($params)-2];
-<a name="l00043"></a>00043                 $sub_entity_num = $params[<span class="keyword">sizeof</span>($params)-1];
-<a name="l00044"></a>00044                 <span class="keywordflow">if</span> ($sub_entity ==<span class="stringliteral">&quot;versions&quot;</span>) { 
-<a name="l00045"></a>00045                         $type = $entities[$type][<span class="stringliteral">&#39;version_entity&#39;</span>];
-<a name="l00046"></a>00046                         <span class="keywordflow">if</span> (!empty($entities[$type][<span class="stringliteral">&#39;parent_entity&#39;</span>])) {
-<a name="l00047"></a>00047                                 $version_sql=<span class="stringliteral">&quot;select id from {$entities[$type][&#39;table&#39;]} where {$entities[$type][&#39;parent_id&#39;]}=$id and version=$sub_entity_num&quot;</span>;
-<a name="l00048"></a>00048                                 $version_res=mysql_query($version_sql);
-<a name="l00049"></a>00049                                 $primary_id=$id;
-<a name="l00050"></a>00050                                 <span class="keywordflow">if</span> (mysql_num_rows($version_res) == 0) {
-<a name="l00051"></a>00051                                         <span class="keywordflow">return</span> array(null,null,null,null);
-<a name="l00052"></a>00052                                 }
-<a name="l00053"></a>00053                                 $id=mysql_result($version_res,0,<span class="stringliteral">&#39;id&#39;</span>);
-<a name="l00054"></a>00054                         }
-<a name="l00055"></a>00055                 }
-<a name="l00056"></a>00056                 elseif (isset($entities[$type][<span class="stringliteral">&#39;child_url_subpaths&#39;</span>][$sub_entity])) {
-<a name="l00057"></a>00057                         $type = $entities[$type][<span class="stringliteral">&#39;child_url_subpaths&#39;</span>][$sub_entity];
-<a name="l00058"></a>00058                         $id=$sub_entity_num;
-<a name="l00059"></a>00059                 }
-<a name="l00060"></a>00060                 elseif (!$noexit){
-<a name="l00061"></a>00061                         exit();
-<a name="l00062"></a>00062                 }
-<a name="l00063"></a>00063         }
-<a name="l00064"></a>00064         <span class="keywordflow">return</span> array($type,$id,$params,$primary_id);
-<a name="l00065"></a>00065 }
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067 function getEntityResults($type,$id){
-<a name="l00068"></a>00068         global $entities, $sql;
-<a name="l00069"></a>00069         <span class="keywordflow">if</span> ($id){
-<a name="l00070"></a>00070                 $whereclause=$entities[$type][<span class="stringliteral">&#39;table&#39;</span>].<span class="stringliteral">&quot;.id=$id&quot;</span>;
-<a name="l00071"></a>00071                 <span class="keywordflow">if</span> (stripos($sql[$type],<span class="stringliteral">&quot;where&quot;</span>) === <span class="keyword">false</span> ){
-<a name="l00072"></a>00072                         $cursql=$sql[$type].<span class="stringliteral">&quot; where &quot;</span>.$whereclause;
-<a name="l00073"></a>00073                 }
-<a name="l00074"></a>00074                 <span class="keywordflow">else</span> $cursql=$sql[$type].<span class="stringliteral">&quot; and &quot;</span>.$whereclause;
-<a name="l00075"></a>00075         }
-<a name="l00076"></a>00076         <span class="keywordflow">else</span> $cursql=$sql[$type];
-<a name="l00077"></a>00077         <span class="keywordflow">return</span> mysql_query($cursql);
-<a name="l00078"></a>00078 }
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080 function entityExists($type,$ids=array()){
-<a name="l00081"></a>00081         global $entities;
-<a name="l00082"></a>00082         <span class="keywordflow">if</span> (!isset($entities[$type])) <span class="keywordflow">return</span> 0;
-<a name="l00083"></a>00083         <span class="keywordflow">if</span> (!is_array($ids)) $ids=array($ids);
-<a name="l00084"></a>00084         $cursql=<span class="stringliteral">&quot;select * from &quot;</span>.$entities[$type][<span class="stringliteral">&#39;table&#39;</span>];
-<a name="l00085"></a>00085         <span class="keywordflow">if</span> (<span class="keyword">sizeof</span>($ids)&gt;0 &amp;&amp; $ids[0]&gt;0){
-<a name="l00086"></a>00086                 $idstr=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00087"></a>00087                 <span class="keywordflow">foreach</span>($ids as $id) $idstr.=<span class="stringliteral">&quot;$id,&quot;</span>;
-<a name="l00088"></a>00088                 $cursql.=<span class="stringliteral">&quot; where id in (&quot;</span>.substr($idstr,0,-1).<span class="stringliteral">&quot;)&quot;</span>;
-<a name="l00089"></a>00089                 <span class="keywordflow">if</span> ($type==<span class="stringliteral">&quot;Comment&quot;</span>) $cursql.=<span class="stringliteral">&quot; and commentable_type in (&#39;Workflow&#39;,&#39;Blob&#39;,&#39;Pack&#39;,&#39;Network&#39;)&quot;</span>;
-<a name="l00090"></a>00090         }
-<a name="l00091"></a>00091         <span class="keywordflow">else</span>{
-<a name="l00092"></a>00092                 $res=mysql_query($cursql);
-<a name="l00093"></a>00093                 <span class="keywordflow">if</span> ($res) <span class="keywordflow">return</span> 1;
-<a name="l00094"></a>00094         }
-<a name="l00095"></a>00095         $res=mysql_query($cursql);
-<a name="l00096"></a>00096         <span class="keywordflow">if</span> ($res===<span class="keyword">false</span>) <span class="keywordflow">return</span> 0;
-<a name="l00097"></a>00097         <span class="keywordflow">return</span> mysql_num_rows($res);
-<a name="l00098"></a>00098 }
-<a name="l00099"></a>00099 
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101         function printEntity($row, $type){
-<a name="l00102"></a>00102                 global $datauri, $domain, $datatypes, $entities, $mappings; 
-<a name="l00103"></a>00103                 <span class="comment">//error_log(print_r($row,1). &quot;type: $type&quot;);</span>
-<a name="l00104"></a>00104                 $template = $mappings[$type];
-<a name="l00105"></a>00105                 <span class="keywordflow">if</span> (!is_array($template)) <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
-<a name="l00106"></a>00106                 $idfield = array_search(<span class="stringliteral">&#39;url&#39;</span>,$template);
-<a name="l00107"></a>00107                 $id = $row[$idfield];
-<a name="l00108"></a>00108                 unset($template[$idfield]);
-<a name="l00109"></a>00109                 $ontology_prefix = $entities[$type][<span class="stringliteral">&#39;ontology_prefix&#39;</span>];
-<a name="l00110"></a>00110                 $full_entity = <span class="stringliteral">&quot;$ontology_prefix:$type&quot;</span>;
-<a name="l00111"></a>00111                 $uri = getEntityURI($type, $id ,$row);  
-<a name="l00112"></a>00112                 $xml = <span class="stringliteral">&quot;  &lt;$full_entity rdf:about=\&quot;$uri\&quot;&gt;\n&quot;</span>;
-<a name="l00113"></a>00113                 $xml .= getHomepageAndFormats($uri, $type, $id, $row);
-<a name="l00114"></a>00114                 <span class="keywordflow">foreach</span> ($template as $field =&gt; $property) {
-<a name="l00115"></a>00115                         <span class="keywordflow">switch</span> (substr($property, 0, 1)) {
-<a name="l00116"></a>00116                         <span class="keywordflow">case</span> <span class="charliteral">&#39;&lt;&#39;</span>:
-<a name="l00117"></a>00117                                 <span class="keywordflow">if</span> (!isset($row[$field])) <span class="keywordflow">break</span>;
-<a name="l00118"></a>00118                                 $row[$field]=xmlentities($row[$field]);
-<a name="l00119"></a>00119                                 <span class="keywordflow">if</span> (isset($row[$field])){
-<a name="l00120"></a>00120                                         <span class="keywordflow">if</span> (isset($datatypes[substr($property, 1)])){
-<a name="l00121"></a>00121                                                 $xml.=printDatatypeProperty(substr($property, 1),$row[$field]);
-<a name="l00122"></a>00122                                         }
-<a name="l00123"></a>00123                                         <span class="keywordflow">else</span>{
-<a name="l00124"></a>00124                                                 $xml.=printEntityProperty($field,substr($property, 1),$row[$field],<span class="stringliteral">&quot;NoDataURI&quot;</span>);
-<a name="l00125"></a>00125                                         }
-<a name="l00126"></a>00126                                         <span class="keywordflow">break</span>;
-<a name="l00127"></a>00127                                 }
-<a name="l00128"></a>00128                                 <span class="keywordflow">break</span>;
-<a name="l00129"></a>00129                         <span class="keywordflow">case</span> <span class="charliteral">&#39;+&#39;</span>:
-<a name="l00130"></a>00130                                 $propbits=explode(<span class="stringliteral">&quot;+&quot;</span>,$property);
-<a name="l00131"></a>00131                                 array_shift($propbits);
-<a name="l00132"></a>00132                                 $xml.=printCombinedProperty($field,$propbits,$row);
-<a name="l00133"></a>00133                                 <span class="keywordflow">break</span>;
-<a name="l00134"></a>00134                         <span class="keywordflow">case</span> <span class="charliteral">&#39;&amp;&#39;</span>:
-<a name="l00135"></a>00135                                 $xml.=printEntityProperty($field,substr($property,1),$row[$field]);
-<a name="l00136"></a>00136                                 <span class="keywordflow">break</span>;
-<a name="l00137"></a>00137                         <span class="keywordflow">case</span> <span class="charliteral">&#39;@&#39;</span>:
-<a name="l00138"></a>00138                                 <span class="keywordflow">if</span> (substr($property, 1, 1)==<span class="stringliteral">&quot;-&quot;</span>)  $xml.=printFunctionProperty(substr($property,2),$row,<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;NoDataURI&quot;</span>);
-<a name="l00139"></a>00139                                 elseif (substr($property, 1, 1)==<span class="stringliteral">&quot;#&quot;</span>){
-<a name="l00140"></a>00140                                         <span class="keywordflow">if</span> ($domain!=<span class="stringliteral">&quot;private&quot;</span>){
-<a name="l00141"></a>00141                                                 $xml.=printFunctionProperty(substr($property,2),$row,<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;Hash&quot;</span>);
-<a name="l00142"></a>00142                                         }
-<a name="l00143"></a>00143                                         <span class="keywordflow">else</span>{
-<a name="l00144"></a>00144                                                 $xml.=printFunctionProperty(substr($property,2),$row,<span class="stringliteral">&quot;&quot;</span>);
-<a name="l00145"></a>00145                                         }
-<a name="l00146"></a>00146                                 }
-<a name="l00147"></a>00147                                 elseif (substr($property, 1, 1)==<span class="stringliteral">&quot;&amp;&quot;</span>){
-<a name="l00148"></a>00148                                         <span class="keywordflow">if</span> (substr($property, 2, 1)==<span class="stringliteral">&quot;-&quot;</span>) $xml.=printFunctionProperty(substr($property,3),$row,$type,<span class="stringliteral">&quot;NoDataURI&quot;</span>);
-<a name="l00149"></a>00149                                         elseif (substr($property, 2, 1)==<span class="stringliteral">&quot;%&quot;</span>) $xml.=printFunctionProperty(substr($property,3),$row,$type,&quot;EncapsulatedObject&quot;);
-<a name="l00150"></a>00150                                         else $xml.=printFunctionProperty(substr($property,2),$row,$type);
-<a name="l00151"></a>00151                                 }
-<a name="l00152"></a>00152                                 elseif (substr($property, 1, 1)==&quot;%&quot;) $xml.=printFunctionProperty(substr($property,2),$row,&quot;&quot;,&quot;EncapsulatedObject&quot;);
-<a name="l00153"></a>00153                                 else{
-<a name="l00154"></a>00154                                         $xml.=printFunctionProperty(substr($property,1),$row,<span class="stringliteral">&quot;&quot;</span>);
-<a name="l00155"></a>00155                                 }
-<a name="l00156"></a>00156                                 <span class="keywordflow">break</span>;
-<a name="l00157"></a>00157                         <span class="keywordflow">case</span> <span class="charliteral">&#39;!&#39;</span>:
-<a name="l00158"></a>00158                                 <span class="keywordflow">break</span>;
-<a name="l00159"></a>00159                         <span class="keywordflow">default</span>:
-<a name="l00160"></a>00160                                 <span class="keywordflow">if</span> (isset($row[$field])){
-<a name="l00161"></a>00161                                         <span class="keywordflow">if</span> (isset($datatypes[$property])){
-<a name="l00162"></a>00162                                                 $xml.=printDatatypeProperty($property,$row[$field]);
-<a name="l00163"></a>00163                                         }
-<a name="l00164"></a>00164                                         <span class="keywordflow">else</span>{
-<a name="l00165"></a>00165                                                 $xml.=printEntityProperty($field,$property,$row[$field],<span class="stringliteral">&quot;NoDataURI&quot;</span>);
-<a name="l00166"></a>00166                                         }       
-<a name="l00167"></a>00167                                         <span class="keywordflow">break</span>;
-<a name="l00168"></a>00168                                 }
-<a name="l00169"></a>00169                         }       
-<a name="l00170"></a>00170                 }
-<a name="l00171"></a>00171                 $xml .= <span class="stringliteral">&quot;  &lt;/$full_entity&gt;\n\n&quot;</span>;
-<a name="l00172"></a>00172                 <span class="keywordflow">return</span> $xml;
-<a name="l00173"></a>00173         }
-<a name="l00174"></a>00174 
-<a name="l00175"></a>00175 function getHomepageAndFormats($uri,$type,$id,$entity=<span class="stringliteral">&#39;&#39;</span>){
-<a name="l00176"></a>00176         global $entities;
-<a name="l00177"></a>00177         $xml=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00178"></a>00178         <span class="keywordflow">if</span> (!empty($entities[$type][<span class="stringliteral">&#39;homepage&#39;</span>])) $xml .= <span class="stringliteral">&quot;    &lt;foaf:homepage rdf:resource=\&quot;${uri}.html\&quot;/&gt;\n&quot;</span>;
-<a name="l00179"></a>00179         <span class="keywordflow">if</span> (empty($entities[$type][<span class="stringliteral">&#39;no_rdf_uri&#39;</span>])) $xml .= <span class="stringliteral">&quot;    &lt;dcterms:hasFormat rdf:resource=\&quot;${uri}.rdf\&quot;/&gt;\n&quot;</span>;
-<a name="l00180"></a>00180         <span class="keywordflow">if</span> (!empty($entities[$type][<span class="stringliteral">&#39;xml_service&#39;</span>])) $xml .= <span class="stringliteral">&quot;    &lt;dcterms:hasFormat rdf:resource=\&quot;{$uri}.xml\&quot;/&gt;\n&quot;</span>;
-<a name="l00181"></a>00181         <span class="keywordflow">return</span> $xml;
-<a name="l00182"></a>00182 }
-<a name="l00183"></a>00183 
-<a name="l00184"></a>00184 function getWorkflowVersion($wfid,$version){
-<a name="l00185"></a>00185         $wfvsql=<span class="stringliteral">&quot;select id from workflow_versions where workflow_id=$wfid and version=$version&quot;</span>;
-<a name="l00186"></a>00186         $res=mysql_query($wfvsql);
-<a name="l00187"></a>00187         <span class="keywordflow">return</span> mysql_result($res,0,<span class="stringliteral">&#39;id&#39;</span>);
-<a name="l00188"></a>00188 }
-<a name="l00189"></a>00189 
-<a name="l00190"></a>00190 function getDatatypes(){
-<a name="l00191"></a>00191         global $lddir;
-<a name="l00192"></a>00192         $dtfile=file($lddir.<span class="stringliteral">&#39;inc/config/datatypes.txt&#39;</span>);
-<a name="l00193"></a>00193         <span class="keywordflow">foreach</span> ($dtfile as $dt){
-<a name="l00194"></a>00194                 $dtbits = explode(<span class="stringliteral">&quot; &quot;</span>,$dt);
-<a name="l00195"></a>00195                 $datatypes[trim($dtbits[0])]=trim($dtbits[1]);
-<a name="l00196"></a>00196         }
-<a name="l00197"></a>00197         <span class="keywordflow">return</span> $datatypes;
-<a name="l00198"></a>00198 }
-<a name="l00199"></a>00199 
-<a name="l00200"></a>00200 function isDataflow($params){
-<a name="l00201"></a>00201         <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&#39;dataflow&#39;</span>,$params)) <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00202"></a>00202         <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&#39;dataflows&#39;</span>,$params)) <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00203"></a>00203         <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00204"></a>00204 }
-<a name="l00205"></a>00205 
-<a name="l00206"></a>00206 function getPermissions($policy){
-<a name="l00207"></a>00207         $permsql=<span class="stringliteral">&quot;select * from permissions where policy_id=&quot;</span>.$policy;
-<a name="l00208"></a>00208         $permres=mysql_query($permsql);
-<a name="l00209"></a>00209         $perms=array();
-<a name="l00210"></a>00210         <span class="keywordflow">for</span> ($p=0; $p&lt;mysql_num_rows($permres); $p++){
-<a name="l00211"></a>00211                 $perms[$p]=mysql_fetch_array($permres);
-<a name="l00212"></a>00212         }
-<a name="l00213"></a>00213         <span class="keywordflow">return</span> $perms;
-<a name="l00214"></a>00214 }
-<a name="l00215"></a>00215 
-<a name="l00216"></a>00216 function addShareAndUpdateMode($contrib){
-<a name="l00217"></a>00217         $policysql=<span class="stringliteral">&quot;select share_mode, update_mode from policies where id =&quot;</span>.$contrib[<span class="stringliteral">&#39;policy_id&#39;</span>];
-<a name="l00218"></a>00218         $pres=mysql_query($policysql);
-<a name="l00219"></a>00219         $contrib[<span class="stringliteral">&#39;share_mode&#39;</span>]=mysql_result($pres,0,<span class="stringliteral">&#39;share_mode&#39;</span>);
-<a name="l00220"></a>00220         $contrib[<span class="stringliteral">&#39;update_mode&#39;</span>]=mysql_result($pres,0,<span class="stringliteral">&#39;update_mode&#39;</span>);
-<a name="l00221"></a>00221         <span class="keywordflow">return</span> $contrib;
-<a name="l00222"></a>00222 }
-<a name="l00223"></a>00223 
-<a name="l00224"></a>00224 
-<a name="l00225"></a>00225         function printUsage($type, $id, $views, $downloads){
-<a name="l00226"></a>00226                 global $datauri, $entities;
-<a name="l00227"></a>00227                 <span class="keywordflow">return</span> <span class="stringliteral">&quot;  &lt;rdf:Description rdf:about=\&quot;$datauri{$entities[$type][&#39;url_subpath&#39;]}/$id\&quot;&gt;</span>
-<a name="l00228"></a>00228 <span class="stringliteral">    &lt;mevd:viewed rdf:datatype=\&quot;http://www.w3.org/2001/XMLSchema#nonNegativeInteger\&quot;&gt;$views&lt;/mevd:viewed&gt;</span>
-<a name="l00229"></a>00229 <span class="stringliteral">    &lt;mevd:downloaded rdf:datatype=\&quot;http://www.w3.org/2001/XMLSchema#nonNegativeInteger\&quot;&gt;$downloads&lt;/mevd:downloaded&gt;</span>
-<a name="l00230"></a>00230 <span class="stringliteral">  &lt;/rdf:Description&gt;\n\n&quot;</span>;
-<a name="l00231"></a>00231         }       
-<a name="l00232"></a>00232                 
-<a name="l00233"></a>00233         function printCombinedProperty($field,$property,$row){
-<a name="l00234"></a>00234                 global $datauri, $entities; 
-<a name="l00235"></a>00235                 $url_subpath = $entities[$row[$field]][<span class="stringliteral">&#39;url_subpath&#39;</span>];
-<a name="l00236"></a>00236                 $pbits=explode(<span class="charliteral">&#39;|&#39;</span>,$property[<span class="keyword">sizeof</span>($property)-1]);
-<a name="l00237"></a>00237                 <span class="keywordflow">if</span> (<span class="keyword">sizeof</span>($property)&gt;1)$uri=$datauri.$url_subpath.<span class="stringliteral">&quot;/&quot;</span>.$row[$property[0]];
-<a name="l00238"></a>00238                 <span class="keywordflow">else</span> $uri=$datauri.$url_subpath.<span class="stringliteral">&quot;/&quot;</span>.$row[$pbits[0]];
-<a name="l00239"></a>00239                 <span class="keywordflow">if</span> (!empty($row[$pbits[0]]) &amp;&amp; preg_match(<span class="stringliteral">&#39;/workflow_version/&#39;</span>,$pbits[0])){
-<a name="l00240"></a>00240                         $uri=$datauri.<span class="stringliteral">&quot;workflows/&quot;</span>.$row[$field].<span class="stringliteral">&quot;/versions/&quot;</span>.$row[$pbits[0]];
-<a name="l00241"></a>00241                 }
-<a name="l00242"></a>00242                 $nsandp=$pbits[1];
-<a name="l00243"></a>00243                 $line=<span class="stringliteral">&quot;    &lt;$nsandp rdf:resource=\&quot;$uri\&quot;/&gt;\n&quot;</span>;
-<a name="l00244"></a>00244                 <span class="keywordflow">return</span> $line;
-<a name="l00245"></a>00245         }
-<a name="l00246"></a>00246         function printEntityProperty($field, $property, $value, $msg=<span class="stringliteral">&quot;&quot;</span>) {
-<a name="l00247"></a>00247                 global $datauri, $entities;
-<a name="l00248"></a>00248                 $msgs=explode(<span class="stringliteral">&quot;,&quot;</span>,$msg);
-<a name="l00249"></a>00249                 <span class="keywordflow">if</span> ($value){
-<a name="l00250"></a>00250                         $pbits=explode(<span class="charliteral">&#39;|&#39;</span>,$property);
-<a name="l00251"></a>00251                         <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&quot;NoDataURI&quot;</span>,$msgs)){
-<a name="l00252"></a>00252                                 $uri=$value;
-<a name="l00253"></a>00253                                 $nsandp=$pbits[0];
-<a name="l00254"></a>00254                         }
-<a name="l00255"></a>00255                         <span class="keywordflow">else</span>{
-<a name="l00256"></a>00256                                 $url_subpath=$entities[$pbits[0]][<span class="stringliteral">&#39;url_subpath&#39;</span>];
-<a name="l00257"></a>00257                                 $uri=$datauri.$url_subpath.<span class="stringliteral">&quot;/&quot;</span>.$value;
-<a name="l00258"></a>00258                                 $nsandp=$pbits[1];
-<a name="l00259"></a>00259                         }
-<a name="l00260"></a>00260                         $uri=str_replace(<span class="stringliteral">&quot;&amp;&quot;</span>,<span class="stringliteral">&quot;&amp;amp;&quot;</span>,$uri);
-<a name="l00261"></a>00261                         $line=<span class="stringliteral">&quot;    &lt;$nsandp rdf:resource=\&quot;$uri\&quot;/&gt;\n&quot;</span>;
-<a name="l00262"></a>00262                         <span class="keywordflow">return</span> $line;
-<a name="l00263"></a>00263                 }
-<a name="l00264"></a>00264         }
-<a name="l00265"></a>00265         function printFunctionProperty($property, $row, $entity_type=<span class="stringliteral">&quot;&quot;</span>, $msg=<span class="stringliteral">&quot;&quot;</span>){
-<a name="l00266"></a>00266                 global $datauri, $datatypes;
-<a name="l00267"></a>00267                 $pbits=explode(<span class="charliteral">&#39;|&#39;</span>,$property);
-<a name="l00268"></a>00268                 <span class="keywordflow">if</span> (isset($msg) &amp;&amp; is_string($msg)&gt;0) $msgs=explode(<span class="stringliteral">&quot;,&quot;</span>,$msg);
-<a name="l00269"></a>00269                 <span class="keywordflow">else</span> $msgs=array();
-<a name="l00270"></a>00270                 <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&#39;hide&#39;</span>,$msgs) &amp;&amp; $pbits[0]==<span class="stringliteral">&quot;getOREAggregatedResources&quot;</span>) <span class="keywordflow">return</span>;
-<a name="l00271"></a>00271                 <span class="keywordflow">if</span> ($entity_type) $value=call_user_func($pbits[0], $row, $entity_type);
-<a name="l00272"></a>00272                 elseif (in_array(<span class="stringliteral">&#39;Hash&#39;</span>,$msgs)){
-<a name="l00273"></a>00273                         $value=call_user_func($pbits[0],$row,1);
-<a name="l00274"></a>00274                 }
-<a name="l00275"></a>00275                 <span class="keywordflow">else</span> $value=call_user_func($pbits[0],$row);
-<a name="l00276"></a>00276                 <span class="keywordflow">if</span> (!isset($pbits[1]) || !$pbits[1]) <span class="keywordflow">return</span> $value;
-<a name="l00277"></a>00277                 elseif (in_array(<span class="stringliteral">&quot;EncapsulatedObject&quot;</span>,$msgs)){
-<a name="l00278"></a>00278                         $nsandp=$pbits[1];
-<a name="l00279"></a>00279                         $line=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00280"></a>00280                         <span class="keywordflow">if</span> ($value){
-<a name="l00281"></a>00281                                 $line=<span class="stringliteral">&quot;    &lt;$nsandp&gt;\n      $value\n    &lt;/$nsandp&gt;\n&quot;</span>;
-<a name="l00282"></a>00282                         }
-<a name="l00283"></a>00283                         <span class="keywordflow">return</span> $line;
-<a name="l00284"></a>00284                 }
-<a name="l00285"></a>00285                 elseif (array_key_exists($pbits[1],$datatypes) &amp;&amp; $datatypes[$pbits[1]]!=<span class="stringliteral">&quot;&quot;</span>){
-<a name="l00286"></a>00286                         $fh=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00287"></a>00287                         <span class="keywordflow">return</span> printDatatypeProperty($pbits[1],$value,$fh);
-<a name="l00288"></a>00288                 }
-<a name="l00289"></a>00289                 elseif ($pbits[0]==<span class="stringliteral">&quot;getComponentsAsResources&quot;</span> || $pbits==<span class="stringliteral">&quot;getWorkflowVersions&quot;</span> ) return $value;
-<a name="l00290"></a>00290                 else{
-<a name="l00291"></a>00291                         <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&quot;NoDataURI&quot;</span>,$msgs)) $uri=$value;
-<a name="l00292"></a>00292                         <span class="keywordflow">else</span> $uri=$datauri.$value;
-<a name="l00293"></a>00293                         $nsandp=$pbits[1];
-<a name="l00294"></a>00294                         <span class="keywordflow">if</span> ($uri) <span class="keywordflow">return</span> <span class="stringliteral">&quot;    &lt;$nsandp rdf:resource=\&quot;$uri\&quot;/&gt;\n&quot;</span>;
-<a name="l00295"></a>00295                         <span class="keywordflow">return</span>;
-<a name="l00296"></a>00296                 }
-<a name="l00297"></a>00297         }       
-<a name="l00298"></a>00298         function printDatatypeProperty($property,$value){
-<a name="l00299"></a>00299                 global $datatypes;
-<a name="l00300"></a>00300                 $value=xmlentities($value);
-<a name="l00301"></a>00301                 $line=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00302"></a>00302                 <span class="keywordflow">if</span> (($datatypes[$property]==<span class="stringliteral">&quot;nonNegativeInteger&quot;</span> || $datatypes[$property]==<span class="stringliteral">&quot;boolean&quot;</span>) &amp;&amp; !$value) $value=<span class="stringliteral">&quot;0&quot;</span>;
-<a name="l00303"></a>00303                 elseif ($datatypes[$property]==<span class="stringliteral">&quot;dateTime&quot;</span>){
-<a name="l00304"></a>00304                         $value=str_replace(<span class="stringliteral">&quot; &quot;</span>,<span class="stringliteral">&quot;T&quot;</span>,$value);
-<a name="l00305"></a>00305                         <span class="keywordflow">if</span> ($value) $value.=<span class="stringliteral">&quot;Z&quot;</span>;
-<a name="l00306"></a>00306                 }
-<a name="l00307"></a>00307 
-<a name="l00308"></a>00308                 $nsandp=$property;                      
-<a name="l00309"></a>00309                 <span class="keywordflow">if</span> ($datatypes[$property]!=<span class="stringliteral">&quot;base64Binary&quot;</span>){
-<a name="l00310"></a>00310                         <span class="keywordflow">if</span> ($value || $datatypes[$property]==<span class="stringliteral">&quot;boolean&quot;</span> || $datatypes[$property]==<span class="stringliteral">&quot;nonNegativeInteger&quot;</span>){
-<a name="l00311"></a>00311                                 $line=<span class="stringliteral">&quot;    &lt;$nsandp&quot;</span>; 
-<a name="l00312"></a>00312                                 <span class="keywordflow">if</span> ($datatypes[$property]) $line.=<span class="stringliteral">&quot; rdf:datatype=\&quot;&amp;xsd;&quot;</span>.$datatypes[$property].<span class="stringliteral">&quot;\&quot;&quot;</span>;
-<a name="l00313"></a>00313                                 $line.=<span class="stringliteral">&quot;&gt;&quot;</span>.trim($value).<span class="stringliteral">&quot;&lt;/$nsandp&gt;\n&quot;</span>;
-<a name="l00314"></a>00314                         }
-<a name="l00315"></a>00315                         <span class="keywordflow">if</span> (($nsandp==<span class="stringliteral">&quot;mevd:viewed&quot;</span> || $nsandp==<span class="stringliteral">&quot;mevd:downloaded&quot;</span>) &amp;&amp; $value==0) $line=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00316"></a>00316 
-<a name="l00317"></a>00317                 }
-<a name="l00318"></a>00318                 <span class="keywordflow">else</span>{
-<a name="l00319"></a>00319                         $line=<span class="stringliteral">&quot;    &lt;$nsandp&quot;</span>; 
-<a name="l00320"></a>00320                         <span class="keywordflow">if</span> ($datatypes[$property]) $line.=<span class="stringliteral">&quot; rdf:datatype=\&quot;&amp;xsd;&quot;</span>.$datatypes[$property].<span class="stringliteral">&quot;\&quot;&quot;</span>;
-<a name="l00321"></a>00321                         <span class="comment">//else echo $property.&quot;1&quot;;</span>
-<a name="l00322"></a>00322                         $line.=<span class="stringliteral">&quot;&gt;&quot;</span>.trim(base64_encode($value)).<span class="stringliteral">&quot;&lt;/$nsandp&gt;\n&quot;</span>;
-<a name="l00323"></a>00323                 }
-<a name="l00324"></a>00324                 <span class="keywordflow">return</span> $line;
-<a name="l00325"></a>00325         }
-<a name="l00326"></a>00326 
-<a name="l00327"></a>00327         function getUsedTagsFromTaggings($wherestat){
-<a name="l00328"></a>00328                 $sql=<span class="stringliteral">&quot;select tag_id from taggings &quot;</span>.$wherestat;
-<a name="l00329"></a>00329                 $res=mysql_query($sql);
-<a name="l00330"></a>00330                 $tagid=array();
-<a name="l00331"></a>00331                 <span class="keywordflow">for</span> ($t=0; $t&lt;mysql_num_rows($res); $t++){
-<a name="l00332"></a>00332                         $tagid[mysql_result($res,$t,<span class="stringliteral">&#39;tag_id&#39;</span>)]++;
-<a name="l00333"></a>00333                 }
-<a name="l00334"></a>00334                 <span class="keywordflow">return</span> array_keys($tagid);
-<a name="l00335"></a>00335         }
+<a name="l00031"></a><a class="code" href="rdf_8inc_8php.html#a6cccbabf4f1fb0e1327470c4fe9a3aad">00031</a> function <a class="code" href="rdf_8inc_8php.html#a6cccbabf4f1fb0e1327470c4fe9a3aad" title="Determine the entity type and ID from the arguments provided at the command line.">getEntityTypeAndID</a>($args){
+<a name="l00032"></a>00032         global <a class="code" href="data_8inc_8php.html#ab536a0d95f590a75a3a4e3228224e5eb" title="A multi-dimensional associative array specifying all the myExperiment entity types a particular piece...">$entities</a>, <a class="code" href="data_8inc_8php.html#a0f0b9d529b042420c1bf96040d7415ba" title="An associative array mapping the URL subpath of an entity type to its name (e.g. files maps to File)...">$path_entity_mappings</a>, $rdfgen_userid;
+<a name="l00033"></a>00033         $params = array();
+<a name="l00034"></a>00034         $rdfgen_userid = 0;
+<a name="l00035"></a>00035         <span class="keywordflow">if</span> (!isset($path_entity_mappings[$args[1]])) {
+<a name="l00036"></a>00036                 error_log(<span class="stringliteral">&quot;Type does not exist: &quot;</span> . print_r($args, <span class="keyword">true</span>));
+<a name="l00037"></a>00037                 <span class="keywordflow">return</span> array(null, null);
+<a name="l00038"></a>00038         }
+<a name="l00039"></a>00039         <span class="keywordflow">if</span> (isset($args[2])){
+<a name="l00040"></a>00040                 $type=$path_entity_mappings[$args[1]];
+<a name="l00041"></a>00041                 $id=$args[2];
+<a name="l00042"></a>00042         }
+<a name="l00043"></a>00043         <span class="keywordflow">else</span> {
+<a name="l00044"></a>00044                 error_log(<span class="stringliteral">&quot;Not enough arguments: &quot;</span> . print_r($args, <span class="keyword">true</span>));
+<a name="l00045"></a>00045                 <span class="keywordflow">return</span> array(null, null);
+<a name="l00046"></a>00046         }
+<a name="l00047"></a>00047         <span class="keywordflow">if</span> (isset($args[4])){
+<a name="l00048"></a>00048                 $rdfgen_userid = $args[4];
+<a name="l00049"></a>00049                 $params = explode(<span class="stringliteral">&quot;/&quot;</span>,$args[3]);
+<a name="l00050"></a>00050         }
+<a name="l00051"></a>00051         elseif (isset($args[3])) {
+<a name="l00052"></a>00052                 $paramstemp = explode(<span class="stringliteral">&quot;/&quot;</span>,$args[3]);
+<a name="l00053"></a>00053                 <span class="keywordflow">if</span> (<span class="keyword">sizeof</span>($paramstemp) &gt; 1) $params = $paramstemp;
+<a name="l00054"></a>00054                 <span class="keywordflow">else</span> $rdfgen_userid = $args[3];
+<a name="l00055"></a>00055         }
+<a name="l00056"></a>00056         <span class="keywordflow">if</span> (!empty($params[0])){
+<a name="l00057"></a>00057                 $nested_url_subpath = $params[<span class="keyword">sizeof</span>($params)-2];
+<a name="l00058"></a>00058                 $nested_entity_num = $params[<span class="keyword">sizeof</span>($params)-1];
+<a name="l00059"></a>00059                 <span class="keywordflow">if</span> (isset($entities[$type][<span class="stringliteral">&#39;nested_url_subpath_entities&#39;</span>][$nested_url_subpath])){
+<a name="l00060"></a>00060                         $nested_entity_type = $entities[$type][<span class="stringliteral">&#39;nested_url_subpath_entities&#39;</span>][$nested_url_subpath];
+<a name="l00061"></a>00061                 }
+<a name="l00062"></a>00062                 <span class="keywordflow">else</span> <span class="keywordflow">if</span> (isset($path_entity_mappings[$nested_url_subpath])) {
+<a name="l00063"></a>00063                         $nested_entity_type = $path_entity_mappings[$nested_url_subpath];
+<a name="l00064"></a>00064                 }
+<a name="l00065"></a>00065                 <span class="keywordflow">if</span> ($nested_url_subpath ==<span class="stringliteral">&quot;versions&quot;</span>) { 
+<a name="l00066"></a>00066                         $type = $entities[$type][<span class="stringliteral">&#39;version_entity&#39;</span>];
+<a name="l00067"></a>00067                         <span class="keywordflow">if</span> (!empty($entities[$type][<span class="stringliteral">&#39;parent_entity&#39;</span>])) {
+<a name="l00068"></a>00068                                 $version_sql=<span class="stringliteral">&quot;select id from {$entities[$type][&#39;table&#39;]} where {$entities[$type][&#39;parent_id&#39;]}=$id and version=$nested_entity_num&quot;</span>;
+<a name="l00069"></a>00069                                 $version_res=mysql_query($version_sql);
+<a name="l00070"></a>00070                                 <span class="keywordflow">if</span> (mysql_num_rows($version_res) == 0) {
+<a name="l00071"></a>00071                                         error_log(<span class="stringliteral">&quot;Version ID could not be deterimed for version $nested_entity_num of $type $id&quot;</span>);
+<a name="l00072"></a>00072                                         <span class="keywordflow">return</span> array(null,null);
+<a name="l00073"></a>00073                                 }
+<a name="l00074"></a>00074                                 $id=mysql_result($version_res,0,<span class="stringliteral">&#39;id&#39;</span>);
+<a name="l00075"></a>00075                         }
+<a name="l00076"></a>00076                 }
+<a name="l00077"></a>00077                 elseif (isset($nested_entity_type)) {
+<a name="l00078"></a>00078                         <span class="keywordflow">return</span> array($nested_entity_type, $nested_entity_num);
+<a name="l00079"></a>00079                 }
+<a name="l00080"></a>00080                 <span class="keywordflow">else</span> {
+<a name="l00081"></a>00081                         error_log(<span class="stringliteral">&quot;Type of nested entity could not be determined from URL subpath: $nested_url_subpath&quot;</span>);
+<a name="l00082"></a>00082                         <span class="keywordflow">return</span> array(null, null);
+<a name="l00083"></a>00083                 }
+<a name="l00084"></a>00084         }
+<a name="l00085"></a>00085         <span class="keywordflow">return</span> array($type,$id);
+<a name="l00086"></a>00086 }
+<a name="l00087"></a>00087 
+<a name="l00100"></a><a class="code" href="rdf_8inc_8php.html#ac14a7c284e8466a123f449bd88318bf8">00100</a> function <a class="code" href="rdf_8inc_8php.html#ac14a7c284e8466a123f449bd88318bf8" title="Get MySQL result for query of an entity with a specific ID.">getEntityResults</a>($type,$id){
+<a name="l00101"></a>00101         global <a class="code" href="data_8inc_8php.html#ab536a0d95f590a75a3a4e3228224e5eb" title="A multi-dimensional associative array specifying all the myExperiment entity types a particular piece...">$entities</a>, <a class="code" href="generateDataflowRDF_8php.html#a047170d6020a882807665812a27e2525" title="A string containing an SQL query to find all the publically downloadable workflows that have dataflow...">$sql</a>;
+<a name="l00102"></a>00102         <span class="keywordflow">if</span> ($id){
+<a name="l00103"></a>00103                 $whereclause=$entities[$type][<span class="stringliteral">&#39;table&#39;</span>].<span class="stringliteral">&quot;.id=$id&quot;</span>;
+<a name="l00104"></a>00104                 <span class="keywordflow">if</span> (stripos($sql[$type],<span class="stringliteral">&quot;where&quot;</span>) === <span class="keyword">false</span> ){
+<a name="l00105"></a>00105                         $cursql=$sql[$type].<span class="stringliteral">&quot; where &quot;</span>.$whereclause;
+<a name="l00106"></a>00106                 }
+<a name="l00107"></a>00107                 <span class="keywordflow">else</span> $cursql=$sql[$type].<span class="stringliteral">&quot; and &quot;</span>.$whereclause;
+<a name="l00108"></a>00108         }
+<a name="l00109"></a>00109         <span class="keywordflow">else</span> $cursql=$sql[$type];
+<a name="l00110"></a>00110         <span class="keywordflow">return</span> mysql_query($cursql);
+<a name="l00111"></a>00111 }
+<a name="l00112"></a>00112 
+<a name="l00125"></a><a class="code" href="rdf_8inc_8php.html#a807eecb369752a6ad3c1e84fa0be8016">00125</a> function <a class="code" href="rdf_8inc_8php.html#a807eecb369752a6ad3c1e84fa0be8016" title="Test whether an entity or one of a number entities or a type of entity exists.">entityExists</a>($type,$ids=array()){
+<a name="l00126"></a>00126         global <a class="code" href="data_8inc_8php.html#ab536a0d95f590a75a3a4e3228224e5eb" title="A multi-dimensional associative array specifying all the myExperiment entity types a particular piece...">$entities</a>;
+<a name="l00127"></a>00127         <span class="keywordflow">if</span> (!isset($entities[$type])) <span class="keywordflow">return</span> FALSE;
+<a name="l00128"></a>00128         <span class="keywordflow">if</span> (!is_array($ids)) $ids=array($ids);
+<a name="l00129"></a>00129         $cursql=<span class="stringliteral">&quot;select * from &quot;</span>.$entities[$type][<span class="stringliteral">&#39;table&#39;</span>];
+<a name="l00130"></a>00130         <span class="keywordflow">if</span> (<span class="keyword">sizeof</span>($ids)&gt;0 &amp;&amp; $ids[0]&gt;0){
+<a name="l00131"></a>00131                 $cursql.=<span class="stringliteral">&quot; where id in (&quot;</span>.implode(<span class="stringliteral">&quot;,&quot;</span>, $ids).<span class="stringliteral">&quot;)&quot;</span>;
+<a name="l00132"></a>00132         }
+<a name="l00133"></a>00133         <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysql_query($cursql);
+<a name="l00134"></a>00134         <span class="keywordflow">if</span> (empty(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>)) <span class="keywordflow">return</span> FALSE;
+<a name="l00135"></a>00135         <span class="keywordflow">return</span> TRUE;
+<a name="l00136"></a>00136 }
+<a name="l00137"></a>00137 
+<a name="l00150"></a><a class="code" href="rdf_8inc_8php.html#ae4fd0b2214091d22d01543ad067d399b">00150</a> function <a class="code" href="rdf_8inc_8php.html#ae4fd0b2214091d22d01543ad067d399b" title="Generates RDF/XML for a particular entity.">generateEntityRDF</a>($row, $type){
+<a name="l00151"></a>00151         global <a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a>, <a class="code" href="datadump_8php.html#aef9cf198312d2f89238a8e8e2f0f67f3" title="A string containing the domain for generating RDF data. (public: publicly available myExperiment RDF ...">$domain</a>, <a class="code" href="data_8inc_8php.html#af11acd2654b41bde36cc9e8d38522ba2" title="An associative array mapping RDF properteries to their XML datatypes.">$datatypes</a>, <a class="code" href="data_8inc_8php.html#ab536a0d95f590a75a3a4e3228224e5eb" title="A multi-dimensional associative array specifying all the myExperiment entity types a particular piece...">$entities</a>, $mappings; 
+<a name="l00152"></a>00152         $template = $mappings[$type];
+<a name="l00153"></a>00153         <span class="keywordflow">if</span> (!is_array($template)) <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
+<a name="l00154"></a>00154         $idfield = array_search(<span class="stringliteral">&#39;url&#39;</span>,$template);
+<a name="l00155"></a>00155         $id = $row[$idfield];
+<a name="l00156"></a>00156         unset($template[$idfield]);
+<a name="l00157"></a>00157         $ontology_prefix = $entities[$type][<span class="stringliteral">&#39;ontology_prefix&#39;</span>];
+<a name="l00158"></a>00158         $full_entity = <span class="stringliteral">&quot;$ontology_prefix:$type&quot;</span>;
+<a name="l00159"></a>00159         $uri = <a class="code" href="property_8inc_8php.html#a5111c785fc992ce2d62ec8213ac3112b" title="Determine the URI for an entity from its type, ID and other fields retrieved from a database query...">getEntityURI</a>($type, $id ,$row);  
+<a name="l00160"></a>00160         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a> = <span class="stringliteral">&quot;  &lt;$full_entity rdf:about=\&quot;$uri\&quot;&gt;\n&quot;</span>;
+<a name="l00161"></a>00161         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a> .= <a class="code" href="rdf_8inc_8php.html#a622ea368e263ea1d8e6a34dac2b46144" title="Generate RDF/XML representing the foaf:homepage and dcterms:hasFormat(s) properties for a specified N...">getHomepageAndFormats</a>($uri, $type);
+<a name="l00162"></a>00162         <span class="keywordflow">foreach</span> ($template as $field =&gt; $property) {
+<a name="l00163"></a>00163                 <span class="keywordflow">switch</span> (substr($property, 0, 1)) {
+<a name="l00164"></a>00164                 <span class="keywordflow">case</span> <span class="charliteral">&#39;&lt;&#39;</span>:
+<a name="l00165"></a>00165                         <span class="keywordflow">if</span> (!isset($row[$field])) <span class="keywordflow">break</span>;
+<a name="l00166"></a>00166                         $row[$field]=<a class="code" href="xml_8inc_8php.html#aa545f6c86d33695e2d647b8b16262ace" title="Sanitizes and string so that it render as a value within some XML markup.">convertToXMLEntities</a>($row[$field]);
+<a name="l00167"></a>00167                         <span class="keywordflow">if</span> (isset($row[$field])){
+<a name="l00168"></a>00168                                 <span class="keywordflow">if</span> (isset($datatypes[substr($property, 1)])){
+<a name="l00169"></a>00169                                        <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#a2143761eab8b81032a8c868a68d2cc57" title="Generates RDF/XML for a property with an XML datatype.">printDatatypeProperty</a>(substr($property, 1),$row[$field]);
+<a name="l00170"></a>00170                                 }
+<a name="l00171"></a>00171                                 <span class="keywordflow">else</span>{
+<a name="l00172"></a>00172                                         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#a9124af813c21f0120d5a4833c15b9a24" title="Generates RDF/XML for a property by builidng a URI from optionally prepending $datauri and the URL su...">printEntityProperty</a>($field,substr($property, 1),$row[$field],<span class="stringliteral">&quot;NoDataURI&quot;</span>);
+<a name="l00173"></a>00173                                 }
+<a name="l00174"></a>00174                         }
+<a name="l00175"></a>00175                         <span class="keywordflow">break</span>;
+<a name="l00176"></a>00176                 <span class="keywordflow">case</span> <span class="charliteral">&#39;+&#39;</span>:
+<a name="l00177"></a>00177                         $propbits=explode(<span class="stringliteral">&quot;+&quot;</span>,$property);
+<a name="l00178"></a>00178                         array_shift($propbits);
+<a name="l00179"></a>00179                         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#a0e5e843889bcf2f79d691bbd38024b6d" title="Generate RDF/XML for a property by combining two or more database fields.">printCombinedProperty</a>($field,$propbits,$row);
+<a name="l00180"></a>00180                         <span class="keywordflow">break</span>;
+<a name="l00181"></a>00181                 <span class="keywordflow">case</span> <span class="charliteral">&#39;&amp;&#39;</span>:
+<a name="l00182"></a>00182                         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#a9124af813c21f0120d5a4833c15b9a24" title="Generates RDF/XML for a property by builidng a URI from optionally prepending $datauri and the URL su...">printEntityProperty</a>($field,substr($property,1),$row[$field]);
+<a name="l00183"></a>00183                         <span class="keywordflow">break</span>;
+<a name="l00184"></a>00184                 <span class="keywordflow">case</span> <span class="charliteral">&#39;@&#39;</span>:
+<a name="l00185"></a>00185                         <span class="keywordflow">if</span> (substr($property, 1, 1)==<span class="stringliteral">&quot;-&quot;</span>)  <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#ac6698ee2ffe671250c2f5d2a705fadaa" title="Generates RDF/XML for a property by building the value of the property by calling a particular functi...">printFunctionProperty</a>(substr($property,2),$row,<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;NoDataURI&quot;</span>);
+<a name="l00186"></a>00186                         elseif (substr($property, 1, 1)==<span class="stringliteral">&quot;&amp;&quot;</span>){
+<a name="l00187"></a>00187                                 <span class="keywordflow">if</span> (substr($property, 2, 1)==<span class="stringliteral">&quot;-&quot;</span>) <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#ac6698ee2ffe671250c2f5d2a705fadaa" title="Generates RDF/XML for a property by building the value of the property by calling a particular functi...">printFunctionProperty</a>(substr($property,3),$row,$type,<span class="stringliteral">&quot;NoDataURI&quot;</span>);
+<a name="l00188"></a>00188                                 elseif (substr($property, 2, 1)==<span class="stringliteral">&quot;%&quot;</span>) <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#ac6698ee2ffe671250c2f5d2a705fadaa" title="Generates RDF/XML for a property by building the value of the property by calling a particular functi...">printFunctionProperty</a>(substr($property,3),$row,$type,<span class="stringliteral">&quot;EncapsulatedObject&quot;</span>);
+<a name="l00189"></a>00189                                 <span class="keywordflow">else</span> <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#ac6698ee2ffe671250c2f5d2a705fadaa" title="Generates RDF/XML for a property by building the value of the property by calling a particular functi...">printFunctionProperty</a>(substr($property,2),$row,$type);
+<a name="l00190"></a>00190                         }
+<a name="l00191"></a>00191                         elseif (substr($property, 1, 1)==<span class="stringliteral">&quot;%&quot;</span>) <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#ac6698ee2ffe671250c2f5d2a705fadaa" title="Generates RDF/XML for a property by building the value of the property by calling a particular functi...">printFunctionProperty</a>(substr($property,2),$row,<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;EncapsulatedObject&quot;</span>);
+<a name="l00192"></a>00192                         <span class="keywordflow">else</span>{
+<a name="l00193"></a>00193                                 <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#ac6698ee2ffe671250c2f5d2a705fadaa" title="Generates RDF/XML for a property by building the value of the property by calling a particular functi...">printFunctionProperty</a>(substr($property,1),$row,<span class="stringliteral">&quot;&quot;</span>);
+<a name="l00194"></a>00194                         }
+<a name="l00195"></a>00195                         <span class="keywordflow">break</span>;
+<a name="l00196"></a>00196                 <span class="keywordflow">case</span> <span class="charliteral">&#39;-&#39;</span>:
+<a name="l00197"></a>00197                         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#a9124af813c21f0120d5a4833c15b9a24" title="Generates RDF/XML for a property by builidng a URI from optionally prepending $datauri and the URL su...">printEntityProperty</a>($field,$property,$row[$field],<span class="stringliteral">&quot;NoDataURI&quot;</span>);
+<a name="l00198"></a>00198                         <span class="keywordflow">break</span>;
+<a name="l00199"></a>00199                 <span class="keywordflow">default</span>:
+<a name="l00200"></a>00200                         <span class="keywordflow">if</span> (isset($row[$field])){
+<a name="l00201"></a>00201                                 <span class="keywordflow">if</span> (isset($datatypes[$property])){
+<a name="l00202"></a>00202                                         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#a2143761eab8b81032a8c868a68d2cc57" title="Generates RDF/XML for a property with an XML datatype.">printDatatypeProperty</a>($property,$row[$field]);
+<a name="l00203"></a>00203                                 }
+<a name="l00204"></a>00204                                 <span class="keywordflow">else</span>{
+<a name="l00205"></a>00205                                         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#a9124af813c21f0120d5a4833c15b9a24" title="Generates RDF/XML for a property by builidng a URI from optionally prepending $datauri and the URL su...">printEntityProperty</a>($field,$property,$row[$field],<span class="stringliteral">&quot;NoDataURI&quot;</span>);
+<a name="l00206"></a>00206                                 }       
+<a name="l00207"></a>00207                                 <span class="keywordflow">break</span>;
+<a name="l00208"></a>00208                         }
+<a name="l00209"></a>00209                 }       
+<a name="l00210"></a>00210         }
+<a name="l00211"></a>00211         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a> .= <span class="stringliteral">&quot;  &lt;/$full_entity&gt;\n\n&quot;</span>;
+<a name="l00212"></a>00212         <span class="keywordflow">return</span> <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>;
+<a name="l00213"></a>00213 }
+<a name="l00214"></a>00214 
+<a name="l00224"></a><a class="code" href="rdf_8inc_8php.html#acbd4feb9a01d9ddfa60eeb4298d7fa01">00224</a> function <a class="code" href="rdf_8inc_8php.html#acbd4feb9a01d9ddfa60eeb4298d7fa01" title="Get the ID field value from the database table of a version of a specified versioned entity...">getVersionID</a>(<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>){
+<a name="l00225"></a>00225         global <a class="code" href="data_8inc_8php.html#ab536a0d95f590a75a3a4e3228224e5eb" title="A multi-dimensional associative array specifying all the myExperiment entity types a particular piece...">$entities</a>, <a class="code" href="data_8inc_8php.html#a77de31c759b8ff4ccaa90c0d27bf9d25" title="An associative array mapping entity types in the database to myExperiment entity types (as defined wi...">$db_entity_mappings</a>;
+<a name="l00226"></a>00226         <span class="keywordflow">if</span> (!empty($db_entity_mappings[<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>[<span class="stringliteral">&#39;contributable_type&#39;</span>]])) {
+<a name="l00227"></a>00227                 $entity[<span class="stringliteral">&#39;contributable_type&#39;</span>] = $db_entity_mappings[$entity[<span class="stringliteral">&#39;contributable_type&#39;</span>]];
+<a name="l00228"></a>00228         }
+<a name="l00229"></a>00229         <span class="keywordflow">if</span> (empty($entities[$entity[<span class="stringliteral">&#39;contributable_type&#39;</span>]][<span class="stringliteral">&#39;version_entity&#39;</span>])) <span class="keywordflow">return</span>;
+<a name="l00230"></a>00230         $entity_version = $entities[$entities[$entity[<span class="stringliteral">&#39;contributable_type&#39;</span>]][<span class="stringliteral">&#39;version_entity&#39;</span>]];
+<a name="l00231"></a>00231         $version_sql = <span class="stringliteral">&quot;SELECT id FROM {$entity_version[&#39;table&#39;]} WHERE {$entity_version[&#39;parent_id&#39;]} = {$entity[&#39;contributable_id&#39;]} AND version = {$entity[&#39;contributable_version&#39;]}&quot;</span>;
+<a name="l00232"></a>00232         <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysql_query($version_sql);
+<a name="l00233"></a>00233         <span class="keywordflow">if</span> (mysql_num_rows(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>) == 0) {
+<a name="l00234"></a>00234                 <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
+<a name="l00235"></a>00235         }
+<a name="l00236"></a>00236         <span class="keywordflow">return</span> mysql_result(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>, 0, <span class="stringliteral">&#39;id&#39;</span>);
+<a name="l00237"></a>00237 }
+<a name="l00238"></a>00238 
+<a name="l00251"></a><a class="code" href="rdf_8inc_8php.html#a622ea368e263ea1d8e6a34dac2b46144">00251</a> function <a class="code" href="rdf_8inc_8php.html#a622ea368e263ea1d8e6a34dac2b46144" title="Generate RDF/XML representing the foaf:homepage and dcterms:hasFormat(s) properties for a specified N...">getHomepageAndFormats</a>($uri, $type){
+<a name="l00252"></a>00252         global <a class="code" href="data_8inc_8php.html#ab536a0d95f590a75a3a4e3228224e5eb" title="A multi-dimensional associative array specifying all the myExperiment entity types a particular piece...">$entities</a>;
+<a name="l00253"></a>00253         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00254"></a>00254         <span class="keywordflow">if</span> (!empty($entities[$type][<span class="stringliteral">&#39;homepage&#39;</span>])) <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a> .= <span class="stringliteral">&quot;    &lt;foaf:homepage rdf:resource=\&quot;${uri}.html\&quot;/&gt;\n&quot;</span>;
+<a name="l00255"></a>00255         <span class="keywordflow">if</span> (empty($entities[$type][<span class="stringliteral">&#39;no_rdf_uri&#39;</span>])) <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a> .= <span class="stringliteral">&quot;    &lt;dcterms:hasFormat rdf:resource=\&quot;${uri}.rdf\&quot;/&gt;\n&quot;</span>;
+<a name="l00256"></a>00256         <span class="keywordflow">if</span> (!empty($entities[$type][<span class="stringliteral">&#39;xml_service&#39;</span>])) <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a> .= <span class="stringliteral">&quot;    &lt;dcterms:hasFormat rdf:resource=\&quot;{$uri}.xml\&quot;/&gt;\n&quot;</span>;
+<a name="l00257"></a>00257         <span class="keywordflow">return</span> <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>;
+<a name="l00258"></a>00258 }
+<a name="l00259"></a>00259 
+<a name="l00275"></a><a class="code" href="rdf_8inc_8php.html#af752f46232808646741465aa901c0e2d">00275</a> function <a class="code" href="rdf_8inc_8php.html#af752f46232808646741465aa901c0e2d" title="Write to a local file the RDF/XML to represent the Dataflow for a specified WorkflowVersion.">writeDataflowToFile</a>($wfvid,$ent_uri,$fileloc,$mime_type){
+<a name="l00276"></a>00276         global <a class="code" href="defaultsettings_8inc_8php.html#a29cc3df12735f5a72e200a146c12801c" title="A string specifying where the myExperiment Ruby-on-Rails application resides if it is deployed locall...">$myexppath</a>, <a class="code" href="defaultsettings_8inc_8php.html#ac847774197c6eca188d3f656de541c1c" title="A string specifying the local filesystem path to the Rake command line interface.">$rakepath</a>, <a class="code" href="defaultsettings_8inc_8php.html#ac759ca70eafa8d888bb88bd6b50ff7ae" title="A string specifying the Rails environment under which to run Rake or any other Ruby-on-Rails applicat...">$rails_env</a>;
+<a name="l00277"></a>00277         require_once(<span class="stringliteral">&#39;xmlfunc.inc.php&#39;</span>);
+<a name="l00278"></a>00278         <a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>=popen(<span class="stringliteral">&quot;cd $myexppath; &quot;</span>.$rakepath.<span class="stringliteral">&quot;rake RAILS_ENV=$rails_env myexp:workflow:components ID=$wfvid | grep -v &#39;^(in&#39; 2&gt;/dev/null&quot;</span>,<span class="charliteral">&#39;r&#39;</span>);
+<a name="l00279"></a>00279         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00280"></a>00280         <span class="keywordflow">while</span>(!feof(<a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>)){
+<a name="l00281"></a>00281                 <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=fgets(<a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>);
+<a name="l00282"></a>00282         }
+<a name="l00283"></a>00283         fclose(<a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>);
+<a name="l00284"></a>00284         $parsedxml=<a class="code" href="xml_8inc_8php.html#a4e5d902d21dad2c18a8a57ab2b530fb0" title="Parses and XML string an returns an array-based representation of the XML. (Reverse of generateXML fu...">parseXML</a>(<a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>);
+<a name="l00285"></a>00285         $dataflows=<a class="code" href="xml_8inc_8php.html#ab16bf4372b36625a7800e3905043f3be" title="Generates a table of Dataflow components extracted from the following MIME type of Workflows applicat...">tabulateDataflowComponents</a>($parsedxml[0][<span class="stringliteral">&#39;children&#39;</span>][0][<span class="stringliteral">&#39;children&#39;</span>],$ent_uri,$mime_type);
+<a name="l00286"></a>00286         <a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>=fopen($fileloc,<span class="charliteral">&#39;w&#39;</span>);
+<a name="l00287"></a>00287         <span class="keywordflow">if</span> ($dataflows) fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<a class="code" href="property_8inc_8php.html#a34d5ac43005ae90fa67a66bdeba45464" title="Generate RDF/XML for the Dataflow (and potentially nested Dataflows thereof) of a particular Workflow...">generateDataflows</a>($dataflows,$ent_uri));
+<a name="l00288"></a>00288         <span class="keywordflow">else</span> fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<span class="stringliteral">&quot;NONE&quot;</span>);
+<a name="l00289"></a>00289         fclose(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>);
+<a name="l00290"></a>00290 }
+<a name="l00291"></a>00291 
+<a name="l00301"></a><a class="code" href="rdf_8inc_8php.html#afcf1afebe118660df754a7e3bb8a606c">00301</a> function <a class="code" href="rdf_8inc_8php.html#afcf1afebe118660df754a7e3bb8a606c" title="Retrieve the RDF/XML pre-generated for a specified WorkflowVersion&amp;#39;s Dataflow.">retrieveDataflowRDF</a>($id){
+<a name="l00302"></a>00302         global <a class="code" href="defaultsettings_8inc_8php.html#af7742a24d8c1298570a7364e0692709a" title="A string specifying the path where RDF and other data files generated by myExperiment Linked Data scr...">$datapath</a>;
+<a name="l00303"></a>00303         $filename=$datapath.<span class="stringliteral">&quot;dataflows/$id&quot;</span>;
+<a name="l00304"></a>00304         <span class="keywordflow">return</span> implode(<span class="stringliteral">&#39;&#39;</span>,file($filename));
+<a name="l00305"></a>00305 }
+<a name="l00306"></a>00306 
+<a name="l00316"></a><a class="code" href="rdf_8inc_8php.html#abf93d121be23c526d4b2a20d2ba0d859">00316</a> function <a class="code" href="rdf_8inc_8php.html#abf93d121be23c526d4b2a20d2ba0d859" title="Test whether based on parts of the path of the URI the entity is a Dataflow or not.">isDataflow</a>($params){
+<a name="l00317"></a>00317         <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&#39;dataflow&#39;</span>,$params)) <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00318"></a>00318         <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&#39;dataflows&#39;</span>,$params)) <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00319"></a>00319         <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00320"></a>00320 }
+<a name="l00321"></a>00321 
+<a name="l00331"></a><a class="code" href="rdf_8inc_8php.html#a729e817cdb3d8bcdc654fd49a254d559">00331</a> function <a class="code" href="rdf_8inc_8php.html#a729e817cdb3d8bcdc654fd49a254d559" title="Take an array of Dataflows and map their internal IDs the their URIs.">generateDataflowMappings</a>($dataflows){
+<a name="l00332"></a>00332         $dfmap=array();
+<a name="l00333"></a>00333         <span class="keywordflow">foreach</span>($dataflows as $dfuri =&gt; $df) $dfmap[$df[<span class="stringliteral">&#39;id&#39;</span>]]=$dfuri;
+<a name="l00334"></a>00334         <span class="keywordflow">return</span> $dfmap;
+<a name="l00335"></a>00335 }
 <a name="l00336"></a>00336 
-<a name="l00337"></a>00337         function varpageheader($namespaces){
-<a name="l00338"></a>00338                 $header=<span class="stringliteral">&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot; ?&gt;</span>
-<a name="l00339"></a>00339 <span class="stringliteral"></span>
-<a name="l00340"></a>00340 <span class="stringliteral">&lt;!DOCTYPE rdf:RDF [\n&quot;</span>;
-<a name="l00341"></a>00341                 <span class="keywordflow">foreach</span> ($namespaces as $ent =&gt; $ns){
-<a name="l00342"></a>00342                         $header.=<span class="stringliteral">&quot; &lt;!ENTITY $ent &#39;$ns&#39;&gt;\n&quot;</span>;
-<a name="l00343"></a>00343                 }
-<a name="l00344"></a>00344                 $header.=<span class="stringliteral">&quot;]&gt;\n\n&lt;rdf:RDF &quot;</span>;
-<a name="l00345"></a>00345                 $ents=array_keys($namespaces);
-<a name="l00346"></a>00346                 <span class="keywordflow">for</span> ($e=0; $e&lt;<span class="keyword">sizeof</span>($ents); $e++){
-<a name="l00347"></a>00347                         $header.=<span class="stringliteral">&quot;xmlns:$ents[$e]\t=\&quot;&amp;$ents[$e];\&quot;\n&quot;</span>;
-<a name="l00348"></a>00348                         <span class="keywordflow">if</span> ($e&lt;<span class="keyword">sizeof</span>($ents)-1) $header.=<span class="stringliteral">&quot;\t&quot;</span>;
-<a name="l00349"></a>00349                 }
-<a name="l00350"></a>00350                 $header.=<span class="stringliteral">&quot;&gt;\n&quot;</span>;
-<a name="l00351"></a>00351                 <span class="keywordflow">return</span> $header;
+<a name="l00346"></a><a class="code" href="rdf_8inc_8php.html#a85cc684b4b268d3774c0d37c2c129ad9">00346</a> function <a class="code" href="rdf_8inc_8php.html#a85cc684b4b268d3774c0d37c2c129ad9" title="Get the permissions associated with a specified Policy.">getPermissions</a>($policy_id){
+<a name="l00347"></a>00347         $permsql=<span class="stringliteral">&quot;select * from permissions where policy_id=&quot;</span>.$policy_id;
+<a name="l00348"></a>00348         $permres=mysql_query($permsql);
+<a name="l00349"></a>00349         $perms=array();
+<a name="l00350"></a>00350         <span class="keywordflow">for</span> (<a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>=0; <a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>&lt;mysql_num_rows($permres); <a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>++){
+<a name="l00351"></a>00351                 $perms[<a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>]=mysql_fetch_array($permres);
 <a name="l00352"></a>00352         }
-<a name="l00353"></a>00353         function ontologypageheader($ontology){
-<a name="l00354"></a>00354                 $namespaces[<span class="stringliteral">&#39;rdf&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;</span>;
-<a name="l00355"></a>00355                 $namespaces[<span class="stringliteral">&#39;rdfs&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/2000/01/rdf-schema#&#39;</span>;
-<a name="l00356"></a>00356                 $namespaces[<span class="stringliteral">&#39;owl&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/2002/07/owl#&#39;</span>;
-<a name="l00357"></a>00357                 $namespaces[<span class="stringliteral">&#39;dc&#39;</span>]=<span class="stringliteral">&#39;http://purl.org/dc/elements/1.1/&#39;</span>;
-<a name="l00358"></a>00358                 $namespaces[<span class="stringliteral">&#39;dcterms&#39;</span>]=<span class="stringliteral">&#39;http://purl.org/dc/terms/&#39;</span>;
-<a name="l00359"></a>00359                 $namespaces[<span class="stringliteral">&#39;xsd&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/2001/XMLSchema#&#39;</span>;
-<a name="l00360"></a>00360                 $namespaces[$ontology[<span class="stringliteral">&#39;prefix&#39;</span>]]=$ontology[<span class="stringliteral">&#39;uri&#39;</span>].<span class="stringliteral">&quot;/&quot;</span>;
-<a name="l00361"></a>00361                 <span class="keywordflow">return</span> varpageheader($namespaces);
-<a name="l00362"></a>00362         }       
-<a name="l00363"></a>00363 
-<a name="l00364"></a>00364         function pageheader($namespaces=array()){
-<a name="l00365"></a>00365                 global $ontopath;
-<a name="l00366"></a>00366                 $namespaces[<span class="stringliteral">&#39;mebase&#39;</span>]=$ontopath.<span class="stringliteral">&#39;base/&#39;</span>;
-<a name="l00367"></a>00367                 $namespaces[<span class="stringliteral">&#39;meac&#39;</span>]=$ontopath.<span class="stringliteral">&#39;attrib_credit/&#39;</span>;
-<a name="l00368"></a>00368                 $namespaces[<span class="stringliteral">&#39;meannot&#39;</span>]=$ontopath.<span class="stringliteral">&#39;annotations/&#39;</span>;
-<a name="l00369"></a>00369                 $namespaces[<span class="stringliteral">&#39;mepack&#39;</span>]=$ontopath.<span class="stringliteral">&#39;packs/&#39;</span>;
-<a name="l00370"></a>00370                 $namespaces[<span class="stringliteral">&#39;meexp&#39;</span>]=$ontopath.<span class="stringliteral">&#39;experiments/&#39;</span>;
-<a name="l00371"></a>00371                 $namespaces[<span class="stringliteral">&#39;mecontrib&#39;</span>]=$ontopath.<span class="stringliteral">&#39;contributions/&#39;</span>;
-<a name="l00372"></a>00372                 $namespaces[<span class="stringliteral">&#39;mevd&#39;</span>]=$ontopath.<span class="stringliteral">&#39;viewings_downloads/&#39;</span>;
-<a name="l00373"></a>00373                 $namespaces[<span class="stringliteral">&#39;mecomp&#39;</span>]=$ontopath.<span class="stringliteral">&#39;components/&#39;</span>;
-<a name="l00374"></a>00374                 $namespaces[<span class="stringliteral">&#39;mespec&#39;</span>]=$ontopath.<span class="stringliteral">&#39;specific/&#39;</span>;
-<a name="l00375"></a>00375                 $namespaces[<span class="stringliteral">&#39;rdf&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;</span>;
-<a name="l00376"></a>00376                 $namespaces[<span class="stringliteral">&#39;rdfs&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/2000/01/rdf-schema#&#39;</span>;
-<a name="l00377"></a>00377                 $namespaces[<span class="stringliteral">&#39;owl&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/2002/07/owl#&#39;</span>;
-<a name="l00378"></a>00378                 $namespaces[<span class="stringliteral">&#39;dc&#39;</span>]=<span class="stringliteral">&#39;http://purl.org/dc/elements/1.1/&#39;</span>;
-<a name="l00379"></a>00379                 $namespaces[<span class="stringliteral">&#39;dcterms&#39;</span>]=<span class="stringliteral">&#39;http://purl.org/dc/terms/&#39;</span>;
-<a name="l00380"></a>00380                 $namespaces[<span class="stringliteral">&#39;cc&#39;</span>]=<span class="stringliteral">&#39;http://creativecommons.org/ns#&#39;</span>;
-<a name="l00381"></a>00381                 $namespaces[<span class="stringliteral">&#39;foaf&#39;</span>]=<span class="stringliteral">&#39;http://xmlns.com/foaf/0.1/&#39;</span>;
-<a name="l00382"></a>00382                 $namespaces[<span class="stringliteral">&#39;sioc&#39;</span>]=<span class="stringliteral">&#39;http://rdfs.org/sioc/ns#&#39;</span>;
-<a name="l00383"></a>00383                 $namespaces[<span class="stringliteral">&#39;skos&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/2004/02/skos/core#&#39;</span>;
-<a name="l00384"></a>00384                 $namespaces[<span class="stringliteral">&#39;ore&#39;</span>]=<span class="stringliteral">&#39;http://www.openarchives.org/ore/terms/&#39;</span>;
-<a name="l00385"></a>00385                 $namespaces[<span class="stringliteral">&#39;dbpedia&#39;</span>]=<span class="stringliteral">&#39;http://dbpedia.org/ontology/&#39;</span>;
-<a name="l00386"></a>00386                 $namespaces[<span class="stringliteral">&#39;snarm&#39;</span>]=$ontopath.<span class="stringliteral">&#39;snarm/&#39;</span>;
-<a name="l00387"></a>00387                 $namespaces[<span class="stringliteral">&#39;xsd&#39;</span>]=<span class="stringliteral">&#39;http://www.w3.org/2001/XMLSchema#&#39;</span>;
-<a name="l00388"></a>00388                 <span class="keywordflow">return</span> varpageheader($namespaces);
-<a name="l00389"></a>00389         }
-<a name="l00390"></a>00390         function pagefooter(){
-<a name="l00391"></a>00391                 <span class="keywordflow">return</span> <span class="stringliteral">&quot;&lt;/rdf:RDF&gt;&quot;</span>;
-<a name="l00392"></a>00392         }
-<a name="l00393"></a>00393         function rdffiledescription($url){
-<a name="l00394"></a>00394                 <span class="keywordflow">return</span> <span class="stringliteral">&quot;  &lt;rdf:Description rdf:about=\&quot;$url.rdf\&quot;&gt;\n    &lt;foaf:primaryTopic rdf:resource=\&quot;$url\&quot;/&gt;\n  &lt;/rdf:Description&gt;\n\n&quot;</span>;
-<a name="l00395"></a>00395         }
-<a name="l00396"></a>00396 
-<a name="l00397"></a>00397 
-<a name="l00398"></a>00398 ?&gt;
+<a name="l00353"></a>00353         <span class="keywordflow">return</span> $perms;
+<a name="l00354"></a>00354 }
+<a name="l00355"></a>00355 
+<a name="l00365"></a><a class="code" href="rdf_8inc_8php.html#a4542f26f96fe3106d064da119bdb5d92">00365</a> function <a class="code" href="rdf_8inc_8php.html#a4542f26f96fe3106d064da119bdb5d92" title="Get the share and update modes for the Policy of a specified Contribution.">addShareAndUpdateMode</a>($contrib){
+<a name="l00366"></a>00366         $policysql=<span class="stringliteral">&quot;select share_mode, update_mode from policies where id =&quot;</span>.$contrib[<span class="stringliteral">&#39;policy_id&#39;</span>];
+<a name="l00367"></a>00367         $pres=mysql_query($policysql);
+<a name="l00368"></a>00368         $contrib[<span class="stringliteral">&#39;share_mode&#39;</span>]=mysql_result($pres,0,<span class="stringliteral">&#39;share_mode&#39;</span>);
+<a name="l00369"></a>00369         $contrib[<span class="stringliteral">&#39;update_mode&#39;</span>]=mysql_result($pres,0,<span class="stringliteral">&#39;update_mode&#39;</span>);
+<a name="l00370"></a>00370         <span class="keywordflow">return</span> $contrib;
+<a name="l00371"></a>00371 }
+<a name="l00372"></a>00372 
+<a name="l00382"></a><a class="code" href="rdf_8inc_8php.html#a11be21d7a973493c55c07a641155396a">00382</a> function <a class="code" href="rdf_8inc_8php.html#a11be21d7a973493c55c07a641155396a" title="Determine whether the User requesting RDF has permission to download a specific downloadable entity...">canUserDownload</a>(<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>){
+<a name="l00383"></a>00383         global $rdfgen_userid, <a class="code" href="defaultsettings_8inc_8php.html#a57c4524da04a2cc05251c8715b9c4a32" title="A boolean specifying whether rake can be invoked to retrieve data from a Ruby-on-Rail application...">$use_rake</a>;
+<a name="l00384"></a>00384         <span class="keywordflow">if</span> (!$use_rake) <span class="keywordflow">return</span> TRUE;
+<a name="l00385"></a>00385         <span class="keywordflow">if</span> (<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>[<span class="stringliteral">&#39;contributor_type&#39;</span>] != <span class="stringliteral">&#39;User&#39;</span>) <span class="keywordflow">return</span> FALSE;
+<a name="l00386"></a>00386         <span class="keywordflow">if</span> ($rdfgen_userid == <a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>[<span class="stringliteral">&#39;contributor_id&#39;</span>]) <span class="keywordflow">return</span> TRUE;
+<a name="l00387"></a>00387         elseif (<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>[<span class="stringliteral">&#39;share_mode&#39;</span>] == 0) <span class="keywordflow">return</span> TRUE;
+<a name="l00388"></a>00388         elseif (in_array(<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>[<span class="stringliteral">&#39;share_mode&#39;</span>],array(1,3))){
+<a name="l00389"></a>00389                 $friendship_sql = <span class="stringliteral">&quot;SELECT * FROM friendships WHERE accepted_at IS NOT NULL AND (user_id = $entity[contributor_id] OR friend_id = $entity[contributor_id]) AND (user_id = $rdfgen_userid OR friend_id = $rdfgen_userid)&quot;</span>;  
+<a name="l00390"></a>00390                 <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysql_query($friendship_sql);
+<a name="l00391"></a>00391                 <span class="keywordflow">if</span> (mysql_num_rows($res2)&gt;0) <span class="keywordflow">return</span> TRUE;
+<a name="l00392"></a>00392         }                       
+<a name="l00393"></a>00393         <span class="keywordflow">else</span>{
+<a name="l00394"></a>00394                 $membership_sql = <span class="stringliteral">&quot;SELECT * FROM memberships WHERE network_id IN (SELECT contributor_id FROM permissions WHERE policy_id = &quot;</span>.$entity[<span class="stringliteral">&#39;policy_id&#39;</span>].<span class="stringliteral">&quot; AND contributor_type = &#39;Network&#39; AND download = 1) AND user_id = $rdfgen_userid&quot;</span>;
+<a name="l00395"></a>00395                 <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysql_query($membership_sql);
+<a name="l00396"></a>00396                 <span class="keywordflow">if</span> (mysql_num_rows(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>)&gt;0) <span class="keywordflow">return</span> TRUE;
+<a name="l00397"></a>00397         }
+<a name="l00398"></a>00398         <span class="keywordflow">return</span> FALSE;
+<a name="l00399"></a>00399 }
+<a name="l00400"></a>00400 
+<a name="l00416"></a><a class="code" href="rdf_8inc_8php.html#a0e5e843889bcf2f79d691bbd38024b6d">00416</a> function <a class="code" href="rdf_8inc_8php.html#a0e5e843889bcf2f79d691bbd38024b6d" title="Generate RDF/XML for a property by combining two or more database fields.">printCombinedProperty</a>($field,$property,<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>){
+<a name="l00417"></a>00417         global <a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a>, <a class="code" href="data_8inc_8php.html#ab536a0d95f590a75a3a4e3228224e5eb" title="A multi-dimensional associative array specifying all the myExperiment entity types a particular piece...">$entities</a>, <a class="code" href="data_8inc_8php.html#a77de31c759b8ff4ccaa90c0d27bf9d25" title="An associative array mapping entity types in the database to myExperiment entity types (as defined wi...">$db_entity_mappings</a>;
+<a name="l00418"></a>00418         $url_subpath = $entities[$db_entity_mappings[<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>[$field]]][<span class="stringliteral">&#39;url_subpath&#39;</span>];
+<a name="l00419"></a>00419         $pbits=explode(<span class="charliteral">&#39;|&#39;</span>,$property[<span class="keyword">sizeof</span>($property)-1]);
+<a name="l00420"></a>00420         <span class="keywordflow">if</span> (<span class="keyword">sizeof</span>($property)&gt;1)$uri=$datauri.$url_subpath.<span class="stringliteral">&quot;/&quot;</span>.$entity[$property[0]];
+<a name="l00421"></a>00421         <span class="keywordflow">else</span> $uri=$datauri.$url_subpath.<span class="stringliteral">&quot;/&quot;</span>.$entity[$pbits[0]];
+<a name="l00422"></a>00422         <span class="keywordflow">if</span> (!empty($entity[$pbits[0]]) &amp;&amp; preg_match(<span class="stringliteral">&#39;/workflow_version/&#39;</span>,$pbits[0])){
+<a name="l00423"></a>00423                 $uri=$datauri.<span class="stringliteral">&quot;workflows/&quot;</span>.$entity[$field].<span class="stringliteral">&quot;/versions/&quot;</span>.$entity[$pbits[0]];
+<a name="l00424"></a>00424         }
+<a name="l00425"></a>00425         $nsandp=$pbits[1];
+<a name="l00426"></a>00426         <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>=<span class="stringliteral">&quot;    &lt;$nsandp rdf:resource=\&quot;$uri\&quot;/&gt;\n&quot;</span>;
+<a name="l00427"></a>00427         <span class="keywordflow">return</span> <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>;
+<a name="l00428"></a>00428 }
+<a name="l00429"></a>00429 
+<a name="l00450"></a><a class="code" href="rdf_8inc_8php.html#a9124af813c21f0120d5a4833c15b9a24">00450</a> function <a class="code" href="rdf_8inc_8php.html#a9124af813c21f0120d5a4833c15b9a24" title="Generates RDF/XML for a property by builidng a URI from optionally prepending $datauri and the URL su...">printEntityProperty</a>($field, $property, $value, $msg=<span class="stringliteral">&quot;&quot;</span>) {
+<a name="l00451"></a>00451         global <a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a>, <a class="code" href="data_8inc_8php.html#ab536a0d95f590a75a3a4e3228224e5eb" title="A multi-dimensional associative array specifying all the myExperiment entity types a particular piece...">$entities</a>, <a class="code" href="data_8inc_8php.html#a77de31c759b8ff4ccaa90c0d27bf9d25" title="An associative array mapping entity types in the database to myExperiment entity types (as defined wi...">$db_entity_mappings</a>;
+<a name="l00452"></a>00452         $msgs=explode(<span class="stringliteral">&quot;,&quot;</span>,$msg);
+<a name="l00453"></a>00453         <span class="keywordflow">if</span> ($value){
+<a name="l00454"></a>00454                 $pbits=explode(<span class="charliteral">&#39;|&#39;</span>,$property);
+<a name="l00455"></a>00455                 <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&quot;NoDataURI&quot;</span>,$msgs)){
+<a name="l00456"></a>00456                         $uri=$value;
+<a name="l00457"></a>00457                         $nsandp=$pbits[0];
+<a name="l00458"></a>00458                 }
+<a name="l00459"></a>00459                 <span class="keywordflow">else</span>{
+<a name="l00460"></a>00460                         $url_subpath=$entities[$pbits[0]][<span class="stringliteral">&#39;url_subpath&#39;</span>];
+<a name="l00461"></a>00461                         $uri=$datauri.$url_subpath.<span class="stringliteral">&quot;/&quot;</span>.$value;
+<a name="l00462"></a>00462                         $nsandp=$pbits[1];
+<a name="l00463"></a>00463                 }
+<a name="l00464"></a>00464                 $uri=str_replace(<span class="stringliteral">&quot;&amp;&quot;</span>,<span class="stringliteral">&quot;&amp;amp;&quot;</span>,$uri);
+<a name="l00465"></a>00465                 <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>=<span class="stringliteral">&quot;    &lt;$nsandp rdf:resource=\&quot;$uri\&quot;/&gt;\n&quot;</span>;
+<a name="l00466"></a>00466                 <span class="keywordflow">return</span> <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>;
+<a name="l00467"></a>00467         }
+<a name="l00468"></a>00468 }
+<a name="l00469"></a>00469 
+<a name="l00490"></a><a class="code" href="rdf_8inc_8php.html#ac6698ee2ffe671250c2f5d2a705fadaa">00490</a> function <a class="code" href="rdf_8inc_8php.html#ac6698ee2ffe671250c2f5d2a705fadaa" title="Generates RDF/XML for a property by building the value of the property by calling a particular functi...">printFunctionProperty</a>($property, <a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>, $type=<span class="stringliteral">&quot;&quot;</span>, $msg=<span class="stringliteral">&quot;&quot;</span>){
+<a name="l00491"></a>00491         global <a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a>, <a class="code" href="data_8inc_8php.html#af11acd2654b41bde36cc9e8d38522ba2" title="An associative array mapping RDF properteries to their XML datatypes.">$datatypes</a>;
+<a name="l00492"></a>00492         $pbits=explode(<span class="charliteral">&#39;|&#39;</span>,$property);
+<a name="l00493"></a>00493         <span class="keywordflow">if</span> (isset($msg) &amp;&amp; is_string($msg)&gt;0) $msgs=explode(<span class="stringliteral">&quot;,&quot;</span>,$msg);
+<a name="l00494"></a>00494         <span class="keywordflow">else</span> $msgs=array();
+<a name="l00495"></a>00495         <span class="keywordflow">if</span> (!empty($type)) $value=call_user_func($pbits[0], <a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>, $type);
+<a name="l00496"></a>00496         <span class="keywordflow">else</span> $value=call_user_func($pbits[0], <a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>);
+<a name="l00497"></a>00497         <span class="keywordflow">if</span> (empty($pbits[1])) <span class="keywordflow">return</span> $value;
+<a name="l00498"></a>00498         elseif (in_array(<span class="stringliteral">&quot;EncapsulatedObject&quot;</span>,$msgs)){
+<a name="l00499"></a>00499                 $nsandp=$pbits[1];
+<a name="l00500"></a>00500                 <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00501"></a>00501                 <span class="keywordflow">if</span> (!empty($value)){
+<a name="l00502"></a>00502                         <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>=<span class="stringliteral">&quot;    &lt;$nsandp&gt;\n      $value\n    &lt;/$nsandp&gt;\n&quot;</span>;
+<a name="l00503"></a>00503                 }
+<a name="l00504"></a>00504                 <span class="keywordflow">return</span> <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>;
+<a name="l00505"></a>00505         }
+<a name="l00506"></a>00506         elseif (array_key_exists($pbits[1],$datatypes) &amp;&amp; $datatypes[$pbits[1]]!=<span class="stringliteral">&quot;&quot;</span>){
+<a name="l00507"></a>00507                 <a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00508"></a>00508                 <span class="keywordflow">return</span> <a class="code" href="rdf_8inc_8php.html#a2143761eab8b81032a8c868a68d2cc57" title="Generates RDF/XML for a property with an XML datatype.">printDatatypeProperty</a>($pbits[1],$value,<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>);
+<a name="l00509"></a>00509         }
+<a name="l00510"></a>00510         <span class="keywordflow">else</span>{
+<a name="l00511"></a>00511                 <span class="keywordflow">if</span> (in_array(<span class="stringliteral">&quot;NoDataURI&quot;</span>,$msgs)) $uri=$value;
+<a name="l00512"></a>00512                 <span class="keywordflow">else</span> $uri=$datauri.$value;
+<a name="l00513"></a>00513                 $nsandp=$pbits[1];
+<a name="l00514"></a>00514                 <span class="keywordflow">if</span> ($uri) <span class="keywordflow">return</span> <span class="stringliteral">&quot;    &lt;$nsandp rdf:resource=\&quot;$uri\&quot;/&gt;\n&quot;</span>;
+<a name="l00515"></a>00515                 <span class="keywordflow">return</span>;
+<a name="l00516"></a>00516         }
+<a name="l00517"></a>00517 }       
+<a name="l00518"></a>00518 
+<a name="l00533"></a><a class="code" href="rdf_8inc_8php.html#a2143761eab8b81032a8c868a68d2cc57">00533</a> function <a class="code" href="rdf_8inc_8php.html#a2143761eab8b81032a8c868a68d2cc57" title="Generates RDF/XML for a property with an XML datatype.">printDatatypeProperty</a>($property,$value){
+<a name="l00534"></a>00534         global <a class="code" href="data_8inc_8php.html#af11acd2654b41bde36cc9e8d38522ba2" title="An associative array mapping RDF properteries to their XML datatypes.">$datatypes</a>;
+<a name="l00535"></a>00535         $value=<a class="code" href="xml_8inc_8php.html#aa545f6c86d33695e2d647b8b16262ace" title="Sanitizes and string so that it render as a value within some XML markup.">convertToXMLEntities</a>($value);
+<a name="l00536"></a>00536         <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00537"></a>00537         <span class="keywordflow">if</span> (($datatypes[$property]==<span class="stringliteral">&quot;nonNegativeInteger&quot;</span> || $datatypes[$property]==<span class="stringliteral">&quot;boolean&quot;</span>) &amp;&amp; !$value) $value=<span class="stringliteral">&quot;0&quot;</span>;
+<a name="l00538"></a>00538         elseif ($datatypes[$property]==<span class="stringliteral">&quot;dateTime&quot;</span>){
+<a name="l00539"></a>00539                 $value=str_replace(<span class="stringliteral">&quot; &quot;</span>,<span class="stringliteral">&quot;T&quot;</span>,$value);
+<a name="l00540"></a>00540                 <span class="keywordflow">if</span> ($value) $value.=<span class="stringliteral">&quot;Z&quot;</span>;
+<a name="l00541"></a>00541         }
+<a name="l00542"></a>00542         $nsandp=$property;                      
+<a name="l00543"></a>00543         <span class="keywordflow">if</span> ($datatypes[$property]!=<span class="stringliteral">&quot;base64Binary&quot;</span>){
+<a name="l00544"></a>00544 <span class="comment">//              error_log(&quot;$property := $value&quot;);</span>
+<a name="l00545"></a>00545                 <span class="keywordflow">if</span> ($value || $datatypes[$property]==<span class="stringliteral">&quot;boolean&quot;</span> || $datatypes[$property]==<span class="stringliteral">&quot;nonNegativeInteger&quot;</span>){
+<a name="l00546"></a>00546                         <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>=<span class="stringliteral">&quot;    &lt;$nsandp&quot;</span>; 
+<a name="l00547"></a>00547                         <span class="keywordflow">if</span> ($datatypes[$property]) <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>.=<span class="stringliteral">&quot; rdf:datatype=\&quot;&amp;xsd;&quot;</span>.$datatypes[$property].<span class="stringliteral">&quot;\&quot;&quot;</span>;
+<a name="l00548"></a>00548                         <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>.=<span class="stringliteral">&quot;&gt;&quot;</span>.trim($value).<span class="stringliteral">&quot;&lt;/$nsandp&gt;\n&quot;</span>;
+<a name="l00549"></a>00549                 }
+<a name="l00550"></a>00550                 <span class="keywordflow">if</span> (($nsandp==<span class="stringliteral">&quot;mevd:viewed&quot;</span> || $nsandp==<span class="stringliteral">&quot;mevd:downloaded&quot;</span>) &amp;&amp; $value==0) <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00551"></a>00551         }
+<a name="l00552"></a>00552         <span class="keywordflow">else</span>{
+<a name="l00553"></a>00553                 <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>=<span class="stringliteral">&quot;    &lt;$nsandp&quot;</span>; 
+<a name="l00554"></a>00554                 <span class="keywordflow">if</span> ($datatypes[$property]) <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>.=<span class="stringliteral">&quot; rdf:datatype=\&quot;&amp;xsd;&quot;</span>.$datatypes[$property].<span class="stringliteral">&quot;\&quot;&quot;</span>;
+<a name="l00555"></a>00555                 <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>.=<span class="stringliteral">&quot;&gt;&quot;</span>.trim(base64_encode($value)).<span class="stringliteral">&quot;&lt;/$nsandp&gt;\n&quot;</span>;
+<a name="l00556"></a>00556         }
+<a name="l00557"></a>00557         <span class="keywordflow">return</span> <a class="code" href="listGraphs_8php.html#a52f469b0182d9abac2d0f20548680c9c" title="A chunk of data return as part of the SPARQL results XML.">$line</a>;
+<a name="l00558"></a>00558 }
+<a name="l00559"></a>00559 
+<a name="l00569"></a><a class="code" href="rdf_8inc_8php.html#ab3b4a44c15404d629760a1fecc2c1d9a">00569</a> function <a class="code" href="rdf_8inc_8php.html#ab3b4a44c15404d629760a1fecc2c1d9a" title="Generate the header for an RDF/XML document based on a specified set of namespaces.">generateSpecificRDFHeader</a>($namespaces){
+<a name="l00570"></a>00570         $header=<span class="stringliteral">&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot; ?&gt;</span>
+<a name="l00571"></a>00571 <span class="stringliteral"></span>
+<a name="l00572"></a>00572 <span class="stringliteral">&lt;!DOCTYPE rdf:RDF [\n&quot;</span>;
+<a name="l00573"></a>00573         <span class="keywordflow">foreach</span> ($namespaces as $ent =&gt; $ns){
+<a name="l00574"></a>00574                 $header.=<span class="stringliteral">&quot; &lt;!ENTITY $ent &#39;$ns&#39;&gt;\n&quot;</span>;
+<a name="l00575"></a>00575         }
+<a name="l00576"></a>00576         $header.=<span class="stringliteral">&quot;]&gt;\n\n&lt;rdf:RDF &quot;</span>;
+<a name="l00577"></a>00577         $ents=array_keys($namespaces);
+<a name="l00578"></a>00578         <span class="keywordflow">for</span> ($e=0; $e&lt;<span class="keyword">sizeof</span>($ents); $e++){
+<a name="l00579"></a>00579                 $header.=<span class="stringliteral">&quot;xmlns:$ents[$e]\t=\&quot;&amp;$ents[$e];\&quot;\n&quot;</span>;
+<a name="l00580"></a>00580                 <span class="keywordflow">if</span> ($e&lt;<span class="keyword">sizeof</span>($ents)-1) $header.=<span class="stringliteral">&quot;\t&quot;</span>;
+<a name="l00581"></a>00581         }
+<a name="l00582"></a>00582         $header.=<span class="stringliteral">&quot;&gt;\n&quot;</span>;
+<a name="l00583"></a>00583         <span class="keywordflow">return</span> $header;
+<a name="l00584"></a>00584 }
+<a name="l00585"></a>00585 
+<a name="l00595"></a><a class="code" href="rdf_8inc_8php.html#a17bb0f5a3a3cf6bea2fb2c5c49376801">00595</a> function <a class="code" href="rdf_8inc_8php.html#a17bb0f5a3a3cf6bea2fb2c5c49376801" title="Generate the header for an RDF/XML document including only those namespaces required when defining a ...">generateOntologyRDFHeader</a>(<a class="code" href="generic__spec_8php.html#a2121a20e6bac58d008dc60ae13902c12" title="A string specifying the ID of the current ontology specified in the HTML Specification Document gener...">$ontology</a>){
+<a name="l00596"></a>00596         global <a class="code" href="data_8inc_8php.html#a26c604d920ed171a1a5435b949dfc62b" title="An asssociative array mapping namespace prefixes to their full URIs.">$namespace_prefixes</a>;
+<a name="l00597"></a>00597         <span class="keywordflow">foreach</span> (array(<span class="stringliteral">&#39;rdf&#39;</span>, <span class="stringliteral">&#39;rdfs&#39;</span>, <span class="stringliteral">&#39;owl&#39;</span>, <span class="stringliteral">&#39;dc&#39;</span>, <span class="stringliteral">&#39;dcterms&#39;</span>, <span class="stringliteral">&#39;xsd&#39;</span>) as $prefix) {
+<a name="l00598"></a>00598                 $pageheader_namespaces[$prefix] = $namespace_prefixes[$prefix];
+<a name="l00599"></a>00599         }
+<a name="l00600"></a>00600         $pageheader_namespaces[<a class="code" href="generic__spec_8php.html#a2121a20e6bac58d008dc60ae13902c12" title="A string specifying the ID of the current ontology specified in the HTML Specification Document gener...">$ontology</a>[<span class="stringliteral">&#39;prefix&#39;</span>]]=$ontology[<span class="stringliteral">&#39;uri&#39;</span>].<span class="stringliteral">&quot;/&quot;</span>;
+<a name="l00601"></a>00601         <span class="keywordflow">return</span> <a class="code" href="rdf_8inc_8php.html#ab3b4a44c15404d629760a1fecc2c1d9a" title="Generate the header for an RDF/XML document based on a specified set of namespaces.">generateSpecificRDFHeader</a>($pageheader_namespaces);
+<a name="l00602"></a>00602 }       
+<a name="l00603"></a>00603 
+<a name="l00613"></a><a class="code" href="rdf_8inc_8php.html#a8638510768d37daadae247e349733e63">00613</a> function <a class="code" href="rdf_8inc_8php.html#a8638510768d37daadae247e349733e63" title="Generate the header for an RDF/XML document including those namespaces required when defining all myE...">generateGenericRDFHeader</a>($namespaces=array()){
+<a name="l00614"></a>00614         global <a class="code" href="data_8inc_8php.html#a26c604d920ed171a1a5435b949dfc62b" title="An asssociative array mapping namespace prefixes to their full URIs.">$namespace_prefixes</a>;
+<a name="l00615"></a>00615         <span class="keywordflow">foreach</span> (array(<span class="stringliteral">&#39;mebase&#39;</span>, <span class="stringliteral">&#39;meac&#39;</span>, <span class="stringliteral">&#39;meannot&#39;</span>, <span class="stringliteral">&#39;mepack&#39;</span>, <span class="stringliteral">&#39;meexp&#39;</span>, <span class="stringliteral">&#39;mecontrib&#39;</span>, <span class="stringliteral">&#39;mevd&#39;</span>, <span class="stringliteral">&#39;mecomp&#39;</span>, <span class="stringliteral">&#39;mespec&#39;</span>, <span class="stringliteral">&#39;rdf&#39;</span>, <span class="stringliteral">&#39;rdfs&#39;</span>, <span class="stringliteral">&#39;owl&#39;</span>, <span class="stringliteral">&#39;dc&#39;</span>, <span class="stringliteral">&#39;dcterms&#39;</span>, <span class="stringliteral">&#39;cc&#39;</span>, <span class="stringliteral">&#39;foaf&#39;</span>, <span class="stringliteral">&#39;sioc&#39;</span>, <span class="stringliteral">&#39;skos&#39;</span>, <span class="stringliteral">&#39;ore&#39;</span>, <span class="stringliteral">&#39;dbpedia&#39;</span>, <span class="stringliteral">&#39;snarm&#39;</span>, <span class="stringliteral">&#39;xsd&#39;</span>) as $prefix) {
+<a name="l00616"></a>00616                 $namespaces[$prefix] = $namespace_prefixes[$prefix];
+<a name="l00617"></a>00617         }
+<a name="l00618"></a>00618         <span class="keywordflow">return</span> <a class="code" href="rdf_8inc_8php.html#ab3b4a44c15404d629760a1fecc2c1d9a" title="Generate the header for an RDF/XML document based on a specified set of namespaces.">generateSpecificRDFHeader</a>($namespaces);
+<a name="l00619"></a>00619 }
+<a name="l00620"></a>00620 
+<a name="l00627"></a><a class="code" href="rdf_8inc_8php.html#ad5e33ca6c3c65e91d5b788e26c6e0c21">00627</a> function <a class="code" href="rdf_8inc_8php.html#ad5e33ca6c3c65e91d5b788e26c6e0c21" title="Generate the footer for an RDF/XML document. (I.e. close the rdf:RDF tag).">generateRDFFooter</a>(){
+<a name="l00628"></a>00628         <span class="keywordflow">return</span> <span class="stringliteral">&quot;&lt;/rdf:RDF&gt;&quot;</span>;
+<a name="l00629"></a>00629 }
+<a name="l00630"></a>00630 
+<a name="l00640"></a><a class="code" href="rdf_8inc_8php.html#a8949ebe0070c577df9cf6faa6cf6bcc3">00640</a> function <a class="code" href="rdf_8inc_8php.html#a8949ebe0070c577df9cf6faa6cf6bcc3" title="Generate an RDF description entity to describe an RDF/XML document for an entity with a specified URI...">generateRDFFileDescription</a>($uri){
+<a name="l00641"></a>00641         <span class="keywordflow">return</span> <span class="stringliteral">&quot;  &lt;rdf:Description rdf:about=\&quot;$uri.rdf\&quot;&gt;\n    &lt;foaf:primaryTopic rdf:resource=\&quot;$uri\&quot;/&gt;\n  &lt;/rdf:Description&gt;\n\n&quot;</span>;
+<a name="l00642"></a>00642 }
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -460,7 +458,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

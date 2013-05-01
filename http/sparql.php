@@ -7,33 +7,46 @@
  * @details Web interface for the SPARQL endpoint to the 4Store knowledge base containing myExperiment RDF data nad ontologies.
  */
 
+/** @brief The page title to be displayed in an h1 tag and the title of the html header. */
 $pagetitle="SPARQL Endpoint";
+/** @brief An array for adding additional lines the the head entity of the HTML page, (e.g. CSS and Javascript files). */
 $htmlheader[]='<link rel="stylesheet" type="text/css" href="/css/style.css"/>';
 $htmlheader[]='<script src="/js/sparql.js" type="text/javascript"></script>';
 $htmlheader[]='<script src="/js/codemirror.js" type="text/javascript"></script>';
-include('include.inc.php');
-include('functions/xml.inc.php');
-include('connect/sparql.inc.php');
-require('functions/4store.inc.php');
-require('functions/utility.inc.php');
+include_once('include.inc.php');
+include_once('connect/sparql.inc.php');
+require_once('functions/rdf.inc.php');
+require_once('functions/4store.inc.php');
+/** @brief A string containing the domain of this SPARQL endpoint (public: publicly available myExperiment RDF data; private: all myExperiment RDF data). */
 $domain="public";
-$ts=$triplestore;
-$notriples=getNoTriples($ts);
-$prefix="";
-$lmdate=date('r',strtotime(date('Y-m-d',getLastUpdated($ts)))-60);
+/** @brief A string containing the number of triples in the myExperiment knowledge base (or the string UNKNOWN if this is unknown). */
+$notriples=getNoTriples($myexp_kb);
+if (empty($notriples) && $notriples !== "0") {
+        $notriples = "UNKNOWN";
+}
+/** @brief A string containing the datetime when the database dump used to generate data in the myExperiment knowledge base was taken. */
+$lmdate=date('r', strtotime(date('Y-m-d', getLastUpdated($myexp_kb)))-60);
+/** @brief An integer containing the percentage of resources the SPARQL endpoint can use to find results to a query.  Based on 4Store's soft limit parameter. */
 $softlimit=1;
+/** @brief An integer.  1 if reasoning should be performed on a query, 0 otherwise. */
 $reasoning=0;
+/** @brief The maximum value to which a user can set the softlimit endpoint form parameter.  As for this endpoint form the softlimit parameter represents a percentage, the maximum must be 100. */
 $maxsoftlimit=100;
+/** @brief A string representing how the results returned from 4Store should be formatted. */
 $formatting="XML";
+/** @brief A string representing the MIME type to be used in the HTTP response to the SPARQL query submitted.  So that the user client waiting for the SPARQL query results knowshow to handle the data sent back. */
 $mimetype="application/xml";
+/** @brief A string representing the format in which results returned from 4Store shoud be returned. */
 $format="sparql";
-
+/** @brief A boolean to record whether a SPARQL query has been successfully executed and a response received. */
+$done=FALSE;
+/** @brief A multi-dimensional associative array mapping the format requested from 4Store to the MIME Type that can be encoded from for this format. (E.g. application/json MIME type can be encoded from a 4Store format request of json). */
 $formats=array("HTML Table"=>array("sparql",array("text/html","application/xhtml+xml")), "XML"=>array("sparql",array("application/xml","applications/sparql-results+xml")),"Text"=>array("text",array("text/plain")),"JSON"=>array("json",array("application/json","application/sparql-results+json","text/json")),"CSV"=>array("sparql",array("text/csv","application/csv")),"CSV Matrix"=>array("sparql",array("text/csv","application/csv")));
 if (isset($_POST['formatting'])) $formatting=$_POST['formatting'];
 elseif (isset($_GET['formatting']) && strlen($_GET['formatting'])>0) $formatting=$_GET['formatting'];
 else{
 	$mtfound=0;
-	$fc_mimetype=get_first_choice_mimetype($_SERVER['HTTP_ACCEPT']);
+	$fc_mimetype=getFirstChoiceMIMEType($_SERVER['HTTP_ACCEPT']);
 	foreach ($formats as $fname => $aformat){
 		foreach ($aformat[1] as $amimetype){
 			if ($fc_mimetype==$amimetype){
@@ -49,11 +62,11 @@ if ($formatting!="XML"){
 	$format=$formats[$formatting][0];
 	$mimetype=$formats[$formatting][1][0];
 }
-$clientlive=testSparqlQueryClient($ts);
+$clientlive = testSPARQLQueryClient($myexp_kb);
 if (isset($_POST['generate_service'])){
 	if (isset($_POST['query']) and strlen($_POST['query'])>0){
 		$pagetitle="SPARQL Query Service";
-	        include('header.inc.php');
+	        include('partials/header.inc.php');
 		if (strlen($formatting)>0 && $formatting!="HTML Table") $formatparam="&formatting=".$formatting;
 		if ($_POST['softlimit']>1) $softlimitparam="&amp;softlimit=$_POST[softlimit]";
 		if (isset($_POST['reasoning'])) $reasoningparam="&amp;reasoning=$_POST[reasoning]";
@@ -64,7 +77,7 @@ if (isset($_POST['generate_service'])){
 			echo "<div class=\"red\"><b>WARNING:</b> This service require the HTTP request to explictly specify its accept type in the request header.  if this is not set appropriately the format returned will most likely be HTML with an embedded table of results. To select a particular format, click back and select it from the list provided before clicking &quot;Generate Service for Query&quot; again.</div><br/>\n";
 		}
 		echo "<p style=\"margin: 0 30px\"><a href=\"$service_url\">$service_url</a></p>";
-		include('footer.inc.php');
+		include('partials/footer.inc.php');
 	       exit(1);
 	}
 	else{
@@ -85,12 +98,12 @@ else{
 	}
 	if ($query) {	
 		$query=preProcessQuery($query);
-		$results=sparqlQueryClient($ts,$query,$format,$softlimit*10000,$reasoning);
+		$results=callSPARQLQueryClient($myexp_kb,$query,$format,$softlimit*10000,$reasoning);
 		$err=implode('<br/>',$errs);
 	}
 }
 if ($formatting!="HTML Table"){
-	$done=1;
+	$done=TRUE;
 	if ($formatting=="CSV") $results=convertTableToCSV(tabulateSPARQLResults(parseXML($results)));
 	elseif ($formatting=="CSV Matrix"){
 		$csvmatrix=convertTableToCSVMatrix(tabulateSPARQLResults(parseXML($results)));
@@ -113,7 +126,7 @@ if ($formatting!="HTML Table"){
 	}
 }
 if($clientlive && !$done){
-	include('header.inc.php');
+	include('partials/header.inc.php');
 ?>
     <div align="center"> 
     <div class="purple">
@@ -134,7 +147,7 @@ if($clientlive && !$done){
        <table style="font-size: 10pt;">
           <tr>
             <th style="text-align: right;">Version Info:</th>
-            <td style="text-align: left;"><?= getVersions() ?></td>
+            <td style="text-align: left;"><?= get4StoreVersions() ?></td>
           </tr>
           <tr>
             <th style="text-align: right;">No. of Triples:</th>
@@ -168,8 +181,8 @@ if($clientlive && !$done){
           <td style="text-align: left;"><input type="checkbox" <?php if ($reasoning) echo "checked=\"checked\""; ?> name="reasoning" value="1"/></td>
         </tr>
       </table>
-      <?php if ($err) echo "<br/><div class=\"red\"><b>$err</b></div><br/>\n"; ?>
-      <?php if ($msg) echo "<br/><div class=\"green\"><b>$msg</b></div><br/>\n"; ?>
+      <?php if (!empty($err)) printError($err); ?>
+      <?php if (!empty($msg)) printMessage($msg); ?>
       
       <p>
         <textarea name="query" id="querybox" cols="110" rows="12" style="width: 800px;"><?= htmlentities($query) ?></textarea>
@@ -177,8 +190,8 @@ if($clientlive && !$done){
       <script type="text/javascript">
 var editor = CodeMirror.fromTextArea('querybox', {
     parserfile: ["parsesparql.js"],
-    path: "js/",
-    stylesheet: "css/sparqlcolors.css"
+    path: "/js/",
+    stylesheet: "/css/sparqlcolors.css"
 });
       </script>
 
@@ -193,15 +206,15 @@ var editor = CodeMirror.fromTextArea('querybox', {
 
   <br/>
     <?php 
-	if ($results){
+	if (!empty($results)){
 		echo "<div class=\"results\">\n";
 		echo "<h3>Results</h3>";
 		if ($timetaken==0) $timetaken="<1";
 		echo "<p><b>Time Taken:</b> $timetaken seconds</p>\n";
 		if ($formatting=="HTML Table"){
 			$parsedxml=parseXML($results);
-			$tabres=tabulateSparqlResults($parsedxml);
-			$formattedoutput=drawSparqlResultsTable($tabres);
+			$tabres=tabulateSPARQLResults($parsedxml);
+			$formattedoutput=drawSPARQLResultsTable($tabres);
 			$nores=sizeof($tabres)-1;
 			echo "<p><b>No. of Results:</b> $nores</p>\n";
 			echo $formattedoutput;
@@ -213,11 +226,11 @@ var editor = CodeMirror.fromTextArea('querybox', {
       hidePrefixes();
     --></script>
 <?php 
-	include('footer.inc.php');
+	include('partials/footer.inc.php');
 }
 elseif (!$done){ 
-	include_once('header.inc.php');
-        print_error($err);
-	include('footer.inc.php');
+	include('partials/header.inc.php');
+        printError($err);
+	include('partials/footer.inc.php');
 } 
 ?> 

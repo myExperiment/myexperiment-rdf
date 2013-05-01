@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>MyExperiment RDF: http/ontologies/sparql.php File Reference</title>
+<title>MyExperiment RDF: http/sparql.php File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -59,11 +59,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<h1>http/ontologies/sparql.php File Reference</h1>  </div>
+<h1>http/sparql.php File Reference</h1>  </div>
 </div>
 <div class="contents">
 
-<p>Web interface to the SPARQL Endpoint for the Ontologies 4Store knowledge base.  
+<p>myExperiment SPARQL endpoint web interface.  
 <a href="#_details">More...</a></p>
 
 <p><a href="sparql_8php_source.html">Go to the source code of this file.</a></p>
@@ -71,35 +71,50 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2582e2f620e4157097929da5cc0ed18"></a><!-- doxytag: member="sparql.php::$pagetitle" ref="af2582e2f620e4157097929da5cc0ed18" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$pagetitle</b> = &quot;&lt;small&gt;Ontologies SPARQL Endpoint&lt;/small&gt;&quot;</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#af2582e2f620e4157097929da5cc0ed18">$pagetitle</a> = &quot;SPARQL Endpoint&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The page title to be displayed in an h1 tag and the title of the html header. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e3a6fe786966755a25be116fa294b80"></a><!-- doxytag: member="sparql.php::$htmlheader" ref="a6e3a6fe786966755a25be116fa294b80" args="[]" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$htmlheader</b> [] = '&lt;script src=&quot;/js/sparql.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;'</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#a6e3a6fe786966755a25be116fa294b80">$htmlheader</a> [] = '&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/css/style.css&quot;/&gt;'</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for adding additional lines the the head entity of the HTML page, (e.g. CSS and Javascript files). <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef9cf198312d2f89238a8e8e2f0f67f3"></a><!-- doxytag: member="sparql.php::$domain" ref="aef9cf198312d2f89238a8e8e2f0f67f3" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$domain</b> = &quot;public&quot;</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09e8cf95b9d29955a0bfabca9b420edc"></a><!-- doxytag: member="sparql.php::$prefix" ref="a09e8cf95b9d29955a0bfabca9b420edc" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$prefix</b> = &quot;Ontologies &quot;</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3984cdc176ac1917376aaa9e16827e5c"></a><!-- doxytag: member="sparql.php::$ts" ref="a3984cdc176ac1917376aaa9e16827e5c" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$ts</b> = &quot;ontologies&quot;</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#aef9cf198312d2f89238a8e8e2f0f67f3">$domain</a> = &quot;public&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string containing the domain of this SPARQL endpoint (public: publicly available myExperiment RDF data; private: all myExperiment RDF data). <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace97946c7c1b2df3a281a74028219dbe"></a><!-- doxytag: member="sparql.php::$notriples" ref="ace97946c7c1b2df3a281a74028219dbe" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$notriples</b> = getNoTriples($ts)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16bb3a7e4686cfdfd7ab2914dfe8f55f"></a><!-- doxytag: member="sparql.php::$ludate" ref="a16bb3a7e4686cfdfd7ab2914dfe8f55f" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$ludate</b> = getLastUpdated($ts)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#ace97946c7c1b2df3a281a74028219dbe">$notriples</a> = getNoTriples($myexp_kb)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string containing the number of triples in the myExperiment knowledge base (or the string UNKNOWN if this is unknown). <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad0b4ef09ad7db716e68785c2fab6f47"></a><!-- doxytag: member="sparql.php::$lmdate" ref="aad0b4ef09ad7db716e68785c2fab6f47" args="" -->
+if(empty($notriples)&amp;&amp;$notriples!==&quot;0&quot;)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#aad0b4ef09ad7db716e68785c2fab6f47">$lmdate</a> = date('r', strtotime(date('Y-m-d', getLastUpdated($myexp_kb)))-60)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string containing the datetime when the database dump used to generate data in the myExperiment knowledge base was taken. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab66c76805539b5e9fb40d32fc101e565"></a><!-- doxytag: member="sparql.php::$softlimit" ref="ab66c76805539b5e9fb40d32fc101e565" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$softlimit</b> = 1</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#ab66c76805539b5e9fb40d32fc101e565">$softlimit</a> = 1</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An integer containing the percentage of resources the SPARQL endpoint can use to find results to a query. Based on 4Store's soft limit parameter. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01073c8908865aef234ed3d5b04ea0cc"></a><!-- doxytag: member="sparql.php::$reasoning" ref="a01073c8908865aef234ed3d5b04ea0cc" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#a01073c8908865aef234ed3d5b04ea0cc">$reasoning</a> = 0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An integer. 1 if reasoning should be performed on a query, 0 otherwise. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85ecd6fd6948cb8826a216fcfe40b146"></a><!-- doxytag: member="sparql.php::$maxsoftlimit" ref="a85ecd6fd6948cb8826a216fcfe40b146" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$maxsoftlimit</b> = 100</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af96428ab40704bd906f052b966aaa651"></a><!-- doxytag: member="sparql.php::$clientlive" ref="af96428ab40704bd906f052b966aaa651" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$clientlive</b> = true</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a844b110b1014982fbd69354d6fd8d497"></a><!-- doxytag: member="sparql.php::$formattings" ref="a844b110b1014982fbd69354d6fd8d497" args="" -->
-if($_POST) elseif($_GET) if($query)&#160;</td><td class="memItemRight" valign="bottom"><b>$formattings</b> = array(&quot;&quot;,&quot;Raw&quot;,&quot;HTML Table&quot;,&quot;CSV&quot;,&quot;CSV Matrix&quot;,&quot;JSON&quot;)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa40b87dee1ea0c240a43295c15ba6859"></a><!-- doxytag: member="sparql.php::$formattinglabels" ref="aa40b87dee1ea0c240a43295c15ba6859" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$formattinglabels</b> = array(&quot;XML (In Page)&quot;,&quot;XML (Raw)&quot;,&quot;HTML Table&quot;,&quot;CSV&quot;,&quot;CSV Matrix&quot;,&quot;JSON&quot;)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#a85ecd6fd6948cb8826a216fcfe40b146">$maxsoftlimit</a> = 100</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum value to which a user can set the softlimit endpoint form parameter. As for this endpoint form the softlimit parameter represents a percentage, the maximum must be 100. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae75f303869d82d073e7aadc0e86b0f9b"></a><!-- doxytag: member="sparql.php::$formatting" ref="ae75f303869d82d073e7aadc0e86b0f9b" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b">$formatting</a> = &quot;XML&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string representing how the results returned from 4Store should be formatted. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c2d63c81d985d381ab4e8dd106a5f24"></a><!-- doxytag: member="sparql.php::$mimetype" ref="a8c2d63c81d985d381ab4e8dd106a5f24" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#a8c2d63c81d985d381ab4e8dd106a5f24">$mimetype</a> = &quot;application/xml&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string representing the MIME type to be used in the HTTP response to the SPARQL query submitted. So that the user client waiting for the SPARQL query results knowshow to handle the data sent back. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e6e4ea377a908a5407c435e9054e3a9"></a><!-- doxytag: member="sparql.php::$format" ref="a1e6e4ea377a908a5407c435e9054e3a9" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#a1e6e4ea377a908a5407c435e9054e3a9">$format</a> = &quot;sparql&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string representing the format in which results returned from 4Store shoud be returned. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2698dc52f06950fcdbaca1e94f88c1ff"></a><!-- doxytag: member="sparql.php::$done" ref="a2698dc52f06950fcdbaca1e94f88c1ff" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff">$done</a> = FALSE</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A boolean to record whether a SPARQL query has been successfully executed and a response received. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22ecbd1b21f5e762994cdd8899058361"></a><!-- doxytag: member="sparql.php::$formats" ref="a22ecbd1b21f5e762994cdd8899058361" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sparql_8php.html#a22ecbd1b21f5e762994cdd8899058361">$formats</a> = array(&quot;HTML Table&quot;=&gt;array(&quot;sparql&quot;,array(&quot;text/html&quot;,&quot;application/xhtml+xml&quot;)), &quot;XML&quot;=&gt;array(&quot;sparql&quot;,array(&quot;application/xml&quot;,&quot;applications/sparql-results+xml&quot;)),&quot;Text&quot;=&gt;array(&quot;text&quot;,array(&quot;text/plain&quot;)),&quot;JSON&quot;=&gt;array(&quot;json&quot;,array(&quot;application/json&quot;,&quot;application/sparql-results+json&quot;,&quot;text/json&quot;)),&quot;CSV&quot;=&gt;array(&quot;sparql&quot;,array(&quot;text/csv&quot;,&quot;application/csv&quot;)),&quot;CSV Matrix&quot;=&gt;array(&quot;sparql&quot;,array(&quot;text/csv&quot;,&quot;application/csv&quot;)))</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A multi-dimensional associative array mapping the format requested from 4Store to the MIME Type that can be encoded from for this format. (E.g. application/json MIME type can be encoded from a 4Store format request of json). <br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Web interface to the SPARQL Endpoint for the Ontologies 4Store knowledge base. </p>
+<div class="textblock"><p>myExperiment SPARQL endpoint web interface. </p>
 <dl class="version"><dt><b>Version:</b></dt><dd>beta </dd></dl>
 <dl class="author"><dt><b>Author:</b></dt><dd>David R Newman</dd></dl>
-<p>Web interface allowing SPARQL queries against the ontologies uploaded by the Ontology Uploader in http/upload_specs.php </p>
+<p>Web interface for the SPARQL endpoint to the 4Store knowledge base containing myExperiment RDF data nad ontologies. </p>
 
 <p>Definition in file <a class="el" href="sparql_8php_source.html">sparql.php</a>.</p>
 </div></div>
@@ -117,7 +132,7 @@ if($_POST) elseif($_GET) if($query)&#160;</td><td class="memItemRight" valign="b
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

@@ -1,6 +1,0 @@
-mevd:viewings-count nonNegativeInteger
-mevd:downloads-count nonNegativeInteger
-mevd:viewed nonNegativeInteger
-mevd:downloaded nonNegativeInteger
-mevd:user-agent string
-mevd:accessed-from-site boolean

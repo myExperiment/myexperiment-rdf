@@ -888,7 +888,7 @@
     <rdfs:range rdf:resource="Friendship"/>
     <rdfs:isDefinedBy rdf:resource="&mebase;"/>
   </owl:ObjectProperty>
-  
+
   <owl:ObjectProperty rdf:about="has-membership">
     <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
     <rdfs:label>has-membership</rdfs:label>
@@ -946,15 +946,6 @@
     <rdfs:comment>A User account is a activated-at certain dateTime</rdfs:comment>
     <rdfs:domain rdf:resource="User"/>
     <rdfs:range rdf:resource="&xsd;dateTime"/>
-    <rdfs:isDefinedBy rdf:resource="&mebase;"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="auto-accept">
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-    <rdfs:label>auto-except</rdfs:label>
-    <rdfs:comment>A Group either auto-accepts a User or it doesn't</rdfs:comment>
-    <rdfs:domain rdf:resource="Group"/>
-    <rdfs:range rdf:resource="&xsd;boolean"/>
     <rdfs:isDefinedBy rdf:resource="&mebase;"/>
   </owl:DatatypeProperty>
 
@@ -1048,6 +1039,15 @@
     <rdfs:comment>The last time a User was seen</rdfs:comment>
     <rdfs:domain rdf:resource="User"/>
     <rdfs:range rdf:resource="&xsd;dateTime"/>
+    <rdfs:isDefinedBy rdf:resource="&mebase;"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="membership-policy">
+    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    <rdfs:label></rdfs:label>
+    <rdfs:comment>The policy for Users joining a Group (e.g. open, invite only, etc.)</rdfs:comment>
+    <rdfs:domain rdf:resource="Group"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
     <rdfs:isDefinedBy rdf:resource="&mebase;"/>
   </owl:DatatypeProperty>
 

@@ -20,7 +20,7 @@
  * An array containing the names of all pages in the How to SPARQL guides in order.
  * 
  */
-function nav_form($name, $pageno, $pages) {
+function printHowToSPARQLNavigationForm($name, $pageno, $pages) {
 	echo "<form name=\"$name\" action=\"#\" method=\"get\" />\n";
         echo "  <table style=\"margin: auto;\"><tr>\n";
 	if ($pageno==1) {

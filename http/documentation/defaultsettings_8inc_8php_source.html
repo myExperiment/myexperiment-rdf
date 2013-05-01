@@ -60,47 +60,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <a href="defaultsettings_8inc_8php.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 &lt;?php
-<a name="l00010"></a>00010         <span class="comment">//Symbolic links to dirs</span>
-<a name="l00011"></a>00011         $lddir=<span class="stringliteral">&quot;/var/linkeddata/&quot;</span>;
-<a name="l00012"></a>00012         $httpdir=<span class="stringliteral">&quot;/var/www/html/linkeddata/&quot;</span>;
-<a name="l00013"></a>00013 
-<a name="l00014"></a>00014         <span class="comment">//Setup include_path</span>
-<a name="l00015"></a>00015         ini_set(<span class="stringliteral">&#39;include_path&#39;</span>,<span class="stringliteral">&quot;.:${lddir}inc/:&quot;</span>);
-<a name="l00016"></a>00016 
-<a name="l00017"></a>00017         <span class="comment">//The URI for RDF data</span>
-<a name="l00018"></a>00018         $datauri=<span class="stringliteral">&quot;http://www.myexperiment.org/&quot;</span>;
-<a name="l00019"></a>00019         <span class="comment">//The URI for RDF data in the guide&quot;</span>
-<a name="l00020"></a>00020         $guidedatauri=<span class="stringliteral">&quot;http://www.myexperiment.org/&quot;</span>;
-<a name="l00021"></a>00021         <span class="comment">//Current host URI path</span>
-<a name="l00022"></a>00022         <span class="keywordflow">if</span> (isset($_SERVER[<span class="stringliteral">&#39;SERVER_NAME&#39;</span>])) $hostpath=<span class="stringliteral">&quot;http://&quot;</span>.$_SERVER[<span class="stringliteral">&#39;SERVER_NAME&#39;</span>].<span class="stringliteral">&quot;/&quot;</span>;
-<a name="l00023"></a>00023         <span class="keywordflow">else</span> $hostpath=$datauri;
-<a name="l00024"></a>00024         <span class="comment">//The URI path for the ontologies</span>
-<a name="l00025"></a>00025         $ontopath=<span class="stringliteral">&quot;http://rdf.myexperiment.org/ontologies/&quot;</span>;
-<a name="l00026"></a>00026         <span class="comment">//The filesystem path for RDF data</span>
-<a name="l00027"></a>00027         $datapath=<span class="stringliteral">&quot;/var/linkeddata/data/&quot;</span>;
-<a name="l00028"></a>00028         <span class="comment">// Path to myExperiment as a Ruby-on-Rails application</span>
-<a name="l00029"></a>00029         $myexppath=<span class="stringliteral">&quot;/var/rails/myexperiment/&quot;</span>;
-<a name="l00030"></a>00030 
-<a name="l00031"></a>00031          <span class="comment">//Exec paths</span>
-<a name="l00032"></a>00032         $store4execpath=<span class="stringliteral">&quot;/usr/local/bin/&quot;</span>;
-<a name="l00033"></a>00033         $phppath=<span class="stringliteral">&quot;/usr/bin/&quot;</span>;
-<a name="l00034"></a>00034         $rakepath=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00035"></a>00035 
-<a name="l00036"></a>00036         <span class="comment">//Triplestore name</span>
-<a name="l00037"></a>00037         $triplestore=<span class="stringliteral">&quot;myexp_public&quot;</span>;
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039         <span class="comment">//Database Settings</span>
-<a name="l00040"></a>00040         $myexp_db=array(<span class="stringliteral">&quot;user&quot;</span>=&gt;<span class="stringliteral">&quot;username&quot;</span>,<span class="stringliteral">&quot;password&quot;</span>=&gt;<span class="stringliteral">&quot;password&quot;</span>,<span class="stringliteral">&quot;server&quot;</span>=&gt;<span class="stringliteral">&quot;localhost&quot;</span>,<span class="stringliteral">&quot;database&quot;</span>=&gt;<span class="stringliteral">&quot;dbname&quot;</span>);
-<a name="l00041"></a>00041         $onto_db=array(<span class="stringliteral">&quot;user&quot;</span>=&gt;<span class="stringliteral">&quot;username&quot;</span>,<span class="stringliteral">&quot;password&quot;</span>=&gt;<span class="stringliteral">&quot;password&quot;</span>,<span class="stringliteral">&quot;server&quot;</span>=&gt;<span class="stringliteral">&quot;localhost&quot;</span>,<span class="stringliteral">&quot;database&quot;</span>=&gt;<span class="stringliteral">&quot;dbname&quot;</span>);
-<a name="l00042"></a>00042         $sparql_db=array(<span class="stringliteral">&quot;user&quot;</span>=&gt;<span class="stringliteral">&quot;username&quot;</span>,<span class="stringliteral">&quot;password&quot;</span>=&gt;<span class="stringliteral">&quot;password&quot;</span>,<span class="stringliteral">&quot;server&quot;</span>=&gt;<span class="stringliteral">&quot;localhost&quot;</span>,<span class="stringliteral">&quot;database&quot;</span>=&gt;<span class="stringliteral">&quot;dbname&quot;</span>);
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044         <span class="comment">//4store version info</span>
-<a name="l00045"></a>00045         $store4versions=<span class="stringliteral">&quot;4Store (undefined), Raptor (undefined), Rasqal (undefined)&quot;</span>;
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047         <span class="comment">//Use rake for generating workflow component XML</span>
-<a name="l00048"></a>00048         $use_rake=TRUE;
-<a name="l00049"></a>00049         $rails_env=<span class="stringliteral">&quot;production&quot;</span>;
-<a name="l00050"></a>00050 ?&gt;
+<a name="l00012"></a><a class="code" href="defaultsettings_8inc_8php.html#aba842f569300485b5d1e50dbb58c8acb">00012</a> <a class="code" href="defaultsettings_8inc_8php.html#aba842f569300485b5d1e50dbb58c8acb" title="A string specifying where the myExperiment Linked Data repository is located on the local system...">$lddir</a>=<span class="stringliteral">&quot;/var/linkeddata/&quot;</span>;
+<a name="l00013"></a>00013 ini_set(<span class="stringliteral">&#39;include_path&#39;</span>,<span class="stringliteral">&quot;.:${lddir}inc/:&quot;</span>);
+<a name="l00015"></a><a class="code" href="defaultsettings_8inc_8php.html#a755728ca8f030d3440d30e0b933116e6">00015</a> <a class="code" href="defaultsettings_8inc_8php.html#a755728ca8f030d3440d30e0b933116e6" title="A string specifying where the files for the web pages of myExperiment Linked Data are located on the ...">$httpdir</a>=<span class="stringliteral">&quot;/var/www/html/linkeddata/&quot;</span>;
+<a name="l00017"></a><a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d">00017</a> <a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a>=<span class="stringliteral">&quot;http://www.myexperiment.org/&quot;</span>;
+<a name="l00019"></a><a class="code" href="defaultsettings_8inc_8php.html#a1a3c8e8a989fe79fa48080e5d412bb57">00019</a> <a class="code" href="defaultsettings_8inc_8php.html#a1a3c8e8a989fe79fa48080e5d412bb57" title="A string specifying the base URI for any myExperiment RDF entities referred to in user documentation...">$guidedatauri</a>=<span class="stringliteral">&quot;http://www.myexperiment.org/&quot;</span>;
+<a name="l00021"></a><a class="code" href="defaultsettings_8inc_8php.html#a7b4309e619887d6a1cbda1cbaab5c3a7">00021</a> <a class="code" href="defaultsettings_8inc_8php.html#a7b4309e619887d6a1cbda1cbaab5c3a7" title="A string specifying the base URI for any entities that are hosted locally.">$hostpath</a>=<a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a>;
+<a name="l00022"></a>00022 <span class="keywordflow">if</span> (isset($_SERVER[<span class="stringliteral">&#39;SERVER_NAME&#39;</span>])) <a class="code" href="defaultsettings_8inc_8php.html#a7b4309e619887d6a1cbda1cbaab5c3a7" title="A string specifying the base URI for any entities that are hosted locally.">$hostpath</a>=<span class="stringliteral">&quot;http://&quot;</span>.$_SERVER[<span class="stringliteral">&#39;SERVER_NAME&#39;</span>].<span class="stringliteral">&quot;/&quot;</span>;
+<a name="l00024"></a><a class="code" href="defaultsettings_8inc_8php.html#a9b72e23b6fed60d3bfd2fb8eb6317d3b">00024</a> <a class="code" href="defaultsettings_8inc_8php.html#a9b72e23b6fed60d3bfd2fb8eb6317d3b" title="A string specifying the base URI for myExperiment ontology modules. (E.g. http://rdf.myexperiment.org/ontologies/).">$ontopath</a>=<span class="stringliteral">&quot;http://rdf.myexperiment.org/ontologies/&quot;</span>;
+<a name="l00026"></a><a class="code" href="defaultsettings_8inc_8php.html#af7742a24d8c1298570a7364e0692709a">00026</a> <a class="code" href="defaultsettings_8inc_8php.html#af7742a24d8c1298570a7364e0692709a" title="A string specifying the path where RDF and other data files generated by myExperiment Linked Data scr...">$datapath</a>=<span class="stringliteral">&quot;/var/linkeddata/data/&quot;</span>;
+<a name="l00028"></a><a class="code" href="defaultsettings_8inc_8php.html#a29cc3df12735f5a72e200a146c12801c">00028</a> <a class="code" href="defaultsettings_8inc_8php.html#a29cc3df12735f5a72e200a146c12801c" title="A string specifying where the myExperiment Ruby-on-Rails application resides if it is deployed locall...">$myexppath</a>=<span class="stringliteral">&quot;/var/rails/myexperiment/&quot;</span>;
+<a name="l00030"></a><a class="code" href="defaultsettings_8inc_8php.html#a9e9f1acb1ae1695691b0d675646e49be">00030</a> <a class="code" href="defaultsettings_8inc_8php.html#a9e9f1acb1ae1695691b0d675646e49be" title="A string specifying the local filesystem path to 4Store command line interface scripts.">$store4execpath</a>=<span class="stringliteral">&quot;/usr/local/bin/&quot;</span>;
+<a name="l00032"></a><a class="code" href="defaultsettings_8inc_8php.html#a7a7447c1499f87aa62cd50b67ddbc30a">00032</a> <a class="code" href="defaultsettings_8inc_8php.html#a7a7447c1499f87aa62cd50b67ddbc30a" title="A string specifying the local filesystem path to the PHP command line interface.">$phppath</a>=<span class="stringliteral">&quot;/usr/bin/&quot;</span>;
+<a name="l00034"></a><a class="code" href="defaultsettings_8inc_8php.html#ac847774197c6eca188d3f656de541c1c">00034</a> <a class="code" href="defaultsettings_8inc_8php.html#ac847774197c6eca188d3f656de541c1c" title="A string specifying the local filesystem path to the Rake command line interface.">$rakepath</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00036"></a><a class="code" href="defaultsettings_8inc_8php.html#a497549f57f9e3b6185f1b37078f04bef">00036</a> <a class="code" href="defaultsettings_8inc_8php.html#a497549f57f9e3b6185f1b37078f04bef" title="A string specifying the name of the myExperiment knowledge base.">$myexp_kb</a>=<span class="stringliteral">&quot;myexp_public&quot;</span>;
+<a name="l00038"></a><a class="code" href="defaultsettings_8inc_8php.html#a4841501b2110b100d640c4671140fa9b">00038</a> <a class="code" href="defaultsettings_8inc_8php.html#a4841501b2110b100d640c4671140fa9b" title="A string specifying the name of the ontologies knowledge base.">$onto_kb</a>=<span class="stringliteral">&quot;ontologies&quot;</span>;
+<a name="l00040"></a><a class="code" href="defaultsettings_8inc_8php.html#abf872c5d84817d2d7c3988cf9609ca5e">00040</a> <a class="code" href="defaultsettings_8inc_8php.html#abf872c5d84817d2d7c3988cf9609ca5e" title="An associative array containing the credentials needed to connect to the myExperiment database...">$myexp_db</a>=array(<span class="stringliteral">&quot;user&quot;</span>=&gt;<span class="stringliteral">&quot;username&quot;</span>,<span class="stringliteral">&quot;password&quot;</span>=&gt;<span class="stringliteral">&quot;password&quot;</span>,<span class="stringliteral">&quot;server&quot;</span>=&gt;<span class="stringliteral">&quot;localhost&quot;</span>,<span class="stringliteral">&quot;database&quot;</span>=&gt;<span class="stringliteral">&quot;dbname&quot;</span>);
+<a name="l00042"></a><a class="code" href="defaultsettings_8inc_8php.html#a2b4639207d4ad7714146b9226db525df">00042</a> <a class="code" href="defaultsettings_8inc_8php.html#a2b4639207d4ad7714146b9226db525df" title="An associative array containing the credentials needed to connect to the ontologies database...">$onto_db</a>=array(<span class="stringliteral">&quot;user&quot;</span>=&gt;<span class="stringliteral">&quot;username&quot;</span>,<span class="stringliteral">&quot;password&quot;</span>=&gt;<span class="stringliteral">&quot;password&quot;</span>,<span class="stringliteral">&quot;server&quot;</span>=&gt;<span class="stringliteral">&quot;localhost&quot;</span>,<span class="stringliteral">&quot;database&quot;</span>=&gt;<span class="stringliteral">&quot;dbname&quot;</span>);
+<a name="l00044"></a><a class="code" href="defaultsettings_8inc_8php.html#a337c3d48c3811390d0c15e2d43fb3192">00044</a> <a class="code" href="defaultsettings_8inc_8php.html#a337c3d48c3811390d0c15e2d43fb3192" title="An associative array containing the credentials needed to connect to the SPARQL queries database...">$sparql_db</a>=array(<span class="stringliteral">&quot;user&quot;</span>=&gt;<span class="stringliteral">&quot;username&quot;</span>,<span class="stringliteral">&quot;password&quot;</span>=&gt;<span class="stringliteral">&quot;password&quot;</span>,<span class="stringliteral">&quot;server&quot;</span>=&gt;<span class="stringliteral">&quot;localhost&quot;</span>,<span class="stringliteral">&quot;database&quot;</span>=&gt;<span class="stringliteral">&quot;dbname&quot;</span>);
+<a name="l00046"></a><a class="code" href="defaultsettings_8inc_8php.html#afacf26d2e3878a64d4dcf77b5e8b8da2">00046</a> <a class="code" href="defaultsettings_8inc_8php.html#afacf26d2e3878a64d4dcf77b5e8b8da2" title="A string specifying the version of 4Store, RAPTOR and RASQAL used by the knowledge bases / SPARQL end...">$store4versions</a>=<span class="stringliteral">&quot;4Store (undefined), Raptor (undefined), Rasqal (undefined)&quot;</span>;
+<a name="l00048"></a><a class="code" href="defaultsettings_8inc_8php.html#a57c4524da04a2cc05251c8715b9c4a32">00048</a> <a class="code" href="defaultsettings_8inc_8php.html#a57c4524da04a2cc05251c8715b9c4a32" title="A boolean specifying whether rake can be invoked to retrieve data from a Ruby-on-Rail application...">$use_rake</a>=TRUE;
+<a name="l00050"></a><a class="code" href="defaultsettings_8inc_8php.html#ac759ca70eafa8d888bb88bd6b50ff7ae">00050</a> <a class="code" href="defaultsettings_8inc_8php.html#ac759ca70eafa8d888bb88bd6b50ff7ae" title="A string specifying the Rails environment under which to run Rake or any other Ruby-on-Rails applicat...">$rails_env</a>=<span class="stringliteral">&quot;production&quot;</span>;
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -117,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

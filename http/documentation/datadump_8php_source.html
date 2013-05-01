@@ -61,60 +61,55 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <a href="datadump_8php.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#!/usr/bin/php</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span>&lt;?php
-<a name="l00010"></a>00010         $domain=<span class="stringliteral">&quot;public&quot;</span>;
-<a name="l00011"></a>00011         include(<span class="stringliteral">&#39;include.inc.php&#39;</span>);
-<a name="l00012"></a>00012         include(<span class="stringliteral">&#39;changeddata.inc.php&#39;</span>);
-<a name="l00013"></a>00013         include(<span class="stringliteral">&#39;genrdf.inc.php&#39;</span>);
-<a name="l00014"></a>00014         
-<a name="l00015"></a>00015         $ts=$triplestore;
-<a name="l00016"></a>00016         $start=2;
-<a name="l00017"></a>00017         $rdffile=<span class="stringliteral">&quot;$datapath$ts/myexperiment.rdf&quot;</span>;
-<a name="l00018"></a>00018         $rdfgzfile=<span class="stringliteral">&quot;$datapath$ts/myexperiment.rdf.gz&quot;</span>;
-<a name="l00019"></a>00019                                 
-<a name="l00020"></a>00020         $ddsql=$sql;
-<a name="l00021"></a>00021         echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Creating temporary file $rdffile\n&quot;</span>;
-<a name="l00022"></a>00022         $fh=fopen($rdffile,<span class="stringliteral">&quot;w&quot;</span>);
-<a name="l00023"></a>00023         fwrite($fh,pageheader());
-<a name="l00024"></a>00024         <span class="keywordflow">foreach</span> ($ddsql as $k =&gt; $v){
-<a name="l00025"></a>00025                 $v=setUserAndGroups($v);
-<a name="l00026"></a>00026                 echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Adding $k\n&quot;</span>;
-<a name="l00027"></a>00027                 $res=mysql_query($v);
-<a name="l00028"></a>00028                 <span class="keywordflow">if</span> ($res!==<span class="keyword">false</span>){
-<a name="l00029"></a>00029                         $rows=mysql_num_rows($res);
-<a name="l00030"></a>00030                         $xml=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00031"></a>00031                         $ents=0;
-<a name="l00032"></a>00032                         <span class="keywordflow">for</span> ($i=0; $i&lt;$rows; $i++){
-<a name="l00033"></a>00033                                 $row=mysql_fetch_assoc($res);
-<a name="l00034"></a>00034                                 $id=$row[<span class="stringliteral">&#39;id&#39;</span>];
-<a name="l00035"></a>00035                                 <span class="keywordflow">if</span> (!isset($row[<span class="stringliteral">&#39;user_id&#39;</span>])) $row[<span class="stringliteral">&#39;user_id&#39;</span>]=<span class="stringliteral">&quot;AnonymousUser&quot;</span>;
-<a name="l00036"></a>00036                                 $xml.=printEntity($row,$k);
-<a name="l00037"></a>00037                                 $ents++;
-<a name="l00038"></a>00038                                 <span class="keywordflow">if</span> ($ents==1000){
-<a name="l00039"></a>00039                                         fwrite($fh,$xml);
-<a name="l00040"></a>00040                                         $ents=0;
-<a name="l00041"></a>00041                                         $xml=<span class="stringliteral">&quot;&quot;</span>;        
-<a name="l00042"></a>00042                                 }       
-<a name="l00043"></a>00043                         }
-<a name="l00044"></a>00044                         fwrite($fh,$xml);
-<a name="l00045"></a>00045                 }
-<a name="l00046"></a>00046                 <span class="keywordflow">else</span>{
-<a name="l00047"></a>00047                          echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Invalid query &lt;$v&gt;\n&quot;</span>;
-<a name="l00048"></a>00048                 }
+<a name="l00012"></a><a class="code" href="datadump_8php.html#aef9cf198312d2f89238a8e8e2f0f67f3">00012</a> <a class="code" href="datadump_8php.html#aef9cf198312d2f89238a8e8e2f0f67f3" title="A string containing the domain for generating RDF data. (public: publicly available myExperiment RDF ...">$domain</a>=<span class="stringliteral">&quot;public&quot;</span>;
+<a name="l00013"></a>00013 include(<span class="stringliteral">&#39;include.inc.php&#39;</span>);
+<a name="l00014"></a>00014 include(<span class="stringliteral">&#39;functions/rdf.inc.php&#39;</span>);
+<a name="l00015"></a>00015         
+<a name="l00017"></a><a class="code" href="datadump_8php.html#a0137efbc1acf5f6100de7acea309929f">00017</a> <a class="code" href="datadump_8php.html#a0137efbc1acf5f6100de7acea309929f" title="A string specifying where the RDF dump of myExperiment data should be stored locally.">$rdffile</a>=<span class="stringliteral">&quot;$datapath$ts/myexperiment.rdf&quot;</span>;
+<a name="l00019"></a><a class="code" href="datadump_8php.html#aea1c51b1d00112014349ffca3b3a2721">00019</a> <a class="code" href="datadump_8php.html#aea1c51b1d00112014349ffca3b3a2721" title="A string specifying where the gzipped RDF dump of myExperiment data should be stored locally...">$rdfgzfile</a>=<span class="stringliteral">&quot;$datapath$ts/myexperiment.rdf.gz&quot;</span>;
+<a name="l00020"></a>00020                                 
+<a name="l00021"></a>00021 echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Creating temporary file $rdffile\n&quot;</span>;
+<a name="l00023"></a><a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958">00023</a> <a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>=fopen(<a class="code" href="datadump_8php.html#a0137efbc1acf5f6100de7acea309929f" title="A string specifying where the RDF dump of myExperiment data should be stored locally.">$rdffile</a>,<span class="stringliteral">&quot;w&quot;</span>);
+<a name="l00024"></a>00024 fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<a class="code" href="rdf_8inc_8php.html#a8638510768d37daadae247e349733e63" title="Generate the header for an RDF/XML document including those namespaces required when defining all myE...">generateGenericRDFHeader</a>());
+<a name="l00025"></a>00025 <span class="keywordflow">foreach</span> (<a class="code" href="generateDataflowRDF_8php.html#a047170d6020a882807665812a27e2525" title="A string containing an SQL query to find all the publically downloadable workflows that have dataflow...">$sql</a> as $k =&gt; $v){
+<a name="l00026"></a>00026         $v=<a class="code" href="sql_8inc_8php.html#ab7646029f0171e8228f9763e5b2913b3" title="Set the user ID and group IDs the user is part of to a SQL query to find all entities viewable by a p...">setUserAndGroups</a>($v);
+<a name="l00027"></a>00027         echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Adding $k\n&quot;</span>;
+<a name="l00028"></a>00028         <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>=mysql_query($v);
+<a name="l00029"></a>00029         <span class="keywordflow">if</span> (<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>!==<span class="keyword">false</span>){
+<a name="l00030"></a>00030                 $rows=mysql_num_rows(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>);
+<a name="l00031"></a>00031                 <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00032"></a>00032                 $ents=0;
+<a name="l00033"></a>00033                 <span class="keywordflow">for</span> ($i=0; $i&lt;$rows; $i++){
+<a name="l00034"></a>00034                         $row=mysql_fetch_assoc(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>);
+<a name="l00035"></a>00035                         $id=$row[<span class="stringliteral">&#39;id&#39;</span>];
+<a name="l00036"></a>00036                         <span class="keywordflow">if</span> (!isset($row[<span class="stringliteral">&#39;user_id&#39;</span>])) $row[<span class="stringliteral">&#39;user_id&#39;</span>]=<span class="stringliteral">&quot;AnonymousUser&quot;</span>;
+<a name="l00037"></a>00037                         <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>.=<a class="code" href="rdf_8inc_8php.html#ae4fd0b2214091d22d01543ad067d399b" title="Generates RDF/XML for a particular entity.">generateEntityRDF</a>($row,$k);
+<a name="l00038"></a>00038                         $ents++;
+<a name="l00039"></a>00039                         <span class="keywordflow">if</span> ($ents==1000){
+<a name="l00040"></a>00040                                 fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>);
+<a name="l00041"></a>00041                                 $ents=0;
+<a name="l00042"></a>00042                                 <a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>=<span class="stringliteral">&quot;&quot;</span>;        
+<a name="l00043"></a>00043                         }       
+<a name="l00044"></a>00044                 }
+<a name="l00045"></a>00045                 fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<a class="code" href="listGraphs_8php.html#aa108d9d91e700ac530401dd363b0723b" title="A string containing the complete SPARQL results XML from the graphs query.">$xml</a>);
+<a name="l00046"></a>00046         }
+<a name="l00047"></a>00047         <span class="keywordflow">else</span>{
+<a name="l00048"></a>00048                  echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Invalid query &lt;$v&gt;\n&quot;</span>;
 <a name="l00049"></a>00049         }
-<a name="l00050"></a>00050         fclose($fh);
-<a name="l00051"></a>00051         echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Adding dataflows\n&quot;</span>;
-<a name="l00052"></a>00052         exec(<span class="stringliteral">&quot;for dffile in `du -b &quot;</span>.$datapath.<span class="stringliteral">&quot;dataflows/* | awk &#39;BEGIN{FS=\&quot; \&quot;}{ if ($1 != \&quot;4\&quot;) print $2 }&#39;`; do</span>
-<a name="l00053"></a>00053 <span class="stringliteral">        cat \$dffile &gt;&gt; $rdffile</span>
-<a name="l00054"></a>00054 <span class="stringliteral">done&quot;</span>);
-<a name="l00055"></a>00055         $fh=fopen($rdffile,<span class="stringliteral">&quot;a&quot;</span>);
-<a name="l00056"></a>00056         fwrite($fh,pagefooter());
-<a name="l00057"></a>00057         fclose($fh);
-<a name="l00058"></a>00058         echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Calculating the number of triples and saving to ${lddir}4store/log/${ts}_datadump_triples.log.\n&quot;</span>;
-<a name="l00059"></a>00059         exec(<span class="stringliteral">&quot;/usr/local/bin/rapper -c $rdffile 2&gt;&amp;1 | tail -n 1 | awk &#39;BEGIN{FS=\&quot; \&quot;}{print $4}&#39; &gt; ${lddir}/4store/log/${ts}_datadump_triples.log&quot;</span>);
-<a name="l00060"></a>00060         echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Gzipping to $rdfgzfile\n&quot;</span>;
-<a name="l00061"></a>00061         exec(<span class="stringliteral">&quot;/bin/gzip -c $rdffile &gt; $rdfgzfile&quot;</span>);     
-<a name="l00062"></a>00062         echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Data dump of $ts complete\n&quot;</span>;
-<a name="l00063"></a>00063 ?&gt;
+<a name="l00050"></a>00050 }
+<a name="l00051"></a>00051 fclose(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>);
+<a name="l00052"></a>00052 echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Adding dataflows\n&quot;</span>;
+<a name="l00053"></a>00053 exec(<span class="stringliteral">&quot;for dffile in `du -b &quot;</span>.<a class="code" href="defaultsettings_8inc_8php.html#af7742a24d8c1298570a7364e0692709a" title="A string specifying the path where RDF and other data files generated by myExperiment Linked Data scr...">$datapath</a>.<span class="stringliteral">&quot;dataflows/* | awk &#39;BEGIN{FS=\&quot; \&quot;}{ if ($1 != \&quot;4\&quot;) print $2 }&#39;`; do</span>
+<a name="l00054"></a>00054 <span class="stringliteral">        cat \$dffile &gt;&gt; $rdffile</span>
+<a name="l00055"></a>00055 <span class="stringliteral">done&quot;</span>);
+<a name="l00056"></a>00056 <a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>=fopen(<a class="code" href="datadump_8php.html#a0137efbc1acf5f6100de7acea309929f" title="A string specifying where the RDF dump of myExperiment data should be stored locally.">$rdffile</a>,<span class="stringliteral">&quot;a&quot;</span>);
+<a name="l00057"></a>00057 fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<a class="code" href="rdf_8inc_8php.html#ad5e33ca6c3c65e91d5b788e26c6e0c21" title="Generate the footer for an RDF/XML document. (I.e. close the rdf:RDF tag).">generateRDFFooter</a>());
+<a name="l00058"></a>00058 fclose(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>);
+<a name="l00059"></a>00059 echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Calculating the number of triples and saving to ${lddir}4store/log/${myexp_kb}_datadump_triples.log.\n&quot;</span>;
+<a name="l00060"></a>00060 exec(<span class="stringliteral">&quot;/usr/local/bin/rapper -c $rdffile 2&gt;&amp;1 | tail -n 1 | awk &#39;BEGIN{FS=\&quot; \&quot;}{print $4}&#39; &gt; ${lddir}/4store/log/${myexp_kb}_datadump_triples.log&quot;</span>);
+<a name="l00061"></a>00061 echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Gzipping to $rdfgzfile\n&quot;</span>;
+<a name="l00062"></a>00062 exec(<span class="stringliteral">&quot;/bin/gzip -c $rdffile &gt; $rdfgzfile&quot;</span>);     
+<a name="l00063"></a>00063 echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Data dump of $myexp_kb complete\n&quot;</span>;
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -131,7 +126,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

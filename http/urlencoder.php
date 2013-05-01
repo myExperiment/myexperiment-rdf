@@ -15,18 +15,20 @@ include('functions/utility.inc.php');
 if ($_POST['encode']){
 	/** @brief The string to URL encoded/decoded. */
 	$string=urlencode($_POST['string']);
-	print_message("String Encoded",'center');
+	printMessage("String Encoded",'center');
 }
-elseif ($_POST['decode']){
-	$string=urldecode($_POST['string']);
-	print_message("String Decoded",'center');
+else {
+	if ($_POST['decode']){
+		$string=urldecode($_POST['string']);
+		printMessage("String Decoded",'center');
+	}
 }	
 ?>
 <form name="urlendec" method="post">
 <p style="text-align: center;">
   <b>String to Encode/Decode:</b>
   <br/>
-  <textarea name="string" cols="80" rows="8"><?=$string ?></textarea>
+  <textarea name="string" cols="80" rows="8"><?php echo $string; ?></textarea>
   <br/>
   <input type="submit" name="encode" value="Encode">&nbsp;&nbsp;
   <input type="submit" name="decode" value="Decode">

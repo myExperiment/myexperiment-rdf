@@ -8,6 +8,7 @@
  * @details This script tests that the RDF generator at rdfgen/rdfgencli.php is generating myExperiment RDF correctly by testing the number of characters size of various myExperiment entities (formatted in RDF/XML) is at least the same as (if not greater than) a pre-calculated baseline number.
  */
 
+/** @brief An associative array mapping myExperiment entity types to the character length sizes of a particular entities of each type. */
 $entity_sizes=array();
 include('include.inc.php');
 echo "========= ".date('D M d H:i:s T Y')." =========\n";

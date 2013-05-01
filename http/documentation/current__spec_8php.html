@@ -65,6 +65,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>Generates HTML specification of MyExperiment ontology.  
 <a href="#_details">More...</a></p>
+
+<p><a href="current__spec_8php_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -90,40 +92,20 @@ Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#af01fd174eade12f55d7c8cdec11d97b7">$query</a> [9]</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">SubProperty Properties query.  <a href="#af01fd174eade12f55d7c8cdec11d97b7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49a8a4009b02e49717caa88b128affc5"></a><!-- doxytag: member="current_spec.php::$res" ref="a49a8a4009b02e49717caa88b128affc5" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a49a8a4009b02e49717caa88b128affc5">$res</a> = sparqlQueryClientMultiple($triplestore,$query,100000,300,true)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a49a8a4009b02e49717caa88b128affc5">$res</a> = callSPARQLQueryClientMultiple($myexp_kb,$query,100000,300,true)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from th SPARQL queries for generating the HTML specification. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23a63d874e5f032bcc7c4cad73a5f623"></a><!-- doxytag: member="current_spec.php::$errs" ref="a23a63d874e5f032bcc7c4cad73a5f623" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a23a63d874e5f032bcc7c4cad73a5f623">$errs</a> = array()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Array to store error messages from failed SPARQL queries. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac470ebdc2191c4612efb570a2e890e28"></a><!-- doxytag: member="current_spec.php::$tableres1" ref="ac470ebdc2191c4612efb570a2e890e28" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#ac470ebdc2191c4612efb570a2e890e28">$tableres1</a> = array()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from the first SPARQL query for generating the HTML specificatiosn formatted as a tabular array. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d4fccbe2dab0fcc89ac65b59e15b4d3"></a><!-- doxytag: member="current_spec.php::$tableres2" ref="a4d4fccbe2dab0fcc89ac65b59e15b4d3" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a4d4fccbe2dab0fcc89ac65b59e15b4d3">$tableres2</a> = array()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from the second SPARQL query for generating the HTML specificatiosn formatted as a tabular array. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3396d4ecae51b4e6de3080997c3abb9"></a><!-- doxytag: member="current_spec.php::$classprops" ref="ab3396d4ecae51b4e6de3080997c3abb9" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#ab3396d4ecae51b4e6de3080997c3abb9">$classprops</a> = array_multiunique(array_merge($tableres1,$tableres2))</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Array containing the class properties found from the SPARQL queries against the MyExperiment ontology. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e44a8faa606c5f4595c05ce9015951a"></a><!-- doxytag: member="current_spec.php::$tableres1" ref="a0e44a8faa606c5f4595c05ce9015951a" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a0e44a8faa606c5f4595c05ce9015951a">$tableres1</a> = array()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from the first SPARQL query for generating the HTML specifications formatted as a tabular array. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4212f1eca3e4faf764728d56bc13dfd3"></a><!-- doxytag: member="current_spec.php::$classes" ref="a4212f1eca3e4faf764728d56bc13dfd3" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a4212f1eca3e4faf764728d56bc13dfd3">$classes</a> = array()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Array containing the classes found from the SPARQL queries against the MyExperiment ontology. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8c839614bf2b6c6c8b5e2efea08db38"></a><!-- doxytag: member="current_spec.php::$tableres6" ref="aa8c839614bf2b6c6c8b5e2efea08db38" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#aa8c839614bf2b6c6c8b5e2efea08db38">$tableres6</a> = array()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from the sixth SPARQL query for generating the HTML specificatiosn formatted as a tabular array. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e78ad969c5bc5284a1f926d69b26c49"></a><!-- doxytag: member="current_spec.php::$tableres7" ref="a1e78ad969c5bc5284a1f926d69b26c49" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a1e78ad969c5bc5284a1f926d69b26c49">$tableres7</a> = array()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from the seventh SPARQL query for generating the HTML specificatiosn formatted as a tabular array. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a83a75f78ee51cabbcf02275d7ee1e4"></a><!-- doxytag: member="current_spec.php::$tableres8" ref="a5a83a75f78ee51cabbcf02275d7ee1e4" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a5a83a75f78ee51cabbcf02275d7ee1e4">$tableres8</a> = array()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from the eighth SPARQL query for generating the HTML specificatiosn formatted as a tabular array. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73f4f698ee36e207123461edc336ecfc"></a><!-- doxytag: member="current_spec.php::$tableres9" ref="a73f4f698ee36e207123461edc336ecfc" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#a73f4f698ee36e207123461edc336ecfc">$tableres9</a> = array()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from the ninth SPARQL query for generating the HTML specificatiosn formatted as a tabular array. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2582e2f620e4157097929da5cc0ed18"></a><!-- doxytag: member="current_spec.php::$pagetitle" ref="af2582e2f620e4157097929da5cc0ed18" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#af2582e2f620e4157097929da5cc0ed18">$pagetitle</a> = &quot;Ontology Specification&quot;</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The page title to be displayed in an h1 tag and the title of the html header. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abefb2ce4eb703cf283559e924085135f"></a><!-- doxytag: member="current_spec.php::else" ref="abefb2ce4eb703cf283559e924085135f" args="" -->
-if(isset($errs)&amp;&amp;sizeof($errs)&gt;0)&#160;</td><td class="memItemRight" valign="bottom"><b>else</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae44ecb289fe0e9ea57fe71d15912edf"></a><!-- doxytag: member="current_spec.php::$tableres6" ref="aae44ecb289fe0e9ea57fe71d15912edf" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#aae44ecb289fe0e9ea57fe71d15912edf">$tableres6</a> = array()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The results from the sixth SPARQL query for generating the HTML specifications formatted as a tabular array. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab73d7f4f2dae233dd561e7fdaab3a77b"></a><!-- doxytag: member="current_spec.php::$c" ref="ab73d7f4f2dae233dd561e7fdaab3a77b" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="current__spec_8php.html#ab73d7f4f2dae233dd561e7fdaab3a77b">$c</a> = 0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">$counter for the number of classes. <br/></td></tr>
@@ -142,45 +124,9 @@ if(isset($errs)&amp;&amp;sizeof($errs)&gt;0)&#160;</td><td class="memItemRight" 
 <dl class="version"><dt><b>Version:</b></dt><dd>beta </dd></dl>
 <dl class="author"><dt><b>Author:</b></dt><dd>David R Newman</dd></dl>
 <p>Generates HTML specification of MyExperiment ontology using SPARQL queries to the 4Store SPARQL endpoint. </p>
+
+<p>Definition in file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
 </div><hr/><h2>Variable Documentation</h2>
-<a class="anchor" id="a3ac4d88168ee2a981dc778fe5b416a7d"></a><!-- doxytag: member="current_spec.php::$query" ref="a3ac4d88168ee2a981dc778fe5b416a7d" args="[1]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$query[1]</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
-<span class="stringliteral">PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
-<span class="stringliteral">PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;</span>
-<span class="stringliteral">select ?class ?property where { ?class rdf:type owl:Class . ?property rdfs:domain ?class . FILTER( REGEX(STR(?class),&#39;^$ontopath&#39;))}&quot;</span>
-</pre></div>
-<p>Property Domain Class-Property Relations query. </p>
-
-</div>
-</div>
-<a class="anchor" id="a5206c3d3a92c114171c8803b9c7820aa"></a><!-- doxytag: member="current_spec.php::$query" ref="a5206c3d3a92c114171c8803b9c7820aa" args="[3]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$query[3]</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
-<span class="stringliteral">PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
-<span class="stringliteral">PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;</span>
-<span class="stringliteral">select ?class ?label ?comment where { ?class rdf:type owl:Class . ?class rdfs:label ?label . ?class rdfs:comment ?comment . FILTER( REGEX(STR(?class),&#39;^$ontopath&#39;))}&quot;</span>
-</pre></div>
-<p>Label and Comment for Classes query. </p>
-
-</div>
-</div>
 <a class="anchor" id="ab583d451e206eb43345ec2c4c033eb33"></a><!-- doxytag: member="current_spec.php::$query" ref="ab583d451e206eb43345ec2c4c033eb33" args="[7]" -->
 <div class="memitem">
 <div class="memproto">
@@ -198,41 +144,7 @@ if(isset($errs)&amp;&amp;sizeof($errs)&gt;0)&#160;</td><td class="memItemRight" 
 </pre></div>
 <p>Equivalent Properties query. </p>
 
-</div>
-</div>
-<a class="anchor" id="a55735643d1e331715213d985f1cbbb58"></a><!-- doxytag: member="current_spec.php::$query" ref="a55735643d1e331715213d985f1cbbb58" args="[8]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$query[8]</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
-<span class="stringliteral">PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
-<span class="stringliteral">PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;</span>
-<span class="stringliteral">select distinct ?myclass ?exclass where {  ?myclass rdf:type owl:Class . ?myclass rdfs:subClassOf ?exclass . FILTER( !REGEX(STR(?exclass),&#39;^$ontopath&#39;) &amp;&amp; !REGEX(STR(?exclass),&#39;^http://www.w3.org/2000/01/rdf-schema#Resource&#39;) &amp;&amp; REGEX(STR(?myclass),&#39;^$ontopath&#39;))}&quot;</span>
-</pre></div>
-<p>SubClass Classes query. </p>
-
-</div>
-</div>
-<a class="anchor" id="ab88f94740c0aa7950cf3b024a522682e"></a><!-- doxytag: member="current_spec.php::$query" ref="ab88f94740c0aa7950cf3b024a522682e" args="[4]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$query[4]</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
-<span class="stringliteral">select ?class ?superclass where { ?class rdfs:subClassOf ?superclass . FILTER(?superclass!=?class &amp;&amp; REGEX(STR(?class),&#39;^$ontopath&#39;) &amp;&amp; REGEX(STR(?superclass),&#39;^$ontopath&#39;))}&quot;</span>
-</pre></div>
-<p>Superclasses for Classes query. </p>
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00052">52</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
 
 </div>
 </div>
@@ -253,6 +165,90 @@ if(isset($errs)&amp;&amp;sizeof($errs)&gt;0)&#160;</td><td class="memItemRight" 
 </pre></div>
 <p>Equivalent Classes query. </p>
 
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00046">46</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5206c3d3a92c114171c8803b9c7820aa"></a><!-- doxytag: member="current_spec.php::$query" ref="a5206c3d3a92c114171c8803b9c7820aa" args="[3]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$query[3]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
+<span class="stringliteral">PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
+<span class="stringliteral">PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;</span>
+<span class="stringliteral">select ?class ?label ?comment where { ?class rdf:type owl:Class . ?class rdfs:label ?label . ?class rdfs:comment ?comment . FILTER( REGEX(STR(?class),&#39;^$ontopath&#39;))}&quot;</span>
+</pre></div>
+<p>Label and Comment for Classes query. </p>
+
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00030">30</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3ac4d88168ee2a981dc778fe5b416a7d"></a><!-- doxytag: member="current_spec.php::$query" ref="a3ac4d88168ee2a981dc778fe5b416a7d" args="[1]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$query[1]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
+<span class="stringliteral">PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
+<span class="stringliteral">PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;</span>
+<span class="stringliteral">select ?class ?property where { ?class rdf:type owl:Class . ?property rdfs:domain ?class . FILTER( REGEX(STR(?class),&#39;^$ontopath&#39;))}&quot;</span>
+</pre></div>
+<p>Property Domain Class-Property Relations query. </p>
+
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00018">18</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a55735643d1e331715213d985f1cbbb58"></a><!-- doxytag: member="current_spec.php::$query" ref="a55735643d1e331715213d985f1cbbb58" args="[8]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$query[8]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
+<span class="stringliteral">PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
+<span class="stringliteral">PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;</span>
+<span class="stringliteral">select distinct ?myclass ?exclass where {  ?myclass rdf:type owl:Class . ?myclass rdfs:subClassOf ?exclass . FILTER( !REGEX(STR(?exclass),&#39;^$ontopath&#39;) &amp;&amp; !REGEX(STR(?exclass),&#39;^http://www.w3.org/2000/01/rdf-schema#Resource&#39;) &amp;&amp; REGEX(STR(?myclass),&#39;^$ontopath&#39;))}&quot;</span>
+</pre></div>
+<p>SubClass Classes query. </p>
+
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00058">58</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab88f94740c0aa7950cf3b024a522682e"></a><!-- doxytag: member="current_spec.php::$query" ref="ab88f94740c0aa7950cf3b024a522682e" args="[4]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$query[4]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Initial value:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
+<span class="stringliteral">select ?class ?superclass where { ?class rdfs:subClassOf ?superclass . FILTER(?superclass!=?class &amp;&amp; REGEX(STR(?class),&#39;^$ontopath&#39;) &amp;&amp; REGEX(STR(?superclass),&#39;^$ontopath&#39;))}&quot;</span>
+</pre></div>
+<p>Superclasses for Classes query. </p>
+
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00036">36</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="af01fd174eade12f55d7c8cdec11d97b7"></a><!-- doxytag: member="current_spec.php::$query" ref="af01fd174eade12f55d7c8cdec11d97b7" args="[9]" -->
@@ -271,6 +267,8 @@ if(isset($errs)&amp;&amp;sizeof($errs)&gt;0)&#160;</td><td class="memItemRight" 
 <span class="stringliteral">select distinct ?myprop ?exprop where {{?myprop rdf:type owl:DatatypeProperty} UNION {?myprop rdf:type owl:ObjectProperty} . ?myprop rdfs:subPropertyOf ?exprop . FILTER( !REGEX(STR(?exprop),&#39;^$ontopath&#39;) &amp;&amp; REGEX(STR(?myprop),&#39;^$ontopath&#39;))}&quot;</span>
 </pre></div>
 <p>SubProperty Properties query. </p>
+
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00064">64</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
 
 </div>
 </div>
@@ -291,6 +289,8 @@ if(isset($errs)&amp;&amp;sizeof($errs)&gt;0)&#160;</td><td class="memItemRight" 
 </pre></div>
 <p>Class Property Restictions Class-Property Relations query. </p>
 
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00024">24</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a65c6dbcbfde1c655105402f013bdadd8"></a><!-- doxytag: member="current_spec.php::$query" ref="a65c6dbcbfde1c655105402f013bdadd8" args="[5]" -->
@@ -310,6 +310,8 @@ if(isset($errs)&amp;&amp;sizeof($errs)&gt;0)&#160;</td><td class="memItemRight" 
 </pre></div>
 <p>Label and Comment for Properties query. </p>
 
+<p>Definition at line <a class="el" href="current__spec_8php_source.html#l00040">40</a> of file <a class="el" href="current__spec_8php_source.html">current_spec.php</a>.</p>
+
 </div>
 </div>
 </div>
@@ -327,7 +329,7 @@ if(isset($errs)&amp;&amp;sizeof($errs)&gt;0)&#160;</td><td class="memItemRight" 
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 9 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

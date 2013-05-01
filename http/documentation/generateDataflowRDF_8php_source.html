@@ -63,53 +63,53 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00002"></a>00002 <span class="preprocessor"></span>&lt;?php
 <a name="l00011"></a>00011         include(<span class="stringliteral">&#39;include.inc.php&#39;</span>);
 <a name="l00012"></a>00012         require_once(<span class="stringliteral">&#39;functions/rdf.inc.php&#39;</span>);
-<a name="l00013"></a>00013         $ph=popen(<span class="stringliteral">&quot;cd ${datapath}dataflows/; du -b * | awk &#39;BEGIN{FS=\&quot; \&quot;}{ if ($1!=\&quot;4\&quot;) print $2 }&#39;&quot;</span>,<span class="charliteral">&#39;r&#39;</span>);
-<a name="l00014"></a>00014         $temp=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00015"></a>00015         <span class="keywordflow">while</span> (!feof($ph)){
-<a name="l00016"></a>00016                 $temp.=fread($ph,8192);
-<a name="l00017"></a>00017         }
-<a name="l00018"></a>00018         $curfiles=explode(<span class="stringliteral">&quot;\n&quot;</span>,trim($temp));
-<a name="l00019"></a>00019         pclose($ph);
-<a name="l00020"></a>00020         $dfct=array();
-<a name="l00021"></a>00021         <span class="keywordflow">foreach</span> ($dataflow_contenttypes as $ct) $dfct[]=<span class="stringliteral">&quot;&#39;$ct&#39;&quot;</span>;
-<a name="l00022"></a>00022         $sql=<span class="stringliteral">&quot;select workflow_versions.id as wfvid from workflow_versions inner join content_types on workflow_versions.content_type_id = content_types.id inner join contributions on workflow_versions.workflow_id=contributions.contributable_id and contributions.contributable_type=&#39;Workflow&#39; inner join policies on contributions.policy_id=policies.id where content_types.mime_type in (&quot;</span>.implode(<span class="charliteral">&#39;,&#39;</span>,$dfct).<span class="stringliteral">&quot;) and content_types.category=&#39;Workflow&#39; and policies.share_mode = 0&quot;</span>;
-<a name="l00023"></a>00023         $res=mysql_query($sql);
-<a name="l00024"></a>00024         $dbfiles=array();
-<a name="l00025"></a>00025         <span class="keywordflow">for</span> ($i=0; $i&lt;mysql_num_rows($res); $i++){
-<a name="l00026"></a>00026                 $dbfiles[]=mysql_result($res,$i,<span class="stringliteral">&#39;wfvid&#39;</span>);
-<a name="l00027"></a>00027         }
-<a name="l00028"></a>00028         <span class="keywordflow">foreach</span> ($curfiles as $cf){
-<a name="l00029"></a>00029                 <span class="keywordflow">if</span> (!in_array($cf,$dbfiles)){
-<a name="l00030"></a>00030                         exec(<span class="stringliteral">&quot;echo -n &#39;NONE&#39; &gt; &quot;</span>.$datapath.<span class="stringliteral">&quot;dataflows/$cf&quot;</span>);
-<a name="l00031"></a>00031                         echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Removed RDF for components of workflow_versions $cf because permissions have changed or workflow has been deleted\n&quot;</span>;
-<a name="l00032"></a>00032                 }
-<a name="l00033"></a>00033         }
-<a name="l00034"></a>00034         $newfiles=array();
-<a name="l00035"></a>00035         <span class="keywordflow">foreach</span> ($dbfiles as $df){
-<a name="l00036"></a>00036                 <span class="keywordflow">if</span> (!in_array($df,$curfiles)){
-<a name="l00037"></a>00037                         $newfiles[]=$df;
-<a name="l00038"></a>00038                 }
-<a name="l00039"></a>00039         }
-<a name="l00040"></a>00040         $filelocdir=$datapath.<span class="stringliteral">&quot;dataflows/&quot;</span>;
-<a name="l00041"></a>00041         <span class="keywordflow">foreach</span> ($newfiles as $wfvid){
-<a name="l00042"></a>00042                 <span class="keywordflow">if</span> (file_exists($filelocdir.$wfvid)) <span class="keywordflow">continue</span>;
-<a name="l00043"></a>00043                 $sql=<span class="stringliteral">&quot;select workflow_versions.*, content_types.mime_type from workflow_versions inner join content_types on workflow_versions.content_type_id=content_types.id where workflow_versions.id=&#39;$wfvid&#39;&quot;</span>;
-<a name="l00044"></a>00044                 $wfv=mysql_fetch_assoc(mysql_query($sql));
-<a name="l00045"></a>00045                 $wget=<span class="stringliteral">&quot;wget -q -O /tmp/wfvc_$wfvid.xml -o /dev/null &#39;${datauri}workflow.xml?id=$wfv[workflow_id]&amp;versions=$wfv[version]&amp;elements=components&#39;&quot;</span>;
-<a name="l00046"></a>00046                 exec($wget);
-<a name="l00047"></a>00047                 $parsedxml=parseXML(implode(<span class="stringliteral">&quot;&quot;</span>,file(<span class="stringliteral">&quot;/tmp/wfvc_$wfvid.xml&quot;</span>)));
-<a name="l00048"></a>00048                 <span class="keywordflow">if</span> (!isset($parsedxml[0][<span class="stringliteral">&#39;children&#39;</span>][0][<span class="stringliteral">&#39;children&#39;</span>])) <span class="keywordflow">continue</span>;
-<a name="l00049"></a>00049                 $wfvc=$parsedxml[0][<span class="stringliteral">&#39;children&#39;</span>][0][<span class="stringliteral">&#39;children&#39;</span>];
-<a name="l00050"></a>00050                 $ent_uri=$datauri.<span class="stringliteral">&quot;workflows/$wfv[workflow_id]/versions/$wfv[version]&quot;</span>;
-<a name="l00051"></a>00051                 $dataflows=tabulateDataflowComponents($wfvc,$ent_uri,$wfv[<span class="stringliteral">&#39;mime_type&#39;</span>]);
-<a name="l00052"></a>00052                 $fh=fopen($filelocdir.$wfvid,<span class="charliteral">&#39;w&#39;</span>);
-<a name="l00053"></a>00053                 <span class="keywordflow">if</span> ($dataflows) fwrite($fh,generateDataflows($dataflows,$ent_uri));
-<a name="l00054"></a>00054                 <span class="keywordflow">else</span> fwrite($fh,<span class="stringliteral">&quot;NONE&quot;</span>);
-<a name="l00055"></a>00055                 fclose($fh);
-<a name="l00056"></a>00056                 echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Generated RDF for components of workflow_versions $wfvid\n&quot;</span>;
-<a name="l00057"></a>00057         }
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 ?&gt;
+<a name="l00014"></a><a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916">00014</a>         <a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>=popen(<span class="stringliteral">&quot;cd ${datapath}dataflows/; du -b * | awk &#39;BEGIN{FS=\&quot; \&quot;}{ if ($1!=\&quot;4\&quot;) print $2 }&#39;&quot;</span>,<span class="charliteral">&#39;r&#39;</span>);
+<a name="l00016"></a><a class="code" href="generateDataflowRDF_8php.html#a0d57fb0317e19ec798aa625381ebf342">00016</a>         <a class="code" href="generateDataflowRDF_8php.html#a0d57fb0317e19ec798aa625381ebf342" title="A string listing all the local Dataflow RDF files that have content.">$temp</a>=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00017"></a>00017         <span class="keywordflow">while</span> (!feof(<a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>)){
+<a name="l00018"></a>00018                 <a class="code" href="generateDataflowRDF_8php.html#a0d57fb0317e19ec798aa625381ebf342" title="A string listing all the local Dataflow RDF files that have content.">$temp</a>.=fread(<a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>,8192);
+<a name="l00019"></a>00019         }
+<a name="l00021"></a><a class="code" href="generateDataflowRDF_8php.html#ad0fd572ad69e7f1ea4bb3d5f89f52cbd">00021</a>         <a class="code" href="generateDataflowRDF_8php.html#ad0fd572ad69e7f1ea4bb3d5f89f52cbd" title="An array listing all the local Dataflow RDF files that have content.">$curfiles</a>=explode(<span class="stringliteral">&quot;\n&quot;</span>,trim(<a class="code" href="generateDataflowRDF_8php.html#a0d57fb0317e19ec798aa625381ebf342" title="A string listing all the local Dataflow RDF files that have content.">$temp</a>));
+<a name="l00022"></a>00022         pclose(<a class="code" href="generateDataflowRDF_8php.html#ac1d420fcdb8b362b7909b4f257c9b916" title="A handler for a piped stream containing a list of all the local Dataflow RDF files that have content ...">$ph</a>);
+<a name="l00024"></a><a class="code" href="generateDataflowRDF_8php.html#a6e6c7bf6eb182f99173d03b38a429cbf">00024</a>         <a class="code" href="generateDataflowRDF_8php.html#a6e6c7bf6eb182f99173d03b38a429cbf" title="An array containing quoted strings of all the Dataflow content types.">$dfct</a>=array();
+<a name="l00025"></a>00025         <span class="keywordflow">foreach</span> (<a class="code" href="data_8inc_8php.html#a939bc75d02399cc1bb9dcdf9e9eab422" title="An array of MIME types that can have dataflows and their components extracted from them...">$dataflow_contenttypes</a> as $ct) <a class="code" href="generateDataflowRDF_8php.html#a6e6c7bf6eb182f99173d03b38a429cbf" title="An array containing quoted strings of all the Dataflow content types.">$dfct</a>[]=<span class="stringliteral">&quot;&#39;$ct&#39;&quot;</span>;
+<a name="l00027"></a><a class="code" href="generateDataflowRDF_8php.html#a047170d6020a882807665812a27e2525">00027</a>         <a class="code" href="generateDataflowRDF_8php.html#a047170d6020a882807665812a27e2525" title="A string containing an SQL query to find all the publically downloadable workflows that have dataflow...">$sql</a>=<span class="stringliteral">&quot;select workflow_versions.id as wfvid from workflow_versions inner join content_types on workflow_versions.content_type_id = content_types.id inner join contributions on workflow_versions.workflow_id=contributions.contributable_id and contributions.contributable_type=&#39;Workflow&#39; inner join policies on contributions.policy_id=policies.id where content_types.mime_type in (&quot;</span>.implode(<span class="charliteral">&#39;,&#39;</span>,<a class="code" href="generateDataflowRDF_8php.html#a6e6c7bf6eb182f99173d03b38a429cbf" title="An array containing quoted strings of all the Dataflow content types.">$dfct</a>).<span class="stringliteral">&quot;) and content_types.category=&#39;Workflow&#39; and policies.share_mode = 0&quot;</span>;
+<a name="l00029"></a><a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5">00029</a>         <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>=mysql_query(<a class="code" href="generateDataflowRDF_8php.html#a047170d6020a882807665812a27e2525" title="A string containing an SQL query to find all the publically downloadable workflows that have dataflow...">$sql</a>);
+<a name="l00031"></a><a class="code" href="generateDataflowRDF_8php.html#a2c87cdca2c1564e183b4717894fe5cc4">00031</a>         <a class="code" href="generateDataflowRDF_8php.html#a2c87cdca2c1564e183b4717894fe5cc4" title="An array containing all the workflow version IDs for publically downloadable workflows that have data...">$dbfiles</a>=array();
+<a name="l00032"></a>00032         <span class="keywordflow">for</span> ($i=0; $i&lt;mysql_num_rows(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>); $i++){
+<a name="l00033"></a>00033                 <a class="code" href="generateDataflowRDF_8php.html#a2c87cdca2c1564e183b4717894fe5cc4" title="An array containing all the workflow version IDs for publically downloadable workflows that have data...">$dbfiles</a>[]=mysql_result(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>,$i,<span class="stringliteral">&#39;wfvid&#39;</span>);
+<a name="l00034"></a>00034         }
+<a name="l00035"></a>00035         <span class="keywordflow">foreach</span> (<a class="code" href="generateDataflowRDF_8php.html#ad0fd572ad69e7f1ea4bb3d5f89f52cbd" title="An array listing all the local Dataflow RDF files that have content.">$curfiles</a> as $cf){
+<a name="l00036"></a>00036                 <span class="keywordflow">if</span> (!in_array($cf,<a class="code" href="generateDataflowRDF_8php.html#a2c87cdca2c1564e183b4717894fe5cc4" title="An array containing all the workflow version IDs for publically downloadable workflows that have data...">$dbfiles</a>)){
+<a name="l00037"></a>00037                         exec(<span class="stringliteral">&quot;echo -n &#39;NONE&#39; &gt; &quot;</span>.<a class="code" href="defaultsettings_8inc_8php.html#af7742a24d8c1298570a7364e0692709a" title="A string specifying the path where RDF and other data files generated by myExperiment Linked Data scr...">$datapath</a>.<span class="stringliteral">&quot;dataflows/$cf&quot;</span>);
+<a name="l00038"></a>00038                         echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Removed RDF for components of workflow_versions $cf because permissions have changed or workflow has been deleted\n&quot;</span>;
+<a name="l00039"></a>00039                 }
+<a name="l00040"></a>00040         }
+<a name="l00042"></a><a class="code" href="generateDataflowRDF_8php.html#a6e0944a73e0caa06db8370a49a35912c">00042</a>         <a class="code" href="generateDataflowRDF_8php.html#a6e0944a73e0caa06db8370a49a35912c" title="An array containing any new workflow versions for publically downloadable workflows that have dataflo...">$newfiles</a>=array();
+<a name="l00043"></a>00043         <span class="keywordflow">foreach</span> (<a class="code" href="generateDataflowRDF_8php.html#a2c87cdca2c1564e183b4717894fe5cc4" title="An array containing all the workflow version IDs for publically downloadable workflows that have data...">$dbfiles</a> as $df){
+<a name="l00044"></a>00044                 <span class="keywordflow">if</span> (!in_array($df,<a class="code" href="generateDataflowRDF_8php.html#ad0fd572ad69e7f1ea4bb3d5f89f52cbd" title="An array listing all the local Dataflow RDF files that have content.">$curfiles</a>)){
+<a name="l00045"></a>00045                         <a class="code" href="generateDataflowRDF_8php.html#a6e0944a73e0caa06db8370a49a35912c" title="An array containing any new workflow versions for publically downloadable workflows that have dataflo...">$newfiles</a>[]=$df;
+<a name="l00046"></a>00046                 }
+<a name="l00047"></a>00047         }
+<a name="l00049"></a><a class="code" href="generateDataflowRDF_8php.html#a89bcaafaaa36fdcb7b4e6e6336e2306c">00049</a>         <a class="code" href="generateDataflowRDF_8php.html#a89bcaafaaa36fdcb7b4e6e6336e2306c" title="A string containg the path to where the local Dataflow RDF files are stored.">$filelocdir</a>=<a class="code" href="defaultsettings_8inc_8php.html#af7742a24d8c1298570a7364e0692709a" title="A string specifying the path where RDF and other data files generated by myExperiment Linked Data scr...">$datapath</a>.<span class="stringliteral">&quot;dataflows/&quot;</span>;
+<a name="l00050"></a>00050         <span class="keywordflow">foreach</span> (<a class="code" href="generateDataflowRDF_8php.html#a6e0944a73e0caa06db8370a49a35912c" title="An array containing any new workflow versions for publically downloadable workflows that have dataflo...">$newfiles</a> as $wfvid){
+<a name="l00051"></a>00051                 <span class="keywordflow">if</span> (file_exists(<a class="code" href="generateDataflowRDF_8php.html#a89bcaafaaa36fdcb7b4e6e6336e2306c" title="A string containg the path to where the local Dataflow RDF files are stored.">$filelocdir</a>.$wfvid)) <span class="keywordflow">continue</span>;
+<a name="l00052"></a>00052                 <a class="code" href="generateDataflowRDF_8php.html#a047170d6020a882807665812a27e2525" title="A string containing an SQL query to find all the publically downloadable workflows that have dataflow...">$sql</a>=<span class="stringliteral">&quot;select workflow_versions.*, content_types.mime_type from workflow_versions inner join content_types on workflow_versions.content_type_id=content_types.id where workflow_versions.id=&#39;$wfvid&#39;&quot;</span>;
+<a name="l00053"></a>00053                 $wfv=mysql_fetch_assoc(mysql_query(<a class="code" href="generateDataflowRDF_8php.html#a047170d6020a882807665812a27e2525" title="A string containing an SQL query to find all the publically downloadable workflows that have dataflow...">$sql</a>));
+<a name="l00054"></a>00054                 $wget=<span class="stringliteral">&quot;wget -q -O /tmp/wfvc_$wfvid.xml -o /dev/null &#39;${datauri}workflow.xml?id=$wfv[workflow_id]&amp;versions=$wfv[version]&amp;elements=components&#39;&quot;</span>;
+<a name="l00055"></a>00055                 exec($wget);
+<a name="l00056"></a>00056                 $parsedxml=<a class="code" href="xml_8inc_8php.html#a4e5d902d21dad2c18a8a57ab2b530fb0" title="Parses and XML string an returns an array-based representation of the XML. (Reverse of generateXML fu...">parseXML</a>(implode(<span class="stringliteral">&quot;&quot;</span>,file(<span class="stringliteral">&quot;/tmp/wfvc_$wfvid.xml&quot;</span>)));
+<a name="l00057"></a>00057                 <span class="keywordflow">if</span> (!isset($parsedxml[0][<span class="stringliteral">&#39;children&#39;</span>][0][<span class="stringliteral">&#39;children&#39;</span>])) <span class="keywordflow">continue</span>;
+<a name="l00058"></a>00058                 $wfvc=$parsedxml[0][<span class="stringliteral">&#39;children&#39;</span>][0][<span class="stringliteral">&#39;children&#39;</span>];
+<a name="l00059"></a>00059                 $ent_uri=<a class="code" href="defaultsettings_8inc_8php.html#af3977e6112188cd0722cdde838f04c9d" title="A string specifying the base URI for any myExperiment RDF entities that are generated. (E.g. http://www.myexperiment.org/).">$datauri</a>.<span class="stringliteral">&quot;workflows/$wfv[workflow_id]/versions/$wfv[version]&quot;</span>;
+<a name="l00060"></a>00060                 $dataflows=<a class="code" href="xml_8inc_8php.html#ab16bf4372b36625a7800e3905043f3be" title="Generates a table of Dataflow components extracted from the following MIME type of Workflows applicat...">tabulateDataflowComponents</a>($wfvc,$ent_uri,$wfv[<span class="stringliteral">&#39;mime_type&#39;</span>]);
+<a name="l00061"></a>00061                 <a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>=fopen(<a class="code" href="generateDataflowRDF_8php.html#a89bcaafaaa36fdcb7b4e6e6336e2306c" title="A string containg the path to where the local Dataflow RDF files are stored.">$filelocdir</a>.$wfvid,<span class="charliteral">&#39;w&#39;</span>);
+<a name="l00062"></a>00062                 <span class="keywordflow">if</span> ($dataflows) fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<a class="code" href="property_8inc_8php.html#a34d5ac43005ae90fa67a66bdeba45464" title="Generate RDF/XML for the Dataflow (and potentially nested Dataflows thereof) of a particular Workflow...">generateDataflows</a>($dataflows,$ent_uri));
+<a name="l00063"></a>00063                 <span class="keywordflow">else</span> fwrite(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>,<span class="stringliteral">&quot;NONE&quot;</span>);
+<a name="l00064"></a>00064                 fclose(<a class="code" href="datadump_8php.html#a015aa0bda28030cbf1a64c0afb88f958" title="A file handler for writing myExperiment RDF data out to a local file.">$fh</a>);
+<a name="l00065"></a>00065                 echo <span class="stringliteral">&quot;[&quot;</span>.date(<span class="stringliteral">&quot;H:i:s&quot;</span>).<span class="stringliteral">&quot;] Generated RDF for components of workflow_versions $wfvid\n&quot;</span>;
+<a name="l00066"></a>00066         }
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068 ?&gt;
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -126,7 +126,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

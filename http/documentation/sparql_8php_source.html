@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>MyExperiment RDF: http/ontologies/sparql.php Source File</title>
+<title>MyExperiment RDF: http/sparql.php Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -56,166 +56,224 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>http/ontologies/sparql.php</h1>  </div>
+<h1>http/sparql.php</h1>  </div>
 </div>
 <div class="contents">
 <a href="sparql_8php.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 &lt;?php
-<a name="l00010"></a>00010         include(<span class="stringliteral">&#39;../include.inc.php&#39;</span>);
-<a name="l00011"></a>00011         $pagetitle=<span class="stringliteral">&quot;&lt;small&gt;Ontologies SPARQL Endpoint&lt;/small&gt;&quot;</span>;
-<a name="l00012"></a>00012         $htmlheader[]=<span class="stringliteral">&#39;&lt;script src=&quot;/js/sparql.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;&#39;</span>;
-<a name="l00013"></a>00013         include(<span class="stringliteral">&#39;functions/xml.inc.php&#39;</span>);
-<a name="l00014"></a>00014         require(<span class="stringliteral">&#39;functions/4store.inc.php&#39;</span>);
-<a name="l00015"></a>00015         require(<span class="stringliteral">&#39;functions/utility.inc.php&#39;</span>);
-<a name="l00016"></a>00016         $domain=<span class="stringliteral">&quot;public&quot;</span>;
-<a name="l00017"></a>00017         $prefix=<span class="stringliteral">&quot;Ontologies &quot;</span>;
-<a name="l00018"></a>00018         $ts=<span class="stringliteral">&quot;ontologies&quot;</span>;
-<a name="l00019"></a>00019         $notriples=getNoTriples($ts);
-<a name="l00020"></a>00020         $ludate=getLastUpdated($ts);
-<a name="l00021"></a>00021         $softlimit=1;
-<a name="l00022"></a>00022         $maxsoftlimit=100;
-<a name="l00023"></a>00023         $clientlive=<span class="keyword">true</span>;
-<a name="l00024"></a>00024         <span class="keywordflow">if</span> ($_POST){
-<a name="l00025"></a>00025                 $query = str_replace(<span class="charliteral">&#39;&quot;&#39;</span>,<span class="stringliteral">&quot;&#39;&quot;</span>,$_POST[<span class="stringliteral">&#39;query&#39;</span>]);
-<a name="l00026"></a>00026                 $formatting = mysql_real_escape_string($_POST[<span class="stringliteral">&#39;formatting&#39;</span>]);   
-<a name="l00027"></a>00027                 <span class="keywordflow">if</span> (is_int(intval($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>])) &amp;&amp; intval($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>])&gt;0 &amp;&amp; intval($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>])&lt;=$maxsoftlimit) $softlimit=intval($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>]);
-<a name="l00028"></a>00028         }
-<a name="l00029"></a>00029         elseif ($_GET){         
-<a name="l00030"></a>00030                 $query = str_replace(<span class="charliteral">&#39;&quot;&#39;</span>,<span class="stringliteral">&quot;&#39;&quot;</span>,rawurldecode($_GET[<span class="stringliteral">&#39;query&#39;</span>]));
-<a name="l00031"></a>00031                 $accepts=explode(<span class="stringliteral">&quot;,&quot;</span>,$_SERVER[<span class="stringliteral">&#39;HTTP_ACCEPT&#39;</span>]);
-<a name="l00032"></a>00032                 <span class="keywordflow">if</span> (is_int(intval($_GET[<span class="stringliteral">&#39;softlimit&#39;</span>])) &amp;&amp; intval($_GET[<span class="stringliteral">&#39;softlimit&#39;</span>])&gt;0 &amp;&amp; intval($_GET[<span class="stringliteral">&#39;softlimit&#39;</span>])&lt;=$maxsoftlimit) $softlimit=intval($_GET[<span class="stringliteral">&#39;softlimit&#39;</span>]);
-<a name="l00033"></a>00033                 <span class="keywordflow">if</span> ($_GET[<span class="stringliteral">&#39;formatting&#39;</span>]) $formatting=$_GET[<span class="stringliteral">&#39;formatting&#39;</span>];
-<a name="l00034"></a>00034                 elseif (array_in_array(array(<span class="stringliteral">&quot;text/html&quot;</span>,<span class="stringliteral">&quot;application/xhtml&quot;</span>),$accepts)) $formatting=&quot;&quot;;
-<a name="l00035"></a>00035                 elseif (array_in_array(array(&quot;text/xml&quot;,&quot;application/xml&quot;,&quot;application/rdf+xml&quot;,&quot;application/sparql-results+xml&quot;),$accepts)) $formatting=&quot;Raw&quot;;
-<a name="l00036"></a>00036                 else $formatting=&quot;Raw&quot;;
-<a name="l00037"></a>00037         }
-<a name="l00038"></a>00038         if ($query) {
-<a name="l00039"></a>00039                 <span class="keywordflow">if</span> (strtolower($query)==<span class="stringliteral">&quot;test&quot;</span>){
-<a name="l00040"></a>00040                         $formatting = <span class="stringliteral">&quot;&quot;</span>;
-<a name="l00041"></a>00041                         <span class="keywordflow">if</span> (ontologiesFullTestSparqlQueryClient($useport)){
-<a name="l00042"></a>00042                                 $msg=<span class="stringliteral">&quot;This myExperiment SPARQL Endpoint is functioning correctly&quot;</span>;
-<a name="l00043"></a>00043                                 $clientlive=<span class="keyword">true</span>;
-<a name="l00044"></a>00044                         }
-<a name="l00045"></a>00045                         <span class="keywordflow">else</span>{
-<a name="l00046"></a>00046                                 $err=<span class="stringliteral">&quot;This myExperiment SPARQL Endpoint needs restarting&quot;</span>;
-<a name="l00047"></a>00047                                 $clientlive=<span class="keyword">false</span>;
-<a name="l00048"></a>00048                         }
-<a name="l00049"></a>00049                 }
-<a name="l00050"></a>00050                 <span class="keywordflow">else</span>{
-<a name="l00051"></a>00051                         $results=sparqlQueryClient($ts,$query,<span class="stringliteral">&quot;sparql&quot;</span>,$softlimit*1000);
-<a name="l00052"></a>00052                         <span class="keywordflow">if</span> ($results) $clientlive=<span class="keyword">true</span>;
-<a name="l00053"></a>00053                         <span class="keywordflow">if</span> (substr($results,0,12)==<span class="stringliteral">&quot;Query Failed&quot;</span>){
-<a name="l00054"></a>00054                                 $err=$results;
-<a name="l00055"></a>00055                                 $results=<span class="stringliteral">&quot;&quot;</span>;
-<a name="l00056"></a>00056                         }       
+<a name="l00011"></a><a class="code" href="sparql_8php.html#af2582e2f620e4157097929da5cc0ed18">00011</a> <a class="code" href="generic__spec_8php.html#af2582e2f620e4157097929da5cc0ed18" title="The page title to be displayed in an h1 tag and the title of the html header.">$pagetitle</a>=<span class="stringliteral">&quot;SPARQL Endpoint&quot;</span>;
+<a name="l00013"></a><a class="code" href="sparql_8php.html#a6e3a6fe786966755a25be116fa294b80">00013</a> <a class="code" href="howtosparql_8php.html#a7f85920e5f567a88a8c90bcf20555aa1" title="An array for adding additional lines the the head entity of the HTML page, (e.g. CSS and Javascript f...">$htmlheader</a>[]=<span class="stringliteral">&#39;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/css/style.css&quot;/&gt;&#39;</span>;
+<a name="l00014"></a>00014 <a class="code" href="howtosparql_8php.html#a7f85920e5f567a88a8c90bcf20555aa1" title="An array for adding additional lines the the head entity of the HTML page, (e.g. CSS and Javascript f...">$htmlheader</a>[]=<span class="stringliteral">&#39;&lt;script src=&quot;/js/sparql.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;&#39;</span>;
+<a name="l00015"></a>00015 <a class="code" href="howtosparql_8php.html#a7f85920e5f567a88a8c90bcf20555aa1" title="An array for adding additional lines the the head entity of the HTML page, (e.g. CSS and Javascript f...">$htmlheader</a>[]=<span class="stringliteral">&#39;&lt;script src=&quot;/js/codemirror.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;&#39;</span>;
+<a name="l00016"></a>00016 include_once(<span class="stringliteral">&#39;include.inc.php&#39;</span>);
+<a name="l00017"></a>00017 include_once(<span class="stringliteral">&#39;connect/sparql.inc.php&#39;</span>);
+<a name="l00018"></a>00018 require_once(<span class="stringliteral">&#39;functions/rdf.inc.php&#39;</span>);
+<a name="l00019"></a>00019 require_once(<span class="stringliteral">&#39;functions/4store.inc.php&#39;</span>);
+<a name="l00021"></a><a class="code" href="sparql_8php.html#aef9cf198312d2f89238a8e8e2f0f67f3">00021</a> <a class="code" href="datadump_8php.html#aef9cf198312d2f89238a8e8e2f0f67f3" title="A string containing the domain for generating RDF data. (public: publicly available myExperiment RDF ...">$domain</a>=<span class="stringliteral">&quot;public&quot;</span>;
+<a name="l00023"></a><a class="code" href="sparql_8php.html#ace97946c7c1b2df3a281a74028219dbe">00023</a> <a class="code" href="sparql_8php.html#ace97946c7c1b2df3a281a74028219dbe" title="A string containing the number of triples in the myExperiment knowledge base (or the string UNKNOWN i...">$notriples</a>=<a class="code" href="4store_8inc_8php.html#a4ac3ef7ed6a836b846c0f3bcd245a41c" title="Determine the number of triples in a specified knowledge base.">getNoTriples</a>(<a class="code" href="defaultsettings_8inc_8php.html#a497549f57f9e3b6185f1b37078f04bef" title="A string specifying the name of the myExperiment knowledge base.">$myexp_kb</a>);
+<a name="l00024"></a>00024 <span class="keywordflow">if</span> (empty(<a class="code" href="sparql_8php.html#ace97946c7c1b2df3a281a74028219dbe" title="A string containing the number of triples in the myExperiment knowledge base (or the string UNKNOWN i...">$notriples</a>) &amp;&amp; <a class="code" href="sparql_8php.html#ace97946c7c1b2df3a281a74028219dbe" title="A string containing the number of triples in the myExperiment knowledge base (or the string UNKNOWN i...">$notriples</a> !== <span class="stringliteral">&quot;0&quot;</span>) {
+<a name="l00025"></a>00025         <a class="code" href="sparql_8php.html#ace97946c7c1b2df3a281a74028219dbe" title="A string containing the number of triples in the myExperiment knowledge base (or the string UNKNOWN i...">$notriples</a> = <span class="stringliteral">&quot;UNKNOWN&quot;</span>;
+<a name="l00026"></a>00026 }
+<a name="l00028"></a><a class="code" href="sparql_8php.html#aad0b4ef09ad7db716e68785c2fab6f47">00028</a> <a class="code" href="sparql_8php.html#aad0b4ef09ad7db716e68785c2fab6f47" title="A string containing the datetime when the database dump used to generate data in the myExperiment kno...">$lmdate</a>=date(<span class="charliteral">&#39;r&#39;</span>, strtotime(date(<span class="stringliteral">&#39;Y-m-d&#39;</span>, <a class="code" href="4store_8inc_8php.html#a1522c08922617ffe497b3cb4fa1c3445" title="Get the last time a specified knowledge base was updated.">getLastUpdated</a>(<a class="code" href="defaultsettings_8inc_8php.html#a497549f57f9e3b6185f1b37078f04bef" title="A string specifying the name of the myExperiment knowledge base.">$myexp_kb</a>)))-60);
+<a name="l00030"></a><a class="code" href="sparql_8php.html#ab66c76805539b5e9fb40d32fc101e565">00030</a> <a class="code" href="sparql_8php.html#ab66c76805539b5e9fb40d32fc101e565" title="An integer containing the percentage of resources the SPARQL endpoint can use to find results to a qu...">$softlimit</a>=1;
+<a name="l00032"></a><a class="code" href="sparql_8php.html#a01073c8908865aef234ed3d5b04ea0cc">00032</a> <a class="code" href="sparql_8php.html#a01073c8908865aef234ed3d5b04ea0cc" title="An integer. 1 if reasoning should be performed on a query, 0 otherwise.">$reasoning</a>=0;
+<a name="l00034"></a><a class="code" href="sparql_8php.html#a85ecd6fd6948cb8826a216fcfe40b146">00034</a> <a class="code" href="sparql_8php.html#a85ecd6fd6948cb8826a216fcfe40b146" title="The maximum value to which a user can set the softlimit endpoint form parameter. As for this endpoint...">$maxsoftlimit</a>=100;
+<a name="l00036"></a><a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b">00036</a> <a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>=<span class="stringliteral">&quot;XML&quot;</span>;
+<a name="l00038"></a><a class="code" href="sparql_8php.html#a8c2d63c81d985d381ab4e8dd106a5f24">00038</a> <a class="code" href="sparql_8php.html#a8c2d63c81d985d381ab4e8dd106a5f24" title="A string representing the MIME type to be used in the HTTP response to the SPARQL query submitted...">$mimetype</a>=<span class="stringliteral">&quot;application/xml&quot;</span>;
+<a name="l00040"></a><a class="code" href="sparql_8php.html#a1e6e4ea377a908a5407c435e9054e3a9">00040</a> <a class="code" href="sparql_8php.html#a1e6e4ea377a908a5407c435e9054e3a9" title="A string representing the format in which results returned from 4Store shoud be returned.">$format</a>=<span class="stringliteral">&quot;sparql&quot;</span>;
+<a name="l00042"></a><a class="code" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff">00042</a> <a class="code" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff" title="A boolean to record whether a SPARQL query has been successfully executed and a response received...">$done</a>=FALSE;
+<a name="l00044"></a><a class="code" href="sparql_8php.html#a22ecbd1b21f5e762994cdd8899058361">00044</a> <a class="code" href="sparql_8php.html#a22ecbd1b21f5e762994cdd8899058361" title="A multi-dimensional associative array mapping the format requested from 4Store to the MIME Type that ...">$formats</a>=array(<span class="stringliteral">&quot;HTML Table&quot;</span>=&gt;array(<span class="stringliteral">&quot;sparql&quot;</span>,array(<span class="stringliteral">&quot;text/html&quot;</span>,<span class="stringliteral">&quot;application/xhtml+xml&quot;</span>)), <span class="stringliteral">&quot;XML&quot;</span>=&gt;array(<span class="stringliteral">&quot;sparql&quot;</span>,array(<span class="stringliteral">&quot;application/xml&quot;</span>,<span class="stringliteral">&quot;applications/sparql-results+xml&quot;</span>)),<span class="stringliteral">&quot;Text&quot;</span>=&gt;array(<span class="stringliteral">&quot;text&quot;</span>,array(<span class="stringliteral">&quot;text/plain&quot;</span>)),<span class="stringliteral">&quot;JSON&quot;</span>=&gt;array(<span class="stringliteral">&quot;json&quot;</span>,array(<span class="stringliteral">&quot;application/json&quot;</span>,<span class="stringliteral">&quot;application/sparql-results+json&quot;</span>,<span class="stringliteral">&quot;text/json&quot;</span>)),<span class="stringliteral">&quot;CSV&quot;</span>=&gt;array(<span class="stringliteral">&quot;sparql&quot;</span>,array(<span class="stringliteral">&quot;text/csv&quot;</span>,<span class="stringliteral">&quot;application/csv&quot;</span>)),<span class="stringliteral">&quot;CSV Matrix&quot;</span>=&gt;array(<span class="stringliteral">&quot;sparql&quot;</span>,array(<span class="stringliteral">&quot;text/csv&quot;</span>,<span class="stringliteral">&quot;application/csv&quot;</span>)));
+<a name="l00045"></a>00045 <span class="keywordflow">if</span> (isset($_POST[<span class="stringliteral">&#39;formatting&#39;</span>])) <a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>=$_POST[<span class="stringliteral">&#39;formatting&#39;</span>];
+<a name="l00046"></a>00046 elseif (isset($_GET[<span class="stringliteral">&#39;formatting&#39;</span>]) &amp;&amp; strlen($_GET[<span class="stringliteral">&#39;formatting&#39;</span>])&gt;0) <a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>=$_GET[&#39;formatting&#39;];
+<a name="l00047"></a>00047 else{
+<a name="l00048"></a>00048         $mtfound=0;
+<a name="l00049"></a>00049         $fc_mimetype=<a class="code" href="utility_8inc_8php.html#aae3698664d4adfc4907ee1c2f56ee677" title="Determine what is the first choice MIME type from the accept string provided.">getFirstChoiceMIMEType</a>($_SERVER[<span class="stringliteral">&#39;HTTP_ACCEPT&#39;</span>]);
+<a name="l00050"></a>00050         <span class="keywordflow">foreach</span> (<a class="code" href="sparql_8php.html#a22ecbd1b21f5e762994cdd8899058361" title="A multi-dimensional associative array mapping the format requested from 4Store to the MIME Type that ...">$formats</a> as $fname =&gt; $aformat){
+<a name="l00051"></a>00051                 <span class="keywordflow">foreach</span> ($aformat[1] as $amimetype){
+<a name="l00052"></a>00052                         <span class="keywordflow">if</span> ($fc_mimetype==$amimetype){
+<a name="l00053"></a>00053                                 <a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>=$fname;
+<a name="l00054"></a>00054                                 $mtfound=1;
+<a name="l00055"></a>00055                                 <span class="keywordflow">break</span>;
+<a name="l00056"></a>00056                         }
 <a name="l00057"></a>00057                 }
-<a name="l00058"></a>00058         }
-<a name="l00059"></a>00059         $formattings=array(<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;Raw&quot;</span>,<span class="stringliteral">&quot;HTML Table&quot;</span>,<span class="stringliteral">&quot;CSV&quot;</span>,<span class="stringliteral">&quot;CSV Matrix&quot;</span>,<span class="stringliteral">&quot;JSON&quot;</span>);
-<a name="l00060"></a>00060         $formattinglabels=array(<span class="stringliteral">&quot;XML (In Page)&quot;</span>,<span class="stringliteral">&quot;XML (Raw)&quot;</span>,<span class="stringliteral">&quot;HTML Table&quot;</span>,<span class="stringliteral">&quot;CSV&quot;</span>,<span class="stringliteral">&quot;CSV Matrix&quot;</span>,<span class="stringliteral">&quot;JSON&quot;</span>);
-<a name="l00061"></a>00061         <span class="keywordflow">if</span> ($formatting==<span class="stringliteral">&quot;Raw&quot;</span>){
-<a name="l00062"></a>00062                 header(<span class="stringliteral">&quot;Content-type: application/xml&quot;</span>);
-<a name="l00063"></a>00063                 echo $results;
-<a name="l00064"></a>00064                 $done=1;
-<a name="l00065"></a>00065         }
-<a name="l00066"></a>00066         elseif ($formatting==<span class="stringliteral">&quot;CSV&quot;</span>){
-<a name="l00067"></a>00067                 header(<span class="stringliteral">&#39;Content-type: text/csv&#39;</span>);
-<a name="l00068"></a>00068                 echo convertTableToCSV(tabulateSPARQLResults(parseXML($results)));
-<a name="l00069"></a>00069                 $done=1;
-<a name="l00070"></a>00070         }
-<a name="l00071"></a>00071         elseif ($formatting==<span class="stringliteral">&quot;CSV Matrix&quot;</span>){
-<a name="l00072"></a>00072                 $csvmatrix=convertTableToCSVMatrix(tabulateSPARQLResults(parseXML($results)));
-<a name="l00073"></a>00073                 <span class="keywordflow">if</span> (substr($csvmatrix,0,5)==<span class="stringliteral">&quot;ERROR&quot;</span>){
-<a name="l00074"></a>00074                         $err=$csvmatrix;
-<a name="l00075"></a>00075                         $results=null;
-<a name="l00076"></a>00076                 }
-<a name="l00077"></a>00077                 <span class="keywordflow">else</span>{
-<a name="l00078"></a>00078                         header(<span class="stringliteral">&#39;Content-type: text/csv&#39;</span>);
-<a name="l00079"></a>00079                         echo $csvmatrix;
-<a name="l00080"></a>00080                         $done=1;
-<a name="l00081"></a>00081                 }
+<a name="l00058"></a>00058                 <span class="keywordflow">if</span> ($mtfound) <span class="keywordflow">break</span>;
+<a name="l00059"></a>00059         }
+<a name="l00060"></a>00060 }
+<a name="l00061"></a>00061 <span class="keywordflow">if</span> (<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>!=<span class="stringliteral">&quot;XML&quot;</span>){
+<a name="l00062"></a>00062         <a class="code" href="sparql_8php.html#a1e6e4ea377a908a5407c435e9054e3a9" title="A string representing the format in which results returned from 4Store shoud be returned.">$format</a>=<a class="code" href="sparql_8php.html#a22ecbd1b21f5e762994cdd8899058361" title="A multi-dimensional associative array mapping the format requested from 4Store to the MIME Type that ...">$formats</a>[<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>][0];
+<a name="l00063"></a>00063         <a class="code" href="sparql_8php.html#a8c2d63c81d985d381ab4e8dd106a5f24" title="A string representing the MIME type to be used in the HTTP response to the SPARQL query submitted...">$mimetype</a>=<a class="code" href="sparql_8php.html#a22ecbd1b21f5e762994cdd8899058361" title="A multi-dimensional associative array mapping the format requested from 4Store to the MIME Type that ...">$formats</a>[<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>][1][0];
+<a name="l00064"></a>00064 }
+<a name="l00065"></a>00065 $clientlive = <a class="code" href="4store_8inc_8php.html#a19765dd6400e542b9c6f979c7d1f6ad3" title="Tests whether is is possible to reach the SPARQL endpoint for a specified knowledge base...">testSPARQLQueryClient</a>(<a class="code" href="defaultsettings_8inc_8php.html#a497549f57f9e3b6185f1b37078f04bef" title="A string specifying the name of the myExperiment knowledge base.">$myexp_kb</a>);
+<a name="l00066"></a>00066 <span class="keywordflow">if</span> (isset($_POST[<span class="stringliteral">&#39;generate_service&#39;</span>])){
+<a name="l00067"></a>00067         <span class="keywordflow">if</span> (isset($_POST[<span class="stringliteral">&#39;query&#39;</span>]) and strlen($_POST[<span class="stringliteral">&#39;query&#39;</span>])&gt;0){
+<a name="l00068"></a>00068                 <a class="code" href="generic__spec_8php.html#af2582e2f620e4157097929da5cc0ed18" title="The page title to be displayed in an h1 tag and the title of the html header.">$pagetitle</a>=<span class="stringliteral">&quot;SPARQL Query Service&quot;</span>;
+<a name="l00069"></a>00069                 include(<span class="stringliteral">&#39;partials/header.inc.php&#39;</span>);
+<a name="l00070"></a>00070                 <span class="keywordflow">if</span> (strlen(<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>)&gt;0 &amp;&amp; <a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>!=<span class="stringliteral">&quot;HTML Table&quot;</span>) $formatparam=<span class="stringliteral">&quot;&amp;formatting=&quot;</span>.$formatting;
+<a name="l00071"></a>00071                 <span class="keywordflow">if</span> ($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>]&gt;1) $softlimitparam=<span class="stringliteral">&quot;&amp;amp;softlimit=$_POST[softlimit]&quot;</span>;
+<a name="l00072"></a>00072                 <span class="keywordflow">if</span> (isset($_POST[<span class="stringliteral">&#39;reasoning&#39;</span>])) $reasoningparam=<span class="stringliteral">&quot;&amp;amp;reasoning=$_POST[reasoning]&quot;</span>;
+<a name="l00073"></a>00073                 <a class="code" href="listGraphs_8php.html#af59a5f7cd609e592c41dc3643efd3c98" title="A string representing a SPARQL query call to get the list of graphs in a specified knowledge base...">$query</a>=urlencode(<a class="code" href="4store_8inc_8php.html#a9890d576ba581310e2e8ffd2348cb4de" title="Pre-process a query to escape quote marks and add PREFIX statements for known namespaces whoese prefi...">preProcessQuery</a>($_POST[<span class="stringliteral">&#39;query&#39;</span>]));
+<a name="l00074"></a>00074                 $service_url=<span class="stringliteral">&quot;http://&quot;</span>.$_SERVER[<span class="stringliteral">&#39;SERVER_NAME&#39;</span>].<span class="stringliteral">&quot;/sparql?query=$query$formatparam$softlimitparam$reasoningparam&quot;</span>;
+<a name="l00075"></a>00075                 echo <span class="stringliteral">&quot;&lt;p&gt;Below is a URL which you can use give to any application capable of making HTTP requests and it will return you the current results for the query you made.&lt;/p&gt;&quot;</span>;
+<a name="l00076"></a>00076                 <span class="keywordflow">if</span> (<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>==<span class="stringliteral">&quot;HTML Table&quot;</span>){
+<a name="l00077"></a>00077                         echo <span class="stringliteral">&quot;&lt;div class=\&quot;red\&quot;&gt;&lt;b&gt;WARNING:&lt;/b&gt; This service require the HTTP request to explictly specify its accept type in the request header.  if this is not set appropriately the format returned will most likely be HTML with an embedded table of results. To select a particular format, click back and select it from the list provided before clicking &amp;quot;Generate Service for Query&amp;quot; again.&lt;/div&gt;&lt;br/&gt;\n&quot;</span>;
+<a name="l00078"></a>00078                 }
+<a name="l00079"></a>00079                 echo <span class="stringliteral">&quot;&lt;p style=\&quot;margin: 0 30px\&quot;&gt;&lt;a href=\&quot;$service_url\&quot;&gt;$service_url&lt;/a&gt;&lt;/p&gt;&quot;</span>;
+<a name="l00080"></a>00080                 include(<span class="stringliteral">&#39;partials/footer.inc.php&#39;</span>);
+<a name="l00081"></a>00081                exit(1);
 <a name="l00082"></a>00082         }
-<a name="l00083"></a>00083         <span class="keywordflow">if</span>($clientlive &amp;&amp; !$done){
-<a name="l00084"></a>00084                 include(<span class="stringliteral">&#39;header.inc.php&#39;</span>);
-<a name="l00085"></a>00085 ?&gt;
-<a name="l00086"></a>00086   &lt;div align=<span class="stringliteral">&quot;center&quot;</span>&gt;
-<a name="l00087"></a>00087     &lt;div style=<span class="stringliteral">&quot;background-color: thistle; border: 2px solid indigo; padding: 10px;&quot;</span>&gt;
-<a name="l00088"></a>00088       &lt;h3 style=<span class="stringliteral">&quot;margin: 0;&quot;</span>&gt;Useful Prefixes&lt;/h3&gt;
-<a name="l00089"></a>00089       &lt;?=getUsefulPrefixes($prefix)?&gt;
-<a name="l00090"></a>00090     &lt;/div&gt;
-<a name="l00091"></a>00091     &lt;br/&gt;
-<a name="l00092"></a>00092     &lt;div style=<span class="stringliteral">&quot;background-color: #FFFFCC; border: 2px solid goldenrod; padding: 10px;&quot;</span>&gt;
-<a name="l00093"></a>00093     &lt;form action=<span class="stringliteral">&quot;&quot;</span> method=<span class="stringliteral">&quot;post&quot;</span>&gt;
-<a name="l00094"></a>00094       &lt;h3 style=<span class="stringliteral">&quot;margin: 0;&quot;</span>&gt;Querying&lt;/h3&gt;
-<a name="l00095"></a>00095        &lt;table style=<span class="stringliteral">&quot;font-size: 10pt;&quot;</span>&gt;
-<a name="l00096"></a>00096           &lt;tr&gt;
-<a name="l00097"></a>00097             &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;No. of Triples:&lt;/th&gt;
-<a name="l00098"></a>00098             &lt;td&gt;&lt;?= $notriples ?&gt;&lt;/td&gt;
-<a name="l00099"></a>00099           &lt;/tr&gt;
-<a name="l00100"></a>00100           &lt;tr&gt;
-<a name="l00101"></a>00101             &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;Last Updated:&lt;/th&gt;
-<a name="l00102"></a>00102             &lt;td&gt;&lt;?= $lmdate ?&gt;&lt;/td&gt;
-<a name="l00103"></a>00103           &lt;/tr&gt;
-<a name="l00104"></a>00104           &lt;tr&gt;
-<a name="l00105"></a>00105             &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;Format:&lt;/th&gt;
-<a name="l00106"></a>00106             &lt;td&gt;
-<a name="l00107"></a>00107               &lt;select name=<span class="stringliteral">&quot;formatting&quot;</span>&gt;
-<a name="l00108"></a>00108           &lt;?php
-<a name="l00109"></a>00109         <span class="keywordflow">for</span> ($f=0; $f&lt;<span class="keyword">sizeof</span>($formattings); $f++){
-<a name="l00110"></a>00110                 echo <span class="stringliteral">&quot;            &lt;option &quot;</span>;
-<a name="l00111"></a>00111                 <span class="keywordflow">if</span> ($formattings[$f]==$formatting) echo <span class="stringliteral">&#39;selected=&quot;selected&quot; &#39;</span>;
-<a name="l00112"></a>00112                 echo <span class="stringliteral">&quot;value=\&quot;&quot;</span>.$formattings[$f].<span class="stringliteral">&quot;\&quot;&gt;&quot;</span>.$formattinglabels[$f].<span class="stringliteral">&quot;&lt;/option&gt;\n&quot;</span>;
-<a name="l00113"></a>00113         }
-<a name="l00114"></a>00114 ?&gt;
-<a name="l00115"></a>00115               &lt;/select&gt;
-<a name="l00116"></a>00116            &lt;/td&gt;
-<a name="l00117"></a>00117         &lt;/tr&gt;
-<a name="l00118"></a>00118         &lt;tr&gt;
-<a name="l00119"></a>00119           &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;Soft Limit:&lt;/th&gt;
-<a name="l00120"></a>00120           &lt;td&gt;&lt;input type=<span class="stringliteral">&quot;text&quot;</span> maxlength=<span class="stringliteral">&quot;3&quot;</span> size=<span class="stringliteral">&quot;3&quot;</span> name=<span class="stringliteral">&quot;softlimit&quot;</span> value=<span class="stringliteral">&quot;&lt;?=$softlimit?&gt;&quot;</span> /&gt; %&lt;/td&gt;
-<a name="l00121"></a>00121         &lt;/tr&gt;
-<a name="l00122"></a>00122       &lt;/table&gt;
-<a name="l00123"></a>00123       &lt;?php <span class="keywordflow">if</span> ($err) echo <span class="stringliteral">&quot;&lt;br/&gt;&lt;div class=\&quot;red\&quot;&gt;&lt;b&gt;$err&lt;/b&gt;&lt;/div&gt;\n&quot;</span>; ?&gt;
-<a name="l00124"></a>00124       &lt;?php <span class="keywordflow">if</span> ($msg) echo <span class="stringliteral">&quot;&lt;br/&gt;&lt;div class=\&quot;green\&quot;&gt;&lt;b&gt;$msg&lt;/b&gt;&lt;/div&gt;\n&quot;</span>; ?&gt;
-<a name="l00125"></a>00125       &lt;p&gt;
-<a name="l00126"></a>00126         &lt;textarea name=<span class="stringliteral">&quot;query&quot;</span> <span class="keywordtype">id</span>=<span class="stringliteral">&quot;querybox&quot;</span> cols=<span class="stringliteral">&quot;110&quot;</span> rows=<span class="stringliteral">&quot;12&quot;</span>&gt;&lt;?= $query ?&gt;&lt;/textarea&gt;
-<a name="l00127"></a>00127       &lt;/p&gt;
-<a name="l00128"></a>00128       &lt;p&gt;
-<a name="l00129"></a>00129         &lt;input type=<span class="stringliteral">&quot;submit&quot;</span>&gt;
-<a name="l00130"></a>00130       &lt;/p&gt;
-<a name="l00131"></a>00131     &lt;/form&gt;
-<a name="l00132"></a>00132     &lt;/div&gt;
-<a name="l00133"></a>00133   &lt;/div&gt;
-<a name="l00134"></a>00134   &lt;br/&gt;
-<a name="l00135"></a>00135     &lt;?php 
-<a name="l00136"></a>00136         <span class="keywordflow">if</span> ($results){
-<a name="l00137"></a>00137                 echo <span class="stringliteral">&quot;&lt;div style=\&quot;background-color: #FFFFFF; border: 2px solid black; padding: 10px;\&quot;&gt;\n&quot;</span>;
-<a name="l00138"></a>00138                 echo <span class="stringliteral">&quot;&lt;h3 style=\&quot;margin: 0;\&quot;&gt;Results&lt;/h3&gt;&quot;</span>;
-<a name="l00139"></a>00139                 <span class="keywordflow">if</span> (!$formatting) echo <span class="stringliteral">&quot;&lt;pre&gt;&quot;</span>.htmlentities($results).<span class="stringliteral">&quot;&lt;/pre&gt;&quot;</span>;
-<a name="l00140"></a>00140                 elseif ($formatting==<span class="stringliteral">&quot;HTML Table&quot;</span>){
-<a name="l00141"></a>00141                         $parsedxml=parseXML($results);
-<a name="l00142"></a>00142                         $tabres=tabulateSparqlResults($parsedxml);
-<a name="l00143"></a>00143                         $formattedoutput=drawSparqlResultsTable($tabres);
-<a name="l00144"></a>00144                         $nores=<span class="keyword">sizeof</span>($tabres)-1;
-<a name="l00145"></a>00145                         echo <span class="stringliteral">&quot;&lt;p&gt;&lt;b&gt;No. of Results:&lt;/b&gt; $nores&lt;/p&gt;\n&quot;</span>;
-<a name="l00146"></a>00146                         echo $formattedoutput;
-<a name="l00147"></a>00147                 }
-<a name="l00148"></a>00148                 echo <span class="stringliteral">&quot;&lt;/div&gt;\n&lt;br/&gt;\n&quot;</span>;
-<a name="l00149"></a>00149         }
-<a name="l00150"></a>00150     ?&gt;
-<a name="l00151"></a>00151 &lt;?php 
-<a name="l00152"></a>00152                 include(<span class="stringliteral">&#39;footer.inc.php&#39;</span>);
-<a name="l00153"></a>00153         }
-<a name="l00154"></a>00154         elseif (!$done){
-<a name="l00155"></a>00155                 include(<span class="stringliteral">&#39;header.inc.php&#39;</span>);
-<a name="l00156"></a>00156 ?&gt;      
-<a name="l00157"></a>00157     &lt;div align=<span class="stringliteral">&quot;center&quot;</span>&gt;
-<a name="l00158"></a>00158       &lt;div <span class="keyword">class</span>=<span class="stringliteral">&quot;red&quot;</span>&gt;
-<a name="l00159"></a>00159         &lt;b&gt;&lt;?= $err ?&gt;&lt;/b&gt;
-<a name="l00160"></a>00160       &lt;/div&gt;
-<a name="l00161"></a>00161     &lt;/div&gt;
-<a name="l00162"></a>00162 &lt;?php 
-<a name="l00163"></a>00163                 include(<span class="stringliteral">&#39;footer.inc.php&#39;</span>);
-<a name="l00164"></a>00164         } 
-<a name="l00165"></a>00165 ?&gt; 
+<a name="l00083"></a>00083         <span class="keywordflow">else</span>{
+<a name="l00084"></a>00084                 $err=<span class="stringliteral">&quot;No query was submitted&quot;</span>;
+<a name="l00085"></a>00085         }
+<a name="l00086"></a>00086 }
+<a name="l00087"></a>00087 <span class="keywordflow">if</span> (!$clientlive) $err=<span class="stringliteral">&quot;This myExperiment SPARQL Endpoint is currently unavailable&quot;</span>;
+<a name="l00088"></a>00088 <span class="keywordflow">else</span>{
+<a name="l00089"></a>00089         <span class="keywordflow">if</span> ($_POST){
+<a name="l00090"></a>00090                 <a class="code" href="listGraphs_8php.html#af59a5f7cd609e592c41dc3643efd3c98" title="A string representing a SPARQL query call to get the list of graphs in a specified knowledge base...">$query</a> = $_POST[<span class="stringliteral">&#39;query&#39;</span>];
+<a name="l00091"></a>00091                 <span class="keywordflow">if</span> (is_int(intval($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>])) &amp;&amp; intval($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>])&gt;0 &amp;&amp; intval($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>])&lt;=<a class="code" href="sparql_8php.html#a85ecd6fd6948cb8826a216fcfe40b146" title="The maximum value to which a user can set the softlimit endpoint form parameter. As for this endpoint...">$maxsoftlimit</a>) <a class="code" href="sparql_8php.html#ab66c76805539b5e9fb40d32fc101e565" title="An integer containing the percentage of resources the SPARQL endpoint can use to find results to a qu...">$softlimit</a>=intval($_POST[<span class="stringliteral">&#39;softlimit&#39;</span>]); 
+<a name="l00092"></a>00092                 <span class="keywordflow">if</span> (isset($_POST[<span class="stringliteral">&#39;reasoning&#39;</span>]) &amp;&amp; strlen($_POST[<span class="stringliteral">&#39;reasoning&#39;</span>])&gt;0) <a class="code" href="sparql_8php.html#a01073c8908865aef234ed3d5b04ea0cc" title="An integer. 1 if reasoning should be performed on a query, 0 otherwise.">$reasoning</a>=1;
+<a name="l00093"></a>00093         }
+<a name="l00094"></a>00094         elseif ($_GET){         
+<a name="l00095"></a>00095                 <a class="code" href="listGraphs_8php.html#af59a5f7cd609e592c41dc3643efd3c98" title="A string representing a SPARQL query call to get the list of graphs in a specified knowledge base...">$query</a> = rawurldecode($_GET[<span class="stringliteral">&#39;query&#39;</span>]);
+<a name="l00096"></a>00096                 <span class="keywordflow">if</span> (is_int(intval($_GET[<span class="stringliteral">&#39;softlimit&#39;</span>])) &amp;&amp; intval($_GET[<span class="stringliteral">&#39;softlimit&#39;</span>])&gt;0 &amp;&amp; intval($_GET[<span class="stringliteral">&#39;softlimit&#39;</span>])&lt;=<a class="code" href="sparql_8php.html#a85ecd6fd6948cb8826a216fcfe40b146" title="The maximum value to which a user can set the softlimit endpoint form parameter. As for this endpoint...">$maxsoftlimit</a>) <a class="code" href="sparql_8php.html#ab66c76805539b5e9fb40d32fc101e565" title="An integer containing the percentage of resources the SPARQL endpoint can use to find results to a qu...">$softlimit</a>=intval($_GET[<span class="stringliteral">&#39;softlimit&#39;</span>]);
+<a name="l00097"></a>00097                 <span class="keywordflow">if</span> (isset($_GET[<span class="stringliteral">&#39;reasoning&#39;</span>]) &amp;&amp; strlen($_GET[<span class="stringliteral">&#39;reasoning&#39;</span>])&gt;0) <a class="code" href="sparql_8php.html#a01073c8908865aef234ed3d5b04ea0cc" title="An integer. 1 if reasoning should be performed on a query, 0 otherwise.">$reasoning</a>=1;
+<a name="l00098"></a>00098         }
+<a name="l00099"></a>00099         <span class="keywordflow">if</span> (<a class="code" href="listGraphs_8php.html#af59a5f7cd609e592c41dc3643efd3c98" title="A string representing a SPARQL query call to get the list of graphs in a specified knowledge base...">$query</a>) {   
+<a name="l00100"></a>00100                 <a class="code" href="listGraphs_8php.html#af59a5f7cd609e592c41dc3643efd3c98" title="A string representing a SPARQL query call to get the list of graphs in a specified knowledge base...">$query</a>=<a class="code" href="4store_8inc_8php.html#a9890d576ba581310e2e8ffd2348cb4de" title="Pre-process a query to escape quote marks and add PREFIX statements for known namespaces whoese prefi...">preProcessQuery</a>(<a class="code" href="listGraphs_8php.html#af59a5f7cd609e592c41dc3643efd3c98" title="A string representing a SPARQL query call to get the list of graphs in a specified knowledge base...">$query</a>);
+<a name="l00101"></a>00101                 $results=<a class="code" href="4store_8inc_8php.html#aa5bb5e8c1689a3e6d0728cd9aaf7f862" title="Send a SPARQL query (and retrieve results) to a specified knowledge base. (This will be refactored wh...">callSPARQLQueryClient</a>(<a class="code" href="defaultsettings_8inc_8php.html#a497549f57f9e3b6185f1b37078f04bef" title="A string specifying the name of the myExperiment knowledge base.">$myexp_kb</a>,<a class="code" href="listGraphs_8php.html#af59a5f7cd609e592c41dc3643efd3c98" title="A string representing a SPARQL query call to get the list of graphs in a specified knowledge base...">$query</a>,<a class="code" href="sparql_8php.html#a1e6e4ea377a908a5407c435e9054e3a9" title="A string representing the format in which results returned from 4Store shoud be returned.">$format</a>,<a class="code" href="sparql_8php.html#ab66c76805539b5e9fb40d32fc101e565" title="An integer containing the percentage of resources the SPARQL endpoint can use to find results to a qu...">$softlimit</a>*10000,<a class="code" href="sparql_8php.html#a01073c8908865aef234ed3d5b04ea0cc" title="An integer. 1 if reasoning should be performed on a query, 0 otherwise.">$reasoning</a>);
+<a name="l00102"></a>00102                 $err=implode(<span class="stringliteral">&#39;&lt;br/&gt;&#39;</span>,<a class="code" href="current__spec_8php.html#a23a63d874e5f032bcc7c4cad73a5f623" title="Array to store error messages from failed SPARQL queries.">$errs</a>);
+<a name="l00103"></a>00103         }
+<a name="l00104"></a>00104 }
+<a name="l00105"></a>00105 <span class="keywordflow">if</span> (<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>!=<span class="stringliteral">&quot;HTML Table&quot;</span>){
+<a name="l00106"></a>00106         <a class="code" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff" title="A boolean to record whether a SPARQL query has been successfully executed and a response received...">$done</a>=TRUE;
+<a name="l00107"></a>00107         <span class="keywordflow">if</span> (<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>==<span class="stringliteral">&quot;CSV&quot;</span>) $results=<a class="code" href="xml_8inc_8php.html#a572e21d510b70ba812089bbc17d31575" title="Convert a tabular representation of SPARQL results into a CSV representation.">convertTableToCSV</a>(<a class="code" href="xml_8inc_8php.html#a5e9cd683e6335d65e92acf5f874d13de" title="Convert the array-based representation of the SPARQL results XML into a tabular form. So it is amongst other things, easy to render as an HTML table of results.">tabulateSPARQLResults</a>(<a class="code" href="xml_8inc_8php.html#a4e5d902d21dad2c18a8a57ab2b530fb0" title="Parses and XML string an returns an array-based representation of the XML. (Reverse of generateXML fu...">parseXML</a>($results)));
+<a name="l00108"></a>00108         elseif (<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>==<span class="stringliteral">&quot;CSV Matrix&quot;</span>){
+<a name="l00109"></a>00109                 $csvmatrix=<a class="code" href="xml_8inc_8php.html#a6853356dc0a2d99868dad7766635e3b2" title="Convert a tabular representation of SPARQL results into a two dimensional CSV matrix representation...">convertTableToCSVMatrix</a>(<a class="code" href="xml_8inc_8php.html#a5e9cd683e6335d65e92acf5f874d13de" title="Convert the array-based representation of the SPARQL results XML into a tabular form. So it is amongst other things, easy to render as an HTML table of results.">tabulateSPARQLResults</a>(<a class="code" href="xml_8inc_8php.html#a4e5d902d21dad2c18a8a57ab2b530fb0" title="Parses and XML string an returns an array-based representation of the XML. (Reverse of generateXML fu...">parseXML</a>($results)));
+<a name="l00110"></a>00110                 <span class="keywordflow">if</span> ($err){
+<a name="l00111"></a>00111                         $results=null;
+<a name="l00112"></a>00112                         <a class="code" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff" title="A boolean to record whether a SPARQL query has been successfully executed and a response received...">$done</a>=0;
+<a name="l00113"></a>00113                 }
+<a name="l00114"></a>00114                 elseif (substr($csvmatrix,0,5)==<span class="stringliteral">&quot;ERROR&quot;</span>){
+<a name="l00115"></a>00115                         $err=$csvmatrix;
+<a name="l00116"></a>00116                         $results=null;
+<a name="l00117"></a>00117                         <a class="code" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff" title="A boolean to record whether a SPARQL query has been successfully executed and a response received...">$done</a>=0;
+<a name="l00118"></a>00118                 }
+<a name="l00119"></a>00119                 <span class="keywordflow">else</span>{
+<a name="l00120"></a>00120                         $results=$csvmatrix;
+<a name="l00121"></a>00121                 }
+<a name="l00122"></a>00122         }
+<a name="l00123"></a>00123         <span class="keywordflow">if</span> (<a class="code" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff" title="A boolean to record whether a SPARQL query has been successfully executed and a response received...">$done</a>){
+<a name="l00124"></a>00124                 header(<span class="stringliteral">&quot;Content-type: $mimetype&quot;</span>);
+<a name="l00125"></a>00125                 echo $results;
+<a name="l00126"></a>00126         }
+<a name="l00127"></a>00127 }
+<a name="l00128"></a>00128 <span class="keywordflow">if</span>($clientlive &amp;&amp; !<a class="code" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff" title="A boolean to record whether a SPARQL query has been successfully executed and a response received...">$done</a>){
+<a name="l00129"></a>00129         include(<span class="stringliteral">&#39;partials/header.inc.php&#39;</span>);
+<a name="l00130"></a>00130 ?&gt;
+<a name="l00131"></a>00131     &lt;div align=<span class="stringliteral">&quot;center&quot;</span>&gt; 
+<a name="l00132"></a>00132     &lt;div <span class="keyword">class</span>=<span class="stringliteral">&quot;purple&quot;</span>&gt;
+<a name="l00133"></a>00133       &lt;div style=<span class="stringliteral">&quot;float: left; width: 10%;&quot;</span>&gt;&amp;nbsp;&lt;/div&gt;
+<a name="l00134"></a>00134       &lt;h3 style=<span class="stringliteral">&quot;float: left; width: 80%; text-align: center; margin: 0;&quot;</span>&gt;Useful Prefixes&lt;/h3&gt;
+<a name="l00135"></a>00135       &lt;div <span class="keywordtype">id</span>=<span class="stringliteral">&quot;prefixes_show&quot;</span> onclick=<span class="stringliteral">&quot;showPrefixes();&quot;</span> style=<span class="stringliteral">&quot;float: right; text-align: right; width: 10%; display: none;&quot;</span>&gt;[&lt;span <span class="keyword">class</span>=<span class="stringliteral">&quot;link&quot;</span> style=<span class="stringliteral">&quot;font-size: 1em;&quot;</span>&gt;Show&lt;/span&gt;]&lt;/div&gt;&lt;div <span class="keywordtype">id</span>=<span class="stringliteral">&quot;prefixes_hide&quot;</span> onclick=<span class="stringliteral">&quot;hidePrefixes();&quot;</span> style=<span class="stringliteral">&quot;float: right; text-align: right; width: 10%;&quot;</span>&gt;[&lt;span <span class="keyword">class</span>=<span class="stringliteral">&quot;link&quot;</span> style=<span class="stringliteral">&quot;font-size: 1em;&quot;</span>&gt;Hide&lt;/span&gt;]&lt;/div&gt;
+<a name="l00136"></a>00136 
+<a name="l00137"></a>00137       &lt;div style=<span class="stringliteral">&quot;clear: both;&quot;</span>&gt;&lt;/div&gt;
+<a name="l00138"></a>00138       &lt;div <span class="keywordtype">id</span>=<span class="stringliteral">&quot;prefixes&quot;</span> style=<span class="stringliteral">&quot;font-size: 0.8em;&quot;</span>&gt;&lt;?=<a class="code" href="utility_8inc_8php.html#a1b89625a6a11d20ba7edcfe554c2b649" title="Generates HTML table of useful prefixes and their namespaces. For use a the top of a SPARQL endpoint ...">getUsefulPrefixes</a>(<a class="code" href="datadump_8php.html#aef9cf198312d2f89238a8e8e2f0f67f3" title="A string containing the domain for generating RDF data. (public: publicly available myExperiment RDF ...">$domain</a>)?&gt;&lt;/div&gt;
+<a name="l00139"></a>00139     &lt;/div&gt;
+<a name="l00140"></a>00140     &lt;br/&gt;
+<a name="l00141"></a>00141     &lt;div <span class="keyword">class</span>=<span class="stringliteral">&quot;yellow&quot;</span>&gt;
+<a name="l00142"></a>00142       &lt;h3 style=<span class="stringliteral">&quot;text-align: center; margin: 0; margin-bottom: 10px;&quot;</span>&gt;Querying&lt;/h3&gt;
+<a name="l00143"></a>00143       &lt;p style=<span class="stringliteral">&quot;text-align: right; position: relative; top: -38px;&quot;</span>&gt;&lt;small&gt;&lt;a href=<span class="stringliteral">&quot;/howtosparql&quot;</span> title=<span class="stringliteral">&quot;How to SPARQL in myExperiment Guide&quot;</span>&gt;Need help querying myExperiment RDF?&lt;br/&gt;New to SPARQL?&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+<a name="l00144"></a>00144       &lt;div <span class="keyword">class</span>=<span class="stringliteral">&quot;green&quot;</span> style=<span class="stringliteral">&quot;position: relative; top: -28px; font-size: 0.9em;&quot;</span>&gt;This SPARQL Endpoint nows supports query time RDFS reasoning <span class="keyword">using</span> &lt;a href=<span class="stringliteral">&quot;http://4sreasoner.ecs.soton.ac.uk/&quot;</span>&gt;4Store Reasoner&lt;/a&gt;.  Click &lt;a href=<span class="stringliteral">&quot;howtosparql?page=Using the SPARQL Endpoint#Reasoning&quot;</span>&gt;here&lt;/a&gt; <span class="keywordflow">for</span> more details.&lt;/div&gt;
+<a name="l00145"></a>00145     &lt;form name=<span class="stringliteral">&quot;queryform&quot;</span> method=<span class="stringliteral">&quot;post&quot;</span> action=<span class="stringliteral">&quot;&quot;</span>&gt;
+<a name="l00146"></a>00146        &lt;p style=<span class="stringliteral">&quot;padding: 10px 70px; margin-top: -30px;&quot;</span>&gt;&lt;small&gt;From time to time modifications are made to the &lt;a href=<span class="stringliteral">&quot;/ontologies/&quot;</span>&gt;myExperiment Ontology&lt;/a&gt; and therefore the RDF queried by <span class="keyword">this</span> SPARQL endpoint.  Please check the &lt;a href=<span class="stringliteral">&quot;/ontologies/CHANGELOG&quot;</span>&gt;CHANGELOG&lt;/a&gt; and/or the &lt;a href=<span class="stringliteral">&quot;/ontologies/specification&quot;</span>&gt;Ontology specification&lt;/a&gt; <span class="keywordflow">if</span> your query has ceased to function.&lt;/p&gt;
+<a name="l00147"></a>00147        &lt;table style=<span class="stringliteral">&quot;font-size: 10pt;&quot;</span>&gt;
+<a name="l00148"></a>00148           &lt;tr&gt;
+<a name="l00149"></a>00149             &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;Version Info:&lt;/th&gt;
+<a name="l00150"></a>00150             &lt;td style=<span class="stringliteral">&quot;text-align: left;&quot;</span>&gt;&lt;?= <a class="code" href="4store_8inc_8php.html#a1c6295221824f7355b3f86eee04676c2" title="Get the versions of 4Store, RAPTOR and RASQAL that are being used by knowledge bases / SPARQL endpoin...">get4StoreVersions</a>() ?&gt;&lt;/td&gt;
+<a name="l00151"></a>00151           &lt;/tr&gt;
+<a name="l00152"></a>00152           &lt;tr&gt;
+<a name="l00153"></a>00153             &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;No. of Triples:&lt;/th&gt;
+<a name="l00154"></a>00154             &lt;td style=<span class="stringliteral">&quot;text-align: left;&quot;</span>&gt;&lt;?= <a class="code" href="sparql_8php.html#ace97946c7c1b2df3a281a74028219dbe" title="A string containing the number of triples in the myExperiment knowledge base (or the string UNKNOWN i...">$notriples</a> ?&gt;&lt;/td&gt;
+<a name="l00155"></a>00155           &lt;/tr&gt;
+<a name="l00156"></a>00156           &lt;tr&gt;
+<a name="l00157"></a>00157             &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;Last Snapshot Taken At:&lt;/th&gt;
+<a name="l00158"></a>00158             &lt;td style=<span class="stringliteral">&quot;text-align: left;&quot;</span>&gt;&lt;?= <a class="code" href="sparql_8php.html#aad0b4ef09ad7db716e68785c2fab6f47" title="A string containing the datetime when the database dump used to generate data in the myExperiment kno...">$lmdate</a> ?&gt;&lt;/td&gt;
+<a name="l00159"></a>00159           &lt;/tr&gt;
+<a name="l00160"></a>00160           &lt;tr&gt;
+<a name="l00161"></a>00161             &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;Format:&lt;/th&gt;
+<a name="l00162"></a>00162             &lt;td style=<span class="stringliteral">&quot;text-align: left;&quot;</span>&gt;
+<a name="l00163"></a>00163               &lt;select name=<span class="stringliteral">&quot;formatting&quot;</span>&gt;
+<a name="l00164"></a>00164           &lt;?php
+<a name="l00165"></a>00165         $formattings=array_keys(<a class="code" href="sparql_8php.html#a22ecbd1b21f5e762994cdd8899058361" title="A multi-dimensional associative array mapping the format requested from 4Store to the MIME Type that ...">$formats</a>);
+<a name="l00166"></a>00166         <span class="keywordflow">for</span> ($f=0; $f&lt;<span class="keyword">sizeof</span>($formattings); $f++){
+<a name="l00167"></a>00167                 echo <span class="stringliteral">&quot;            &lt;option &quot;</span>;
+<a name="l00168"></a>00168                 <span class="keywordflow">if</span> ($formattings[$f]==<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>) echo <span class="stringliteral">&#39;selected=&quot;selected&quot; &#39;</span>;
+<a name="l00169"></a>00169                 echo <span class="stringliteral">&quot;value=\&quot;&quot;</span>.$formattings[$f].<span class="stringliteral">&quot;\&quot;&gt;&quot;</span>.$formattings[$f].<span class="stringliteral">&quot;&lt;/option&gt;\n&quot;</span>;
+<a name="l00170"></a>00170         }
+<a name="l00171"></a>00171 ?&gt;
+<a name="l00172"></a>00172               &lt;/select&gt;
+<a name="l00173"></a>00173            &lt;/td&gt;
+<a name="l00174"></a>00174         &lt;/tr&gt;
+<a name="l00175"></a>00175         &lt;tr&gt;
+<a name="l00176"></a>00176           &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;Soft Limit:&lt;/th&gt;
+<a name="l00177"></a>00177           &lt;td style=<span class="stringliteral">&quot;text-align: left;&quot;</span>&gt;&lt;input type=<span class="stringliteral">&quot;text&quot;</span> size=<span class="stringliteral">&quot;3&quot;</span> maxlength=<span class="stringliteral">&quot;3&quot;</span> name=<span class="stringliteral">&quot;softlimit&quot;</span> value=<span class="stringliteral">&quot;&lt;?=$softlimit?&gt;&quot;</span> /&gt;%&lt;/td&gt;
+<a name="l00178"></a>00178         &lt;/tr&gt;
+<a name="l00179"></a>00179         &lt;tr&gt;
+<a name="l00180"></a>00180           &lt;th style=<span class="stringliteral">&quot;text-align: right;&quot;</span>&gt;Enable RDFS Reasoning:&lt;/th&gt;
+<a name="l00181"></a>00181           &lt;td style=<span class="stringliteral">&quot;text-align: left;&quot;</span>&gt;&lt;input type=<span class="stringliteral">&quot;checkbox&quot;</span> &lt;?php <span class="keywordflow">if</span> (<a class="code" href="sparql_8php.html#a01073c8908865aef234ed3d5b04ea0cc" title="An integer. 1 if reasoning should be performed on a query, 0 otherwise.">$reasoning</a>) echo <span class="stringliteral">&quot;checked=\&quot;checked\&quot;&quot;</span>; ?&gt; name=<span class="stringliteral">&quot;reasoning&quot;</span> value=<span class="stringliteral">&quot;1&quot;</span>/&gt;&lt;/td&gt;
+<a name="l00182"></a>00182         &lt;/tr&gt;
+<a name="l00183"></a>00183       &lt;/table&gt;
+<a name="l00184"></a>00184       &lt;?php <span class="keywordflow">if</span> (!empty($err)) <a class="code" href="utility_8inc_8php.html#a6a35ec0dbaf6a93c6a0a35627dc2ae9d" title="Prints HTML to display a formatted version of the error message provided.">printError</a>($err); ?&gt;
+<a name="l00185"></a>00185       &lt;?php <span class="keywordflow">if</span> (!empty($msg)) <a class="code" href="utility_8inc_8php.html#a6ddb41d22dd48283fbdef8beb2a17ff3" title="Prints HTML to display a formatted version of the message provided.">printMessage</a>($msg); ?&gt;
+<a name="l00186"></a>00186       
+<a name="l00187"></a>00187       &lt;p&gt;
+<a name="l00188"></a>00188         &lt;textarea name=<span class="stringliteral">&quot;query&quot;</span> <span class="keywordtype">id</span>=<span class="stringliteral">&quot;querybox&quot;</span> cols=<span class="stringliteral">&quot;110&quot;</span> rows=<span class="stringliteral">&quot;12&quot;</span> style=<span class="stringliteral">&quot;width: 800px;&quot;</span>&gt;&lt;?= htmlentities(<a class="code" href="listGraphs_8php.html#af59a5f7cd609e592c41dc3643efd3c98" title="A string representing a SPARQL query call to get the list of graphs in a specified knowledge base...">$query</a>) ?&gt;&lt;/textarea&gt;
+<a name="l00189"></a>00189       &lt;/p&gt;
+<a name="l00190"></a>00190       &lt;script type=<span class="stringliteral">&quot;text/javascript&quot;</span>&gt;
+<a name="l00191"></a>00191 var editor = CodeMirror.fromTextArea(<span class="stringliteral">&#39;querybox&#39;</span>, {
+<a name="l00192"></a>00192     parserfile: [<span class="stringliteral">&quot;parsesparql.js&quot;</span>],
+<a name="l00193"></a>00193     path: <span class="stringliteral">&quot;/js/&quot;</span>,
+<a name="l00194"></a>00194     stylesheet: <span class="stringliteral">&quot;/css/sparqlcolors.css&quot;</span>
+<a name="l00195"></a>00195 });
+<a name="l00196"></a>00196       &lt;/script&gt;
+<a name="l00197"></a>00197 
+<a name="l00198"></a>00198       &lt;p&gt;
+<a name="l00199"></a>00199         &lt;input type=<span class="stringliteral">&quot;submit&quot;</span> name=<span class="stringliteral">&quot;submit_query&quot;</span> value =<span class="stringliteral">&quot;Submit Query&quot;</span>/&gt;
+<a name="l00200"></a>00200         &amp;nbsp;&amp;nbsp;
+<a name="l00201"></a>00201         &lt;input type=<span class="stringliteral">&quot;submit&quot;</span> name=<span class="stringliteral">&quot;generate_service&quot;</span> value =<span class="stringliteral">&quot;Generate Service for Query&quot;</span>/&gt;
+<a name="l00202"></a>00202       &lt;/p&gt;
+<a name="l00203"></a>00203     &lt;/form&gt;
+<a name="l00204"></a>00204  &lt;/div&gt;
+<a name="l00205"></a>00205 &lt;/div&gt;
+<a name="l00206"></a>00206 
+<a name="l00207"></a>00207   &lt;br/&gt;
+<a name="l00208"></a>00208     &lt;?php 
+<a name="l00209"></a>00209         <span class="keywordflow">if</span> (!empty($results)){
+<a name="l00210"></a>00210                 echo <span class="stringliteral">&quot;&lt;div class=\&quot;results\&quot;&gt;\n&quot;</span>;
+<a name="l00211"></a>00211                 echo <span class="stringliteral">&quot;&lt;h3&gt;Results&lt;/h3&gt;&quot;</span>;
+<a name="l00212"></a>00212                 <span class="keywordflow">if</span> ($timetaken==0) $timetaken=<span class="stringliteral">&quot;&lt;1&quot;</span>;
+<a name="l00213"></a>00213                 echo <span class="stringliteral">&quot;&lt;p&gt;&lt;b&gt;Time Taken:&lt;/b&gt; $timetaken seconds&lt;/p&gt;\n&quot;</span>;
+<a name="l00214"></a>00214                 <span class="keywordflow">if</span> (<a class="code" href="sparql_8php.html#ae75f303869d82d073e7aadc0e86b0f9b" title="A string representing how the results returned from 4Store should be formatted.">$formatting</a>==<span class="stringliteral">&quot;HTML Table&quot;</span>){
+<a name="l00215"></a>00215                         $parsedxml=<a class="code" href="xml_8inc_8php.html#a4e5d902d21dad2c18a8a57ab2b530fb0" title="Parses and XML string an returns an array-based representation of the XML. (Reverse of generateXML fu...">parseXML</a>($results);
+<a name="l00216"></a>00216                         $tabres=<a class="code" href="xml_8inc_8php.html#a5e9cd683e6335d65e92acf5f874d13de" title="Convert the array-based representation of the SPARQL results XML into a tabular form. So it is amongst other things, easy to render as an HTML table of results.">tabulateSPARQLResults</a>($parsedxml);
+<a name="l00217"></a>00217                         $formattedoutput=<a class="code" href="xml_8inc_8php.html#a601252270772838fcb4707fb085543dc" title="Generates an HTML table, allowing SPARQL results in tabular form to be displayed on a web page...">drawSPARQLResultsTable</a>($tabres);
+<a name="l00218"></a>00218                         $nores=<span class="keyword">sizeof</span>($tabres)-1;
+<a name="l00219"></a>00219                         echo <span class="stringliteral">&quot;&lt;p&gt;&lt;b&gt;No. of Results:&lt;/b&gt; $nores&lt;/p&gt;\n&quot;</span>;
+<a name="l00220"></a>00220                         echo $formattedoutput;
+<a name="l00221"></a>00221                 }
+<a name="l00222"></a>00222                 echo <span class="stringliteral">&quot;&lt;/div&gt;\n&lt;br/&gt;&lt;br/&gt;\n&quot;</span>;
+<a name="l00223"></a>00223         }
+<a name="l00224"></a>00224     ?&gt;
+<a name="l00225"></a>00225     &lt;script type= <span class="stringliteral">&quot;text/javascript&quot;</span>&gt;&lt;!-- 
+<a name="l00226"></a>00226       hidePrefixes();
+<a name="l00227"></a>00227     --&gt;&lt;/script&gt;
+<a name="l00228"></a>00228 &lt;?php 
+<a name="l00229"></a>00229         include(<span class="stringliteral">&#39;partials/footer.inc.php&#39;</span>);
+<a name="l00230"></a>00230 }
+<a name="l00231"></a>00231 elseif (!<a class="code" href="sparql_8php.html#a2698dc52f06950fcdbaca1e94f88c1ff" title="A boolean to record whether a SPARQL query has been successfully executed and a response received...">$done</a>){ 
+<a name="l00232"></a>00232         include(<span class="stringliteral">&#39;partials/header.inc.php&#39;</span>);
+<a name="l00233"></a>00233         <a class="code" href="utility_8inc_8php.html#a6a35ec0dbaf6a93c6a0a35627dc2ae9d" title="Prints HTML to display a formatted version of the error message provided.">printError</a>($err);
+<a name="l00234"></a>00234         include(<span class="stringliteral">&#39;partials/footer.inc.php&#39;</span>);
+<a name="l00235"></a>00235 } 
+<a name="l00236"></a>00236 ?&gt; 
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -232,7 +290,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 10 2013 for MyExperiment RDF by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 23 2013 for MyExperiment RDF by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>
