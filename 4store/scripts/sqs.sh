@@ -333,7 +333,7 @@ check-versions(){
 }
 
 check-entity-sizes(){
-	$PHPEXEC_PATH/php $LD_PATH/rdfgen/testrdfgen.php 1>> ${STORE4_PATH}/log/entity_sizes.log
+	${PHPEXEC_PATH}/php ${STORE4_PATH}/scripts/testrdfgen.php 1>> ${STORE4_PATH}/log/entity_sizes.log
 }
 update-database(){
 	cd $STORE4_PATH/scripts
