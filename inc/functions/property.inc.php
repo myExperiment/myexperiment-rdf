@@ -624,34 +624,40 @@ function getFilename($entity, $type){
 /**
  * @brief Generate mepack:has-entry RDF/XML properties for all the entries (i.e. LocalPackEntry, RemotePackEntry and RelationshipEntry) of a specified Pack.
  * 
- * @param $pack
- * An associative array of database fields mapped to values for a Pack.
+ * @param $entity
+ * An associative array of database fields mapped to values for a Pack or PackSnapshot.
+ *
+ * @param $type
+ * A string containing the type of the entity specified.
  * 
  * @return 
  * A string containing mepack:has-entry RDF/XML properties for all the entries (i.e. LocalPackEntry, RemotePackEntry and RelationshipEntry) of a specified Pack.
  */
-function getPackEntries($pack){
+function getPackEntries($entity, $type){
 	global $datauri, $sql, $entities;
+	$xml = "";
+	if ($type == "PackSnapshot") {
+                $id = $entity['pack_id'];
+		$versionsql = "and version = {$entity['version']}";
+		$packurl=getEntityURI('PackSnapshot',$entity['id'],$entity);
+	}
+	else {
+		$id = $entity['id'];
+		$versionsql = "and version IS NULL";
+		$packurl=getEntityURI('Pack',$entity['id'],$entity);
+	}
 	$lsql=$sql['LocalPackEntry'];
 	if (stripos($lsql,'where')>0) $lsql.=" and ";
 	else $lsql.=" where ";	
-	$lsql.="pack_id=$pack[id]";
-	if (empty($pack['version'])) {
-		$lsql.=" and version IS NULL";
-	}
-	else {
-		$lsql.= " and version = {$pack['version']}";
-	}
+	$lsql.="pack_id=$id $versionsql";
 	$lres=mysql_query($lsql);
-	$xml="";
-	$packurl=getEntityURI('Pack',$pack['id'],$pack);
 	for ($e=0; $e<mysql_num_rows($lres); $e++){
 		$xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['LocalPackEntry']['url_subpath']}/".mysql_result($lres,$e,'id')."\"/>\n";
 	}
 	$rsql=$sql['RemotePackEntry'];
 	if (stripos($rsql,'where')>0) $rsql.=" and ";
         else $rsql.=" where ";
-        $rsql.="pack_id=$pack[id]";
+        $rsql.="pack_id=$id $versionsql";
 	$rres=mysql_query($rsql);
         for ($e=0; $e<mysql_num_rows($rres); $e++){
                 $xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['RemotePackEntry']['url_subpath']}/".mysql_result($rres,$e,'id')."\"/>\n";
@@ -659,7 +665,8 @@ function getPackEntries($pack){
 	$prsql=$sql['RelationshipEntry'];
 	if (stripos($prsql,'where')>0) $prsql.=" and ";
         else $prsql.=" where ";
-        $prsql.="context_id=$pack[id]";
+        $prsql.="context_id={$entity['id']} AND context_type='{$entities[$type]['db_entity']}'";
+	//error_log($prsql);
         $prres=mysql_query($prsql);
 	for ($e=0; $e<mysql_num_rows($prres); $e++){
                 $xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['RelationshipEntry']['url_subpath']}/".mysql_result($prres,$e,'id')."\"/>\n";
@@ -1066,7 +1073,7 @@ function getOREAggregatedResources($entity, $type){
         $xml="";
         if (!empty($entities[$type]['aggregates_resources'])) {
                 if (!isset($entity['version'])) $entity['version'] = null;
-                $arsql=getAggregatedResourceSQL($type,$entity['id'],$entity['version']);
+                $arsql=getAggregatedResourceSQL($type, $entity);
                 $res=mysql_query($arsql);
                 for ($i=0; $i<mysql_num_rows($res); $i++){
                         $row=mysql_fetch_assoc($res);

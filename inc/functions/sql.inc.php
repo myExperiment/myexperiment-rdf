@@ -89,31 +89,31 @@ function addWhereClause($sql, $whereclause){
  * @param $type
  * The type of entity for which an SQL query to find its aggregated resources is to be generated.
  *
- * @param $id
- * The ID of the entity for which an SQL query to find its aggregated resources is to be generated.
+ * @param $entity
+ * An associative array of database fields mapped to values for an aggregatable entity.
  * 
- * @param $version
- * The version (where appropriate) of the entity for which an SQL query to find its aggregated resources is to be generated.
- *
  * @return
  * A string containing the SQL query to find the aggregated resources for a particular entity.
  */
-function getAggregatedResourceSQL($type,$id,$version = null){
+function getAggregatedResourceSQL($type,$entity){
         global $sql;
+	$cursql = "";
         if ($type=="Experiment"){
 		$job_sql = preg_replace("/ from /i", ", 'Job' as contributable_type FROM ", $sql['Job'], 1);
-                return $job_sql . " where experiment_id=$id";
+                return $job_sql . " where experiment_id={$entity['id']}";
         }
         if ($type=="Pack" || $type == "PackSnapshot"){
-                if (empty($version)) {
+                if (empty($entity['version'])) {
                         $versionsql = "IS NULL";
+			$id = $entity['id'];
                 }
                 else {
-                        $versionsql = "= $version";
+                        $versionsql = "= {$entity['version']}";
+			$id = $entity['pack_id'];
                 }
-                return "select id, contributable_id, contributable_version, contributable_type, '' as uri, 'LocalPackEntry' as entry_type, version as entry_version from pack_contributable_entries where pack_id=$id and version $versionsql union select id, '' as contributable_id, '' as contributable_version, '' as contributable_type, uri, 'RemotePackEntry' as entry_type, version as entry_version from pack_remote_entries where pack_id=$id";
+		$cursql = "select id, contributable_id, contributable_version, contributable_type, '' as uri, 'LocalPackEntry' as entry_type, version as entry_version from pack_contributable_entries where pack_id=$id and version $versionsql union select id, '' as contributable_id, '' as contributable_version, '' as contributable_type, uri, 'RemotePackEntry' as entry_type, version as entry_version from pack_remote_entries where pack_id=$id and version $versionsql";
         }
-        return "";
+        return $cursql;
 }
 
 /**
