@@ -39,6 +39,10 @@ list($type,$id) = getEntityTypeAndID($argv);
 if (entityExists($type,$id)){
 	// Get result for entity via a database query
         $entity_result = getEntityResults($type, $id);
+	if (mysql_num_rows($entity_result) == 0) {
+		error_log("Entity does not exist: " . print_r($argv, true));
+        	exit(1);
+	}
 	$entity = mysql_fetch_assoc($entity_result);
 	// Determine URI for the entity requested
 	$entity_uri = getEntityURI($type, $id, $entity);
