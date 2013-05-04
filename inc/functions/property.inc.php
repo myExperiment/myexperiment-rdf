@@ -1077,7 +1077,7 @@ function getOREAggregatedResources($entity, $type){
                 $res=mysql_query($arsql);
                 for ($i=0; $i<mysql_num_rows($res); $i++){
                         $row=mysql_fetch_assoc($res);
-			if ($row['entry_type']=="RemotePackEntry") {
+			if (isset($row['entry_type']) && $row['entry_type']=="RemotePackEntry") {
 				$fulluri=$row['uri'];
 			}
 			else{
