@@ -337,19 +337,16 @@ check-entity-sizes(){
 }
 update-database(){
 	cd $STORE4_PATH/scripts
-	scp backup@tents:/home/backup/www.myexperiment.org/latest_db.txt /tmp/
-	filepath=`cat /tmp/latest_db.txt`
-	filename=`cat /tmp/latest_db.txt | awk 'BEGIN{FS="/"}{ print $NF }'`
-	scp backup@tents:$filepath /tmp/
-	echo "[`date +%T`] Downloaded Latest myExperiment Database Snapshot: $filename"
+	filename=`echo ${MYSQL_BACKUP_LOCATION} | awk 'BEGIN{FS="/"}{print $NF}'`
+	scp ${BACKUP_USER}@${BACKUP_SERVER}:${MYSQL_BACKUP_LOCATION} /tmp/
+	echo "[`date +%T`] Downloaded Latest myExperiment Database Snapshot"
 	if [ ${#MYSQL_PASSWORD} -gt 0 ]; then
 		mysqlparams="-p${MYSQL_PASSWORD}"
         fi
         if [ ${#MYSQL_HOST} -gt 0 ]; then
                 mysqlparams="-h ${MYSQL_HOST} ${mysqlparams}"
         fi
-	
-	zcat /tmp/$filename | egrep -v '^INSERT INTO `(activity_limits|downloads|key_permissions|oauth_|picture|previews|topic|viewings|workflow_processors)' | mysql -u $MYSQL_USERNAME $mysqlparams m2_production
+	zcat /tmp/$filename | egrep -v '^INSERT INTO `(activity_limits|downloads|key_permissions|oauth_|picture|previews|topic|viewings|workflow_processors)' | mysql -u $MYSQL_USERNAME $mysqlparams $MYSQL_DATABASE
 	echo "[`date +%T`] Uploaded SQL File ($filename) to MySQL"
 	rm -f /tmp/$filename
 }
