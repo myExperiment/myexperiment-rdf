@@ -364,7 +364,10 @@ UndoHistory.prototype = {
     function removeRange(from, to) {
       var pos = from ? from.nextSibling : self.container.firstChild;
       while (pos != to) {
-        var temp = pos.nextSibling;
+	var temp = {}; 
+	if (typeof(pos.nextSibling) != "undefined") {
+          temp = pos.nextSibling;
+	}
         removeElement(pos);
         pos = temp;
       }

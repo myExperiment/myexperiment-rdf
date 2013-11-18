@@ -21,7 +21,7 @@
 ## ./sqs.sh &lt;triplestore&gt; test
 ##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
 ## 
-## ./sqs.sh &lt;triplestore&gt; update [ no-cache ]
+## ./sqs.sh &lt;triplestore&gt; update [ no-db-update ]
 ##   &lt;triplestore&gt; = [ myexp_public ]
 ## 
 ## ./sqs.sh &lt;triplestore&gt; import
@@ -32,7 +32,7 @@
 ## 
 ## ./sqs.sh &lt;triplestore&gt; add &lt;filename&gt; 
 ##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
-##   E.g. &lt;filename&gt; = /home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+##   E.g. &lt;filename&gt; = /var/www/linkeddata_dev/data/myexp_public/workflows/12
 ## 
 ## ./sqs.sh &lt;triplestore&gt; add-list &lt;filename&gt;
 ##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
@@ -40,7 +40,7 @@
 ## 
 ## ./sqs.sh &lt;triplestore&gt; remove &lt;filename&gt; &lt;option&gt;
 ##   &lt;triplestore&gt; = [ myexp_public, ontologies ]
-##   E.g. &lt;filename&gt; = /home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+##   E.g. &lt;filename&gt; = /var/www/linkeddata_dev/data/myexp_public/workflows/12
 ##   &lt;option&gt; = [ delete, NULL ]
 ## 
 ## ./sqs.sh &lt;triplestore&gt; remove-list &lt;filename&gt; &lt;option&gt;
@@ -59,7 +59,7 @@
 ## 
 ## ./sqs.sh &lt;triplestore&gt; graph-size &lt;graphuri&gt;
 ##   &lt;triplestore&gt; = [ myexp_public ]
-##   E.g. &lt;graphuri&gt; = file:///home/drn/hg-repos/linkeddata_dev/data/myexp_public/workflows/12
+##   E.g. &lt;graphuri&gt; = file:///var/www/linkeddata_dev/data/myexp_public/workflows/12
 ## 
 ## ./sqs.sh &lt;triplestore&gt; data-dump
 ##   &lt;triplestore&gt; = [ myexp_public ]

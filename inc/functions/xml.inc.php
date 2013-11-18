@@ -338,6 +338,9 @@ function convertToXMLEntities($data){
  */
 
 function tabulateSPARQLResultsAssoc($parsedxml){
+	if (!isset($parsedxml[0]['children'][0]['children'])){
+		return array();
+	}
 	$vararray=$parsedxml[0]['children'][0]['children'];
         for ($v=0; $v<sizeof($vararray); $v++){
                 $vars[$v]=$vararray[$v]['attrs']['name'];
@@ -348,7 +351,12 @@ function tabulateSPARQLResultsAssoc($parsedxml){
         for ($r=0; $r<sizeof($recs); $r++){
                 for ($v=0; $v<sizeof($vars); $v++){
 			$bname=$recs[$r]['children'][$v]['attrs']['name'];
-                        $table[$r][$bname]=$recs[$r]['children'][$v]['tagData'];
+			if (isset($recs[$r]['children'][$v]['tagData'])) {
+                        	$table[$r][$bname]=$recs[$r]['children'][$v]['tagData'];
+			}
+			else {
+				$table[$r][$bname]="";
+			}
                 }
         }
         return $table;
@@ -378,7 +386,7 @@ function tabulateDataflowComponents($allcomponents, $ent_uri, $mime_type, $neste
 	if (!$nested) $dfs=array();
 	switch($mime_type){
 		case 'application/vnd.taverna.scufl+xml':
-			if (strpos($ent_uri,'dataflow') > 0) $dfs[$ent_uri."/dataflow"]=processTavernaComponents($allcomponents,$ent_uri."/dataflow/",$mime,$nested);
+			if (strpos($ent_uri,'dataflow') > 0) $dfs[$ent_uri."/dataflow"]=processTavernaComponents($allcomponents,$ent_uri."/dataflow/",$mime_type,$nested);
 	                else $dfs[$ent_uri."#dataflow"]=processTavernaComponents($allcomponents,$ent_uri."#dataflow/",$mime_type,$nested);
 			break;
 		case 'application/vnd.taverna.t2flow+xml':
@@ -442,6 +450,10 @@ function processGalaxyComponents($allcomponents,$ent_uri){
 		}
 	}
 	$c=1;
+	if (!isset($comps['input'])) {
+		error_log("Problem reading XML for Galaxy workflow: $ent_uri");
+		$comps['input'] = array();
+	}
 	foreach ($comps['input'] as $input){
                 $components[$c]['type']="Source";
 		if (!isset($input['description'])) $input['description']='';
@@ -498,7 +510,15 @@ function processGalaxyComponents($allcomponents,$ent_uri){
  */
 function processRapidMinerComponents($allcomponents,$ent_uri,$mime_type,$nested=0){
 	$components=array();
-	if ($nested==0) $mainprocesscomps=$allcomponents[0]['children'][0]['children'][0]['children'];
+	if ($nested==0) {
+		if (isset($allcomponents[0]['children'][0]['children'][0]['children'])) {
+			$mainprocesscomps=$allcomponents[0]['children'][0]['children'][0]['children'];
+		}
+		else {
+			error_log("Problem reading XML for RapidMiner workflow: $ent_uri");
+			$mainprocesscomps = array();
+		}
+	}
 	elseif (isset($allcomponents[0]['children'])) $mainprocesscomps=$allcomponents[0]['children'];
 	else $mainprocesscomps=array();
 	$c=1;

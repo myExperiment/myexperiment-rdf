@@ -126,7 +126,6 @@ function replaceNamespaces($array, $local_namespace=""){
         $namespaces = array_values($namespace_prefixes_copy);
         $prefixes = array_keys($namespace_prefixes_copy);
         if (empty($prefix)){
-                $namespaces[] = $hasfilter;
                 $prefixes[] = "";
         }
         foreach ($array as $res => $vals){
@@ -161,7 +160,6 @@ function replaceNamespace($uri, $local_namespace=""){
         $namespaces = array_values($namespace_prefixes_copy);
         $prefixes = array_keys($namespace_prefixes_copy);
         if (empty($prefix)){
-                $namespaces[] = $hasfilter;
                 $prefixes[] = "";
         }
         return str_replace($namespaces, $prefixes, $uri);
@@ -205,7 +203,7 @@ function isMyexperimentNamespace($entity){
         $myexp_prefixes = array("");
         $separated_namespaces = separateNamespaces($namespace_prefixes);
         $entity_bits = explode(":", $entity);
-        return in_array($entity_bits[0], array_keys($separate_namespaces['myexperiment']));
+        return in_array($entity_bits[0], array_keys($separated_namespaces['myexperiment']));
 }
 
 /**
@@ -229,7 +227,7 @@ function separateNamespaces($namespaces) {
                         $other_namespaces[$prefix] = $namespace;
                 }
         }
-        return array($myexp_namespaces, $other_namespaces);
+        return array("myexperiment" => $myexp_namespaces, "other" => $other_namespaces);
 }
 
 /**

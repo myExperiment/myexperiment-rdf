@@ -815,6 +815,7 @@ function getDataflowComponents($entity,$type,$retrieve=TRUE){
 	if (!file_exists($fileloc) && $use_rake) writeDataflowToFile($wfv['id'],$ent_uri,$fileloc,$wfv['mime_type']);
 	if (file_exists($fileloc)) $lines=file($fileloc);
 	else return "";
+	if (!isset($lines[0])) error_log("Error getting dataflow components for $df_uri (Workflow: " . $entity['id'] . ", version: " . $entity['current_version'].")");
 	if (trim($lines[0])=="NONE") return "";
 	elseif($retrieve==false) return $df_uri;
 	return implode("",$lines);
