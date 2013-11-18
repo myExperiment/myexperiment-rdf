@@ -8,8 +8,10 @@
  */
 
 include('include.inc.php');
+require_once('config/data.inc.php');
 require_once('functions/xml.inc.php');
 require_once('functions/4store.inc.php');
+require_once('functions/utility.inc.php');
 
 /** @brief An array of strings for the SPARQL queries required to generate the HTML specification for the MyExperiment ontology. */
 $query = array();
@@ -74,7 +76,7 @@ $errs = array();
 
 /** @brief The results from the first SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres1=array();
-if (queryFailed($res[1])){
+if (!isset($res[1]) || queryFailed($res[1])){
 	$errs[]="Property Domain Class-Property Relations Query Failed";
 }
 else {
@@ -83,7 +85,7 @@ else {
 
 /** @brief The results from the second SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres2=array();
-if (queryFailed($res[2])){
+if (!isset($res[2]) || queryFailed($res[2])){
         $errs[]="Class Property Restictions Class-Property Relations Query Failed";
 }
 else {
@@ -95,7 +97,7 @@ $classprops=multidimensionalArrayUnique(array_merge($tableres1,$tableres2));
 
 /** @brief Array containing the classes found from the SPARQL queries against the MyExperiment ontology. */
 $classes=array();
-if (queryFailed($res[3])){
+if (!isset($res[3]) || queryFailed($res[3])){
         $errs[]="Label and Comment for Classes Query Failed";
 }
 else{
@@ -105,7 +107,7 @@ else{
 
 /** @brief The results from the fourth SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres4=array();
-if (queryFailed($res[4])){
+if (!isset($res[4]) || queryFailed($res[4])){
         $errs[]="Superclasses for Classes Query Failed";
 }
 else {
@@ -117,7 +119,7 @@ foreach ($tableres4 as $sclass){
 
 /** @brief Array containing the properties found from the SPARQL queries against the MyExperiment ontology. */
 $properties=array();
-if (queryFailed($res[5])){
+if (!isset($res[5]) || queryFailed($res[5])){
         $errs[]="Label and Comment for Properties Failed";
 }
 else{
@@ -126,7 +128,7 @@ else{
 }
 foreach ($classprops as $classprop){
         $classes[$classprop['class']]['property'][]=$classprop['property'];
-        if (isMMyexperimentNamespace(replaceNamespace($classprop['property']))) $properties[$classprop['property']]['inclass'][]=$classprop['class'];
+        if (isMyexperimentNamespace(replaceNamespace($classprop['property']))) $properties[$classprop['property']]['inclass'][]=$classprop['class'];
 }
 
 ksort($classes);
@@ -134,7 +136,7 @@ ksort($properties);
 
 /** @brief The results from the sixth SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres6=array();
-if (queryFailed($res[6])){
+if (!isset($res[6]) || queryFailed($res[6])){
         $errs[]="Equivalent Classes Query Failed";
 }
 else {
@@ -142,7 +144,7 @@ else {
 }
 /** @brief The results from the seventh SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres7=array();
-if (queryFailed($res[7])){
+if (!isset($res[7]) || queryFailed($res[7])){
         $errs[]="Equivalent Properties Query Failed";
 }
 else {
@@ -150,7 +152,7 @@ else {
 }
 /** @brief The results from the eighth SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres8=array();
-if (queryFailed($res[8])){
+if (!isset($res[8]) || queryFailed($res[8])){
         $errs[]="SubClass Classes Query Failed";
 }
 else {
@@ -158,7 +160,7 @@ else {
 }
 /** @brief The results from the ninth SPARQL query for generating the HTML specifications formatted as a tabular array. */
 $tableres9=array();
-if (queryFailed($res[9])){
+if (!isset($res[9]) || queryFailed($res[9])){
 	$errs[]="SubProperty Properties Query Failed";
 }
 else {
@@ -222,7 +224,7 @@ $p=0;
 echo "    <h3>Properties</h3>\n    <p>\n";
 $text="";
 $previous_namespace="";
-foreach ($properties as $property_name => $property) {
+foreach ($properties as $property_uri => $property) {
 	/** @brief The property URI broken up into an array of strings on slashes. */
         $property_uri_bits=explode("/",$property_uri);
 	$current_namespace=$property_uri_bits[sizeof($property_uri_bits)-2];
@@ -238,7 +240,7 @@ foreach ($properties as $property_name => $property) {
                 echo $text;
                 $text="";
         }
-	$text.="      <a href=\"#".$property_name_prefixed."\">".$property_name_prefixed."</a>, \n";
+	$text.="      <a href=\"#".$property_name."\">".$property_name."</a>, \n";
         $p++;
 	$previous_namespace = $current_namespace;
 }
@@ -283,18 +285,18 @@ foreach ($classes as $class_uri => $class){
 	echo "  <div class=\"yellow\">\n";
 	echo "  <a name=\"".$class_name."\"/>\n    <h3>".$class_name."</h3>\n    <p><b>Label:</b> ".$class['label']."\n      <br/>\n      <b>Comment:</b> ".$class['comment']."\n      <br/>\n      <b>Subclass of:</b>\n";
 	$sc=0;
-	if ($class['subclassof']){
+	if (isset($class['subclassof'])){
 		foreach ($class['subclassof'] as $subclassof){
 			/** @brief Name of a subclass of a particular class. */
 			$subclass_name=replaceNamespace($subclassof);
-			echo "        <a href=\"#".$subclass_name."\">".$suvclass_name."</a>";
+			echo "        <a href=\"#".$subclass_name."\">".$subclass_name."</a>";
 			if ($sc<sizeof($class['subclassof'])-1) echo ",\n";
 			$sc++;
 		}
 	}
 	echo "\n      <br/>\n      <b>Properties:</b>\n";
 	$p=0;
-	if ($class['property']){
+	if (isset($class['property'])){
 		foreach ($class['property'] as $property){
 			$property_name=replaceNamespace($property);
 			if (strpos($property,":")>0 && !isMyexperimentNamespace($property_name)) echo "        ".$property_name;
@@ -309,19 +311,21 @@ foreach ($classes as $class_uri => $class){
 
 //Individual Properties
 echo "<h2>Properties</h2>\n";
-foreach ($properties as $pnoperty_uri => $property){
+foreach ($properties as $property_uri => $property){
 	$property_name=replaceNamespace($property_uri);
 	$property_type_bits=explode("#",$property['property_type']);
  	echo "  <div class=\"green\">\n";
 	echo "    <a name=\"".$property_name."\"/>\n    <h3>".$property_name."</h3>\n    ";
 	echo "    <p>\n      <b>Type:</b> ".$property_type_bits[1]."<br/>\n      <b>Label:</b> ".$property['label']."</br/>\n      <b>Comment:</b> ".$property['comment']."\n      <br/>      <b>Used in classes:</b>\n";
 	$c=0;
-	foreach ($property['inclass'] as $class){
-		$class_name=replaceNamespace($class);
-                echo "        <a href=\"#".$class_name."\">".$class_name."</a>";
-                if ($c<sizeof($property['inclass'])-1) echo ",\n";
-                $c++;
-        }
+	if (isset($property['inclass']) && is_array($property['inclass'])) {
+		foreach ($property['inclass'] as $class){
+			$class_name=replaceNamespace($class);
+                	echo "        <a href=\"#".$class_name."\">".$class_name."</a>";
+	                if ($c<sizeof($property['inclass'])-1) echo ",\n";
+        	        $c++;
+        	}
+	}
 	echo "\n    </p>\n  </div>\n  <br/>\n";
 }
 

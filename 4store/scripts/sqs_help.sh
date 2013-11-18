@@ -20,7 +20,7 @@ Examples
 ./sqs.sh <triplestore> test
   <triplestore> = [ $TRIPLESTORE, ontologies ]
 
-./sqs.sh <triplestore> update [ no-cache ]
+./sqs.sh <triplestore> update [ no-db-update ]
   <triplestore> = [ $TRIPLESTORE ]
 
 ./sqs.sh <triplestore> import
