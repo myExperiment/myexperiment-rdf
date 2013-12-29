@@ -14,4 +14,4 @@ http/myexperiment.rdf
 http/myexp_data_and_ontologies.zip
 http/ontologies/spec.html
 inc/config/entity_sizes.txt
-settings.bash
+settings.sh
