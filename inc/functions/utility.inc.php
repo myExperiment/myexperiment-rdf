@@ -260,8 +260,8 @@ function getDatatypes(){
  */
 function getUsefulPrefixesArray($domain, $merge=false){
 	global $namespace_prefixes;
-	
-	if (in_array(strtolower(trim($domain)), array("public", "private", "protected"))) {
+	$domain = strtolower(trim($domain));
+	if (in_array($domain, array("public", "private", "protected"))) {
 		if ($merge) {
 			return $namespace_prefixes;
 		}
@@ -282,21 +282,22 @@ function getUsefulPrefixesArray($domain, $merge=false){
  */
 function getUsefulPrefixes($domain){
 	global $datauri;
-	list($myexp,$other)=getUsefulPrefixesArray($domain);
-	if (sizeof($myexp)>0){
+	$namespaces = getUsefulPrefixesArray($domain);
+		
+	if (sizeof($namespaces['myexperiment'])>0 || sizeof($namespaces['other'])>0){
 		$usepref='    <table class="borders" style="width: 100%;">
       <tr><th>myExperiment</th><th>Other</th></tr>
       <tr>
         <td style="text-align: left;"><ul class="nonesmall">
            <li class="prefix">BASE &lt;'.$datauri.'&gt;</li>
 ';
-		foreach ($myexp as $pref => $ns){
+		foreach ($namespaces['myexperiment'] as $pref => $ns){
 			$usepref.="          <li class=\"prefix\"><a onclick=\"addPrefixToQuery('$pref','$ns')\">PREFIX $pref: &lt;$ns&gt;</a></li>\n";
 		}
 		$usepref.='        </ul></td>
         <td style="text-align: justify;"><ul class="nonesmall">
 ';		
-		foreach ($other as $pref => $ns){
+		foreach ($namespaces['other'] as $pref => $ns){
 		  	$usepref.="          <li class=\"prefix\"><a onclick=\"addPrefixToQuery('$pref','$ns')\">PREFIX $pref: &lt;$ns&gt;</a></li>\n";
                 }
                 $usepref.="        </ul></td>\n      </tr>\n    </table>\n";
