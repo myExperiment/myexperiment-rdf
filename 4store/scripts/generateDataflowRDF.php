@@ -26,11 +26,11 @@
 	/** @brief A string containing an SQL query to find all the publically downloadable workflows that have dataflows that can be represented in RDF. */
         $sql="select workflow_versions.id as wfvid from workflow_versions inner join content_types on workflow_versions.content_type_id = content_types.id inner join contributions on workflow_versions.workflow_id=contributions.contributable_id and contributions.contributable_type='Workflow' inner join policies on contributions.policy_id=policies.id where content_types.mime_type in (".implode(',',$dfct).") and content_types.category='Workflow' and policies.share_mode = 0";
 	/** @brief An SQL result for all the publically downloadable workflows that have dataflows that can be represented in RDF. */
-        $res=mysql_query($sql);
+        $res=mysqli_query($con, $sql););
 	/** @brief An array containing all the workflow version IDs for publically downloadable workflows that have dataflows that can be represented in RDF.  These are used as the filenames for the local files that store Dataflow RDF. */
 	$dbfiles=array();
-	for ($i=0; $i<mysql_num_rows($res); $i++){
-		$dbfiles[]=mysql_result($res,$i,'wfvid');
+	for ($i=0; $i<mysqli_num_rows($res); $i++){
+		$dbfiles[]=mysqli_result($res,$i,'wfvid');
 	}
 	foreach ($curfiles as $cf){
 		if (!in_array($cf,$dbfiles)){
@@ -50,7 +50,7 @@
 	foreach ($newfiles as $wfvid){
                 if (file_exists($filelocdir.$wfvid)) continue;
                 $sql="select workflow_versions.*, content_types.mime_type from workflow_versions inner join content_types on workflow_versions.content_type_id=content_types.id where workflow_versions.id='$wfvid'";
-                $wfv=mysql_fetch_assoc(mysql_query($sql));
+                $wfv=mysqli_fetch_assoc(mysqli_query($con, $sql);));
                 $wget="wget -q -O /tmp/wfvc_$wfvid.xml -o /dev/null '${datauri}workflow.xml?id=$wfv[workflow_id]&versions=$wfv[version]&elements=components'";
                 exec($wget);
                 $parsedxml=parseXML(implode("",file("/tmp/wfvc_$wfvid.xml")));

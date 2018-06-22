@@ -39,11 +39,11 @@ list($type,$id) = getEntityTypeAndID($argv);
 if (entityExists($type,$id)){
 	// Get result for entity via a database query
         $entity_result = getEntityResults($type, $id);
-	if (mysql_num_rows($entity_result) == 0) {
+	if (mysqli_num_rows($entity_result) == 0) {
 		error_log("Entity does not exist: " . print_r($argv, true));
         	exit(1);
 	}
-	$entity = mysql_fetch_assoc($entity_result);
+	$entity = mysqli_fetch_assoc($entity_result);
 	// Determine URI for the entity requested
 	$entity_uri = getEntityURI($type, $id, $entity);
 	if ($type != "Ontology") {	
@@ -95,7 +95,7 @@ if (entityExists($type,$id)){
 					list($type, $id) = getEntityTypeAndId($args);
 					if (entityExists($type, $id)){
 						$res = getEntityResults($type, $id);	
-						$xml .= generateEntityRDF(mysql_fetch_assoc($res), $type);
+						$xml .= generateEntityRDF(mysqli_fetch_assoc($res), $type);
 					}
 					
 				}

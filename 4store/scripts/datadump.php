@@ -25,13 +25,13 @@ fwrite($fh,generateGenericRDFHeader());
 foreach ($sql as $k => $v){
 	$v=setUserAndGroups($v);
 	echo "[".date("H:i:s")."] Adding $k\n";
-	$res=mysql_query($v);
+	$res=mysqli_query($con, $v););
 	if ($res!==false){
-		$rows=mysql_num_rows($res);
+		$rows=mysqli_num_rows($res);
 		$xml="";
 		$ents=0;
 		for ($i=0; $i<$rows; $i++){
-			$row=mysql_fetch_assoc($res);
+			$row=mysqli_fetch_assoc($res);
 			$id=$row['id'];
 			if (!isset($row['user_id'])) $row['user_id']="AnonymousUser";
 			$xml.=generateEntityRDF($row,$k);

@@ -64,9 +64,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00003"></a>00003         include(<span class="stringliteral">&#39;include.inc.php&#39;</span>);
 <a name="l00004"></a>00004         include(<span class="stringliteral">&#39;myexpconnect.inc.php&#39;</span>);
 <a name="l00005"></a>00005         $sql=<span class="stringliteral">&quot;select workflow_versions.id, workflow_versions.workflow_id, workflow_versions.version from workflow_versions inner join content_types on workflow_versions.content_type_id=content_types.id inner join contributions on workflow_versions.workflow_id=contributions.contributable_id and contributions.contributable_type=&#39;Workflow&#39; inner join policies on contributions.policy_id=policies.id where content_types.mime_type in (&#39;application/vnd.taverna.scufl+xml&#39;,&#39;application/vnd.taverna.t2flow+xml&#39;) and policies.share_mode=0 order by id&quot;</span>;
-<a name="l00006"></a>00006         $res=mysql_query($sql);
-<a name="l00007"></a>00007         <span class="keywordflow">for</span> ($i=0; $i&lt;mysql_num_rows($res); $i++){
-<a name="l00008"></a>00008                 echo mysql_result($res,$i,<span class="stringliteral">&#39;id&#39;</span>).<span class="stringliteral">&quot;\n&quot;</span>;   
+<a name="l00006"></a>00006         $res=mysqli_query($con, $sql););
+<a name="l00007"></a>00007         <span class="keywordflow">for</span> ($i=0; $i&lt;mysqli_num_rows($res); $i++){
+<a name="l00008"></a>00008                 echo mysqli_result($res,$i,<span class="stringliteral">&#39;id&#39;</span>).<span class="stringliteral">&quot;\n&quot;</span>;
 <a name="l00009"></a>00009         }
 <a name="l00010"></a>00010 ?&gt;
 </pre></div></div>

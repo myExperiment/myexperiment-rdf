@@ -208,7 +208,7 @@ function callSPARQLQueryClient($kb,$query,$format="sparql",$softlimit=1000,$reas
 	}
 	else $status='failed';
 	$sql="insert into sparql_queries values('','$kb','$oquery',$start,$stop,'$status','$data')";
-	mysql_query($sql); 
+	mysqli_query($con, $sql););
         return $data;
 }
 

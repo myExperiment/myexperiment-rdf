@@ -74,11 +74,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00023"></a>00023         <span class="keywordflow">if</span> ($_POST[<span class="stringliteral">&#39;ontology&#39;</span>]){
 <a name="l00024"></a>00024                 $tab10=array();
 <a name="l00025"></a>00025                 $uquery=<span class="stringliteral">&quot;update ontologies set name=&#39;$_POST[name]&#39;, url=&#39;$_POST[url]&#39;, image=&#39;$_POST[image]&#39;, namespace=&#39;$_POST[namespace]&#39;, ontology_type=&#39;$_POST[ontology_type]&#39;, timeout=$_POST[timeout] where id=&#39;$_POST[ontology]&#39;&quot;</span>;
-<a name="l00026"></a>00026                 $ures=mysql_query($uquery);
+<a name="l00026"></a>00026                 $ures=mysqli_query($con, $uquery););
 <a name="l00027"></a>00027         }
 <a name="l00028"></a>00028         <span class="keywordflow">else</span>{
 <a name="l00029"></a>00029                 $iquery=<span class="stringliteral">&quot;insert into ontologies values(&#39;&#39;,&#39;$_POST[name]&#39;,&#39;$_POST[url]&#39;,&#39;$_POST[image]&#39;,&#39;$_POST[namespace]&#39;,&#39;$_POST[ontology_type]&#39;,$_POST[timeout])&quot;</span>;
-<a name="l00030"></a>00030                 $ires=mysql_query($iquery);
+<a name="l00030"></a>00030                 $ires=mysqli_query($con, $iquery););
 <a name="l00031"></a>00031                 $_POST[<span class="stringliteral">&#39;ontology&#39;</span>]=mysql_insert_id();
 <a name="l00032"></a>00032         }
 <a name="l00033"></a>00033         <span class="keywordflow">if</span> ($_POST[<span class="stringliteral">&#39;cache&#39;</span>]||$_POST[<span class="stringliteral">&#39;uploadcache&#39;</span>]){
@@ -98,9 +98,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00047"></a>00047 }
 <a name="l00048"></a>00048         
 <a name="l00050"></a><a class="code" href="upload__specs_8php.html#a11f807f1da4519410a8ef3c491054e40">00050</a> <a class="code" href="generic__spec_8php.html#a7de87f9bb273254fb12b2a82db5af4c5" title="A string containg the SQL query to retrieve the details about all registered ontologies in the HTML D...">$onto_query</a>=<span class="stringliteral">&quot;select * from ontologies order by name, namespace&quot;</span>;
-<a name="l00052"></a><a class="code" href="upload__specs_8php.html#ae8a63e48396c801258606664299b4016">00052</a> <a class="code" href="upload__specs_8php.html#ae8a63e48396c801258606664299b4016" title="The result from the $onto_query SQL query to retrieve details about all registered ontologies in the ...">$onto_res</a>=mysql_query(<a class="code" href="generic__spec_8php.html#a7de87f9bb273254fb12b2a82db5af4c5" title="A string containg the SQL query to retrieve the details about all registered ontologies in the HTML D...">$onto_query</a>);
-<a name="l00053"></a>00053 <span class="keywordflow">for</span> ($i=0; $i&lt;mysql_num_rows(<a class="code" href="upload__specs_8php.html#ae8a63e48396c801258606664299b4016" title="The result from the $onto_query SQL query to retrieve details about all registered ontologies in the ...">$onto_res</a>); $i++){
-<a name="l00054"></a>00054         $ontologies[]=mysql_fetch_assoc($onto)res);
+<a name="l00052"></a><a class="code" href="upload__specs_8php.html#ae8a63e48396c801258606664299b4016">00052</a> <a class="code" href="upload__specs_8php.html#ae8a63e48396c801258606664299b4016" title="The result from the $onto_query SQL query to retrieve details about all registered ontologies in the ...">$onto_res</a>=mysqli_query(<a class="code" href="generic__spec_8php.html#a7de87f9bb273254fb12b2a82db5af4c5" title="A string containg the SQL query to retrieve the details about all registered ontologies in the HTML D...">$onto_query</a>);
+<a name="l00053"></a>00053 <span class="keywordflow">for</span> ($i=0; $i&lt;mysqli_num_rows(<a class="code" href="upload__specs_8php.html#ae8a63e48396c801258606664299b4016" title="The result from the $onto_query SQL query to retrieve details about all registered ontologies in the ...">$onto_res</a>); $i++){
+<a name="l00054"></a>00054         $ontologies[]=mysqli_fetch_assoc($onto)res);
 <a name="l00055"></a>00055         if ($_POST[&#39;ontology&#39;]==$ontologies[$i][&#39;<span class="keywordtype">id</span>&#39;]){
 <a name="l00056"></a>00056                 <a class="code" href="generic__spec_8php.html#a2121a20e6bac58d008dc60ae13902c12" title="A string specifying the ID of the current ontology specified in the HTML Specification Document gener...">$ontology</a>=$ontologies[$i][<span class="stringliteral">&#39;id&#39;</span>];        
 <a name="l00057"></a>00057                 $name=$ontologies[$i][<span class="stringliteral">&#39;name&#39;</span>];

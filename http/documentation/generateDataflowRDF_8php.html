@@ -86,13 +86,13 @@ while(!feof($ph))&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generateDataflowRDF_8php.html#a047170d6020a882807665812a27e2525">$sql</a> = &quot;) and content_types.category='Workflow' and policies.share_mode = 0&quot;</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A string containing an SQL query to find all the publically downloadable workflows that have dataflows that can be represented in RDF. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49a8a4009b02e49717caa88b128affc5"></a><!-- doxytag: member="generateDataflowRDF.php::$res" ref="a49a8a4009b02e49717caa88b128affc5" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5">$res</a> = mysql_query($sql)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5">$res</a> = mysqli_query($con, $sql);)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An SQL result for all the publically downloadable workflows that have dataflows that can be represented in RDF. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c87cdca2c1564e183b4717894fe5cc4"></a><!-- doxytag: member="generateDataflowRDF.php::$dbfiles" ref="a2c87cdca2c1564e183b4717894fe5cc4" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generateDataflowRDF_8php.html#a2c87cdca2c1564e183b4717894fe5cc4">$dbfiles</a> = array()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An array containing all the workflow version IDs for publically downloadable workflows that have dataflows that can be represented in RDF. These are used as the filenames for the local files that store Dataflow RDF. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e0944a73e0caa06db8370a49a35912c"></a><!-- doxytag: member="generateDataflowRDF.php::$newfiles" ref="a6e0944a73e0caa06db8370a49a35912c" args="" -->
-for($i=0;$i&lt; mysql_num_rows($res);$i++) <br class="typebreak"/>
+for($i=0;$i&lt; mysqli_num_rows($res);$i++) <br class="typebreak"/>
 foreach($curfiles as $cf)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generateDataflowRDF_8php.html#a6e0944a73e0caa06db8370a49a35912c">$newfiles</a> = array()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An array containing any new workflow versions for publically downloadable workflows that have dataflows that can be represented in RDF. So that Dataflow RDF for these can be generated. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89bcaafaaa36fdcb7b4e6e6336e2306c"></a><!-- doxytag: member="generateDataflowRDF.php::$filelocdir" ref="a89bcaafaaa36fdcb7b4e6e6336e2306c" args="" -->

@@ -23,11 +23,11 @@ if ($_POST['addedit']||$_POST['cache']||$_POST['uploadcache']){
 	if ($_POST['ontology']){
         	$tab10=array();
 		$uquery="update ontologies set name='$_POST[name]', url='$_POST[url]', image='$_POST[image]', namespace='$_POST[namespace]', ontology_type='$_POST[ontology_type]', timeout=$_POST[timeout] where id='$_POST[ontology]'";
-		$ures=mysql_query($uquery);
+		$ures=mysqli_query($con, $uquery););
 	}
 	else{
 		$iquery="insert into ontologies values('','$_POST[name]','$_POST[url]','$_POST[image]','$_POST[namespace]','$_POST[ontology_type]',$_POST[timeout])";
-		$ires=mysql_query($iquery);
+		$ires=mysqli_query($con, $iquery););
 		$_POST['ontology']=mysql_insert_id();
 	}
 	if ($_POST['cache']||$_POST['uploadcache']){
@@ -49,9 +49,9 @@ if ($_POST['addedit']||$_POST['cache']||$_POST['uploadcache']){
 /** @brief A string containg the SQL query to retrieve the details about all registered ontologies in the HTML Document Specification generator system. */
 $onto_query="select * from ontologies order by name, namespace";
 /** @brief The result from the $onto_query SQL query to retrieve details about all registered ontologies in the HTML Document Specification generator system. */ 
-$onto_res=mysql_query($onto_query);
-for ($i=0; $i<mysql_num_rows($onto_res); $i++){
-	$ontologies[]=mysql_fetch_assoc($onto)res);
+$onto_res=mysqli_query($con, $onto_query););
+for ($i=0; $i<mysqli_num_rows($onto_res); $i++){
+	$ontologies[]=mysqli_fetch_assoc($onto)res);
 	if ($_POST['ontology']==$ontologies[$i]['id']){
 		$ontology=$ontologies[$i]['id'];	
 		$name=$ontologies[$i]['name'];

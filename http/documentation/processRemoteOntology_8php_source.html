@@ -64,8 +64,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00003"></a>00003         include(<span class="stringliteral">&#39;xmlfunc.inc.php&#39;</span>);
 <a name="l00004"></a>00004         include(<span class="stringliteral">&#39;ontoconnect.inc.php&#39;</span>);
 <a name="l00005"></a>00005         $sql=<span class="stringliteral">&quot;select * from ontologies where id=$argv[1]&quot;</span>;
-<a name="l00006"></a>00006         $res=mysql_query($sql);
-<a name="l00007"></a>00007         $ont=mysql_fetch_assoc($res);
+<a name="l00006"></a>00006         $res=mysqli_query($con, $sql););
+<a name="l00007"></a>00007         $ont=mysqli_fetch_assoc($res);
 <a name="l00008"></a>00008         $fh=fopen($datapath.<span class="stringliteral">&quot;ontologies/remoteont/$argv[1]_$ont[name].owl&quot;</span>,<span class="charliteral">&#39;r&#39;</span>);
 <a name="l00009"></a>00009         $xml=<span class="stringliteral">&quot;&quot;</span>;
 <a name="l00010"></a>00010         <span class="keywordflow">while</span> (!feof($fh)){
