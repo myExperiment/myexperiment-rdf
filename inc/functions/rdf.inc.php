@@ -66,7 +66,7 @@ function getEntityTypeAndID($args){
 			$type = $entities[$type]['version_entity'];
                         if (!empty($entities[$type]['versioned_entity'])) {
                                 $version_sql="select id from {$entities[$type]['table']} where {$entities[$type]['versioned_id']}=$id and version=$nested_entity_num";
-                                $version_res=mysqli_query($con, $version_sql););
+                                $version_res=mysqli_query($con, $version_sql);
 				if (mysqli_num_rows($version_res) == 0) {
 					error_log("Version ID could not be deterimed for version $nested_entity_num of $type $id");
 					return array(null,null);
@@ -109,7 +109,7 @@ function getEntityResults($type,$id){
                 else $cursql=$sql[$type]." and ".$whereclause;
         }
         else $cursql=$sql[$type];
-        return mysqli_query($con, $cursql););
+        return mysqli_query($con, $cursql);
 }
 
 /**
@@ -132,7 +132,7 @@ function entityExists($type,$ids=array()){
         if (sizeof($ids)>0 && $ids[0]>0){
                 $cursql.=" where id in (".implode(",", $ids).")";
         }
-        $res = mysqli_query($con, $cursql););
+        $res = mysqli_query($con, $cursql);
         if (empty($res)) return FALSE;
         return TRUE;
 }
@@ -231,7 +231,7 @@ function getVersionID($entity){
         if (empty($entities[$entity['contributable_type']]['version_entity'])) return;
         $entity_version = $entities[$entities[$entity['contributable_type']]['version_entity']];
         $version_sql = "SELECT id FROM {$entity_version['table']} WHERE {$entity_version['versioned_id']} = {$entity['contributable_id']} AND version = {$entity['contributable_version']}";
-        $res = mysqli_query($con, $version_sql););
+        $res = mysqli_query($con, $version_sql);
         if (mysqli_num_rows($res) == 0) {
                 return "";
         }
@@ -355,7 +355,7 @@ function generateDataflowMappings($dataflows){
  */
 function getPermissions($policy_id){
         $permsql="select * from permissions where policy_id=".$policy_id;
-        $permres=mysqli_query($con, $permsql););
+        $permres=mysqli_query($con, $permsql);
         $perms=array();
         for ($p=0; $p<mysqli_num_rows($permres); $p++){
                 $perms[$p]=mysqli_fetch_array($permres);
@@ -374,7 +374,7 @@ function getPermissions($policy_id){
  */
 function addShareAndUpdateMode($contrib){
         $policysql="select share_mode, update_mode from policies where id =".$contrib['policy_id'];
-        $pres=mysqli_query($con, $policysql););
+        $pres=mysqli_query($con, $policysql);
         $contrib['share_mode']=mysqli_result($pres,0,'share_mode');
         $contrib['update_mode']=mysqli_result($pres,0,'update_mode');
         return $contrib;
@@ -397,12 +397,12 @@ function canUserDownload($entity){
         elseif ($entity['share_mode'] == 0) return TRUE;
         elseif (in_array($entity['share_mode'],array(1,3))){
                 $friendship_sql = "SELECT * FROM friendships WHERE accepted_at IS NOT NULL AND (user_id = $entity[contributor_id] OR friend_id = $entity[contributor_id]) AND (user_id = $rdfgen_userid OR friend_id = $rdfgen_userid)";  
-                $res = mysqli_query($con, $friendship_sql););
+                $res = mysqli_query($con, $friendship_sql);
                 if (mysqli_num_rows($res2)>0) return TRUE;
         }                       
         else{
                 $membership_sql = "SELECT * FROM memberships WHERE network_id IN (SELECT contributor_id FROM permissions WHERE policy_id = ".$entity['policy_id']." AND contributor_type = 'Network' AND download = 1) AND user_id = $rdfgen_userid";
-                $res = mysqli_query($con, $membership_sql););
+                $res = mysqli_query($con, $membership_sql);
                 if (mysqli_num_rows($res)>0) return TRUE;
         }
         return FALSE;

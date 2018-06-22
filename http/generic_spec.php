@@ -27,7 +27,7 @@ else {
 	include('partials/header.inc.php');
 }
 /** @brief The result from the $onto_query SQL query to retrieve details about all registered ontologies in the HTML Document Specification generator system. */
-$onto_res=mysqli_query($con, $onto_query););
+$onto_res=mysqli_query($con, $onto_query);
 for ($i=0; $i<mysqli_num_rows($onto_res); $i++){
 	$ontologies[]=mysqli_fetch_assoc($onto_res);
         if ($ontology==$ontologies[$i]['id']){
@@ -331,7 +331,7 @@ if ($ontology){
 	echo "    <h4>Imported Ontologies</h4>\n    <p>\n";
         foreach ($ontimports as $ontology){
 		$oquery="select * from ontologies where namespace like '$ontology%' or url like '$ontology%'";
-		$ores=mysqli_query($con, $oquery););
+		$ores=mysqli_query($con, $oquery);
 		if (mysqli_num_rows($ores)==1){
 			$ourl="?ontology=".mysqli_result($ores,0,'id');
 	                echo "<a href=\"$ourl\">".$ontology."</a><br/>\n";

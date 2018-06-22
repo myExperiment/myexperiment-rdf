@@ -26,7 +26,7 @@
 	/** @brief A string containing an SQL query to find all the publically downloadable workflows that have dataflows that can be represented in RDF. */
         $sql="select workflow_versions.id as wfvid from workflow_versions inner join content_types on workflow_versions.content_type_id = content_types.id inner join contributions on workflow_versions.workflow_id=contributions.contributable_id and contributions.contributable_type='Workflow' inner join policies on contributions.policy_id=policies.id where content_types.mime_type in (".implode(',',$dfct).") and content_types.category='Workflow' and policies.share_mode = 0";
 	/** @brief An SQL result for all the publically downloadable workflows that have dataflows that can be represented in RDF. */
-        $res=mysqli_query($con, $sql););
+        $res=mysqli_query($con, $sql);
 	/** @brief An array containing all the workflow version IDs for publically downloadable workflows that have dataflows that can be represented in RDF.  These are used as the filenames for the local files that store Dataflow RDF. */
 	$dbfiles=array();
 	for ($i=0; $i<mysqli_num_rows($res); $i++){

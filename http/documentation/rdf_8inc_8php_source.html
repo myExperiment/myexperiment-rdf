@@ -105,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00066"></a>00066                         $type = $entities[$type][<span class="stringliteral">&#39;version_entity&#39;</span>];
 <a name="l00067"></a>00067                         <span class="keywordflow">if</span> (!empty($entities[$type][<span class="stringliteral">&#39;parent_entity&#39;</span>])) {
 <a name="l00068"></a>00068                                 $version_sql=<span class="stringliteral">&quot;select id from {$entities[$type][&#39;table&#39;]} where {$entities[$type][&#39;parent_id&#39;]}=$id and version=$nested_entity_num&quot;</span>;
-<a name="l00069"></a>00069                                 $version_res=mysqli_query($con, $version_sql););
+<a name="l00069"></a>00069                                 $version_res=mysqli_query($con, $version_sql);
 <a name="l00070"></a>00070                                 <span class="keywordflow">if</span> (mysqli_num_rows($version_res) == 0) {
 <a name="l00071"></a>00071                                         error_log(<span class="stringliteral">&quot;Version ID could not be deterimed for version $nested_entity_num of $type $id&quot;</span>);
 <a name="l00072"></a>00072                                         <span class="keywordflow">return</span> array(null,null);
@@ -134,7 +134,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00107"></a>00107                 <span class="keywordflow">else</span> $cursql=$sql[$type].<span class="stringliteral">&quot; and &quot;</span>.$whereclause;
 <a name="l00108"></a>00108         }
 <a name="l00109"></a>00109         <span class="keywordflow">else</span> $cursql=$sql[$type];
-<a name="l00110"></a>00110         <span class="keywordflow">return</span> mysqli_query($con, $cursql););
+<a name="l00110"></a>00110         <span class="keywordflow">return</span> mysqli_query($con, $cursql);
 <a name="l00111"></a>00111 }
 <a name="l00112"></a>00112 
 <a name="l00125"></a><a class="code" href="rdf_8inc_8php.html#a807eecb369752a6ad3c1e84fa0be8016">00125</a> function <a class="code" href="rdf_8inc_8php.html#a807eecb369752a6ad3c1e84fa0be8016" title="Test whether an entity or one of a number entities or a type of entity exists.">entityExists</a>($type,$ids=array()){
@@ -145,7 +145,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00130"></a>00130         <span class="keywordflow">if</span> (<span class="keyword">sizeof</span>($ids)&gt;0 &amp;&amp; $ids[0]&gt;0){
 <a name="l00131"></a>00131                 $cursql.=<span class="stringliteral">&quot; where id in (&quot;</span>.implode(<span class="stringliteral">&quot;,&quot;</span>, $ids).<span class="stringliteral">&quot;)&quot;</span>;
 <a name="l00132"></a>00132         }
-<a name="l00133"></a>00133         <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysqli_query($con, $cursql););
+<a name="l00133"></a>00133         <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysqli_query($con, $cursql);
 <a name="l00134"></a>00134         <span class="keywordflow">if</span> (empty(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>)) <span class="keywordflow">return</span> FALSE;
 <a name="l00135"></a>00135         <span class="keywordflow">return</span> TRUE;
 <a name="l00136"></a>00136 }
@@ -223,7 +223,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00229"></a>00229         <span class="keywordflow">if</span> (empty($entities[$entity[<span class="stringliteral">&#39;contributable_type&#39;</span>]][<span class="stringliteral">&#39;version_entity&#39;</span>])) <span class="keywordflow">return</span>;
 <a name="l00230"></a>00230         $entity_version = $entities[$entities[$entity[<span class="stringliteral">&#39;contributable_type&#39;</span>]][<span class="stringliteral">&#39;version_entity&#39;</span>]];
 <a name="l00231"></a>00231         $version_sql = <span class="stringliteral">&quot;SELECT id FROM {$entity_version[&#39;table&#39;]} WHERE {$entity_version[&#39;parent_id&#39;]} = {$entity[&#39;contributable_id&#39;]} AND version = {$entity[&#39;contributable_version&#39;]}&quot;</span>;
-<a name="l00232"></a>00232         <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysqli_query($con, $version_sql););
+<a name="l00232"></a>00232         <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysqli_query($con, $version_sql);
 <a name="l00233"></a>00233         <span class="keywordflow">if</span> (mysqli_num_rows(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>) == 0) {
 <a name="l00234"></a>00234                 <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
 <a name="l00235"></a>00235         }
@@ -276,7 +276,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00336"></a>00336 
 <a name="l00346"></a><a class="code" href="rdf_8inc_8php.html#a85cc684b4b268d3774c0d37c2c129ad9">00346</a> function <a class="code" href="rdf_8inc_8php.html#a85cc684b4b268d3774c0d37c2c129ad9" title="Get the permissions associated with a specified Policy.">getPermissions</a>($policy_id){
 <a name="l00347"></a>00347         $permsql=<span class="stringliteral">&quot;select * from permissions where policy_id=&quot;</span>.$policy_id;
-<a name="l00348"></a>00348         $permres=mysqli_query($con, $permsql););
+<a name="l00348"></a>00348         $permres=mysqli_query($con, $permsql);
 <a name="l00349"></a>00349         $perms=array();
 <a name="l00350"></a>00350         <span class="keywordflow">for</span> (<a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>=0; <a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>&lt;mysqli_num_rows($permres); <a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>++){
 <a name="l00351"></a>00351                 $perms[<a class="code" href="current__spec_8php.html#ab0ed46ece3f8d301125a0f2728d90d7b" title="$counter for the number of properties.">$p</a>]=mysqli_fetch_array($permres);
@@ -286,7 +286,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00355"></a>00355 
 <a name="l00365"></a><a class="code" href="rdf_8inc_8php.html#a4542f26f96fe3106d064da119bdb5d92">00365</a> function <a class="code" href="rdf_8inc_8php.html#a4542f26f96fe3106d064da119bdb5d92" title="Get the share and update modes for the Policy of a specified Contribution.">addShareAndUpdateMode</a>($contrib){
 <a name="l00366"></a>00366         $policysql=<span class="stringliteral">&quot;select share_mode, update_mode from policies where id =&quot;</span>.$contrib[<span class="stringliteral">&#39;policy_id&#39;</span>];
-<a name="l00367"></a>00367         $pres=mysqli_query($con, $policysql););
+<a name="l00367"></a>00367         $pres=mysqli_query($con, $policysql);
 <a name="l00368"></a>00368         $contrib[<span class="stringliteral">&#39;share_mode&#39;</span>]=mysqli_result($pres,0,<span class="stringliteral">&#39;share_mode&#39;</span>);
 <a name="l00369"></a>00369         $contrib[<span class="stringliteral">&#39;update_mode&#39;</span>]=mysqli_result($pres,0,<span class="stringliteral">&#39;update_mode&#39;</span>);
 <a name="l00370"></a>00370         <span class="keywordflow">return</span> $contrib;
@@ -300,12 +300,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00387"></a>00387         elseif (<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>[<span class="stringliteral">&#39;share_mode&#39;</span>] == 0) <span class="keywordflow">return</span> TRUE;
 <a name="l00388"></a>00388         elseif (in_array(<a class="code" href="ontent_8php.html#a7ace0ad85fd80fca062f2bf7e166ee47" title="A string containing the full URI for the ontology entity that has been requested.">$entity</a>[<span class="stringliteral">&#39;share_mode&#39;</span>],array(1,3))){
 <a name="l00389"></a>00389                 $friendship_sql = <span class="stringliteral">&quot;SELECT * FROM friendships WHERE accepted_at IS NOT NULL AND (user_id = $entity[contributor_id] OR friend_id = $entity[contributor_id]) AND (user_id = $rdfgen_userid OR friend_id = $rdfgen_userid)&quot;</span>;  
-<a name="l00390"></a>00390                 <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysqli_query($con, $friendship_sql););
+<a name="l00390"></a>00390                 <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysqli_query($con, $friendship_sql);
 <a name="l00391"></a>00391                 <span class="keywordflow">if</span> (mysqli_num_rows($res2)&gt;0) <span class="keywordflow">return</span> TRUE;
 <a name="l00392"></a>00392         }                       
 <a name="l00393"></a>00393         <span class="keywordflow">else</span>{
 <a name="l00394"></a>00394                 $membership_sql = <span class="stringliteral">&quot;SELECT * FROM memberships WHERE network_id IN (SELECT contributor_id FROM permissions WHERE policy_id = &quot;</span>.$entity[<span class="stringliteral">&#39;policy_id&#39;</span>].<span class="stringliteral">&quot; AND contributor_type = &#39;Network&#39; AND download = 1) AND user_id = $rdfgen_userid&quot;</span>;
-<a name="l00395"></a>00395                 <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysqli_query($con, $membership_sql););
+<a name="l00395"></a>00395                 <a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a> = mysqli_query($con, $membership_sql);
 <a name="l00396"></a>00396                 <span class="keywordflow">if</span> (mysqli_num_rows(<a class="code" href="generateDataflowRDF_8php.html#a49a8a4009b02e49717caa88b128affc5" title="An SQL result for all the publically downloadable workflows that have dataflows that can be represent...">$res</a>)&gt;0) <span class="keywordflow">return</span> TRUE;
 <a name="l00397"></a>00397         }
 <a name="l00398"></a>00398         <span class="keywordflow">return</span> FALSE;
