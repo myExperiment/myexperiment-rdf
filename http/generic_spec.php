@@ -333,7 +333,7 @@ if ($ontology){
 		$oquery="select * from ontologies where namespace like '$ontology%' or url like '$ontology%'";
 		$ores=mysqli_query($GLOBALS['con'], $oquery);
 		if (mysqli_num_rows($ores)==1){
-			$ourl="?ontology=".mysqli_result($ores,0,'id');
+			$ourl="?ontology=".mysqli_fetch_assoc($ores)['id'];
 	                echo "<a href=\"$ourl\">".$ontology."</a><br/>\n";
 		}
 		else echo $ontology."<br/>\n";

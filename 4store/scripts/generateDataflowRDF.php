@@ -30,7 +30,7 @@
 	/** @brief An array containing all the workflow version IDs for publically downloadable workflows that have dataflows that can be represented in RDF.  These are used as the filenames for the local files that store Dataflow RDF. */
 	$dbfiles=array();
 	for ($i=0; $i<mysqli_num_rows($res); $i++){
-		$dbfiles[]=mysqli_result($res,$i,'wfvid');
+		$dbfiles[]=mysqli_fetch_assoc($res)['wfvid'];
 	}
 	foreach ($curfiles as $cf){
 		if (!in_array($cf,$dbfiles)){

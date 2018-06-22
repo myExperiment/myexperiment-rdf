@@ -197,7 +197,7 @@ function getMemberships($user){
 		$msql=$sql['Membership']." where user_id=$user[id]";
 		$mres=mysqli_query($GLOBALS['con'], $msql);
 		for ($m=0; $m<mysqli_num_rows($mres); $m++){
-			$xml.="    <mebase:has-membership rdf:resource=\"${datauri}users/$user[id]/memberships/".mysqli_result($mres,$m,'id')."\"/>\n";
+			$xml.="    <mebase:has-membership rdf:resource=\"${datauri}users/$user[id]/memberships/".mysqli_fetch_assoc($mres)['id']."\"/>\n";
 		}
 	}
 	return $xml;
@@ -219,7 +219,7 @@ function getFriendships($user){
 		$fsql=addWhereClause($sql['Friendship'],"user_id=$user[id] or friend_id=$user[id]");
         	$fres=mysqli_query($GLOBALS['con'], $fsql);
 	        for ($f=0; $f<mysqli_num_rows($fres); $f++){
-        	        $xml.="    <mebase:has-friendship rdf:resource=\"${datauri}users/".mysqli_result($fres,$f,'user_id')."/friendships/".mysqli_result($fres,$f,'id')."\"/>\n";
+        	        $xml.="    <mebase:has-friendship rdf:resource=\"${datauri}users/".mysqli_result($fres,$f,'user_id')."/friendships/".mysqli_fetch_assoc($fres)['id']."\"/>\n";
         	}
 	}
         return $xml;
@@ -241,7 +241,7 @@ function getFavourites($user){
 	        $fsql=addWhereClause($sql['Favourite'],"user_id=$user[id]");
         	$fres=mysqli_query($GLOBALS['con'], $fsql);
 	        for ($f=0; $f<mysqli_num_rows($fres); $f++){
-        	        $xml.="    <meannot:has-favourite rdf:resource=\"${datauri}users/$user[id]/favourites/".mysqli_result($fres,$f,'id')."\"/>\n";
+        	        $xml.="    <meannot:has-favourite rdf:resource=\"${datauri}users/$user[id]/favourites/".mysqli_fetch_assoc($fres)['id']."\"/>\n";
         	}
         	return $xml;
 	}
@@ -652,7 +652,7 @@ function getPackEntries($entity, $type){
 	$lsql.="pack_id=$id $versionsql";
 	$lres=mysqli_query($GLOBALS['con'], $lsql);
 	for ($e=0; $e<mysqli_num_rows($lres); $e++){
-		$xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['LocalPackEntry']['url_subpath']}/".mysqli_result($lres,$e,'id')."\"/>\n";
+		$xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['LocalPackEntry']['url_subpath']}/".mysqli_fetch_assoc($lres)['id']."\"/>\n";
 	}
 	$rsql=$sql['RemotePackEntry'];
 	if (stripos($rsql,'where')>0) $rsql.=" and ";
@@ -660,7 +660,7 @@ function getPackEntries($entity, $type){
         $rsql.="pack_id=$id $versionsql";
 	$rres=mysqli_query($GLOBALS['con'], $rsql);
         for ($e=0; $e<mysqli_num_rows($rres); $e++){
-                $xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['RemotePackEntry']['url_subpath']}/".mysqli_result($rres,$e,'id')."\"/>\n";
+                $xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['RemotePackEntry']['url_subpath']}/".mysqli_fetch_assoc($rres)['id']."\"/>\n";
         }
 	$prsql=$sql['RelationshipEntry'];
 	if (stripos($prsql,'where')>0) $prsql.=" and ";
@@ -669,7 +669,7 @@ function getPackEntries($entity, $type){
 	//error_log($prsql);
         $prres=mysqli_query($GLOBALS['con'], $prsql);
 	for ($e=0; $e<mysqli_num_rows($prres); $e++){
-                $xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['RelationshipEntry']['url_subpath']}/".mysqli_result($prres,$e,'id')."\"/>\n";
+                $xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['RelationshipEntry']['url_subpath']}/".mysqli_fetch_assoc($prres)['id']."\"/>\n";
         }
 	return $xml;
 }
@@ -1018,7 +1018,7 @@ function getRelationshipNode($id,$type){
 function getPredicate($id){
 	$predsql="select ontologies.uri as ontology_uri, predicates.title as predicate from predicates inner join ontologies on predicates.ontology_id=ontologies.id where predicates.id=$id";
 	$res=mysqli_query($GLOBALS['con'], $predsql);
-	return mysqli_result($res,0,'ontology_uri')."/".mysqli_result($res,0,'predicate');
+	return mysqli_result($res,0,'ontology_uri')."/".mysqli_fetch_assoc($res)['predicate'];
 }
 
 /**

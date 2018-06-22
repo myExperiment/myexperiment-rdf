@@ -71,7 +71,7 @@ function getEntityTypeAndID($args){
 					error_log("Version ID could not be deterimed for version $nested_entity_num of $type $id");
 					return array(null,null);
 				}
-                                $id=mysqli_result($version_res,0,'id');
+                                $id=mysqli_fetch_assoc($version_res)['id'];
                         }
                 }
 		elseif (isset($nested_entity_type)) {
