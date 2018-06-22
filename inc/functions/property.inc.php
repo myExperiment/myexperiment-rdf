@@ -78,7 +78,7 @@ function getEntityURI($type,$id,$entity){
         elseif ($type=="GroupAnnouncement"){
    	 	$gasql="select network_id from group_announcements where id=$id";
                 $gares=mysqli_query($GLOBALS['con'], $gasql);
-                return $datauri."groups/".mysqli_result($gares,0,'network_id')."/announcements/".$id;
+                return $datauri."groups/".mysqli_fetch_assoc($gares)['network_id']."/announcements/".$id;
         }
 	elseif ($type=="Ontology") return $entity['uri'];
         return $datauri."$url_subpath/$id";
@@ -176,7 +176,7 @@ function getMembers($group){
 	$mres=mysqli_query($GLOBALS['con'], $msql);
         $xml.="    <sioc:has_member rdf:resource=\"${datauri}users/".$group['user_id']."\"/>\n";
         for ($m=0; $m<mysqli_num_rows($mres); $m++){
-        	$xml.="    <sioc:has_member rdf:resource=\"${datauri}users/".mysqli_result($mres,$m,'user_id')."\"/>\n";
+        	$xml.="    <sioc:has_member rdf:resource=\"${datauri}users/".mysqli_fetch_assoc($mres)['user_id']."\"/>\n";
         }
 	return $xml;
 }
@@ -219,7 +219,7 @@ function getFriendships($user){
 		$fsql=addWhereClause($sql['Friendship'],"user_id=$user[id] or friend_id=$user[id]");
         	$fres=mysqli_query($GLOBALS['con'], $fsql);
 	        for ($f=0; $f<mysqli_num_rows($fres); $f++){
-        	        $xml.="    <mebase:has-friendship rdf:resource=\"${datauri}users/".mysqli_result($fres,$f,'user_id')."/friendships/".mysqli_fetch_assoc($fres)['id']."\"/>\n";
+        	        $xml.="    <mebase:has-friendship rdf:resource=\"${datauri}users/".mysqli_fetch_assoc($fres)['user_id']."/friendships/".mysqli_fetch_assoc($fres)['id']."\"/>\n";
         	}
 	}
         return $xml;
@@ -1018,7 +1018,7 @@ function getRelationshipNode($id,$type){
 function getPredicate($id){
 	$predsql="select ontologies.uri as ontology_uri, predicates.title as predicate from predicates inner join ontologies on predicates.ontology_id=ontologies.id where predicates.id=$id";
 	$res=mysqli_query($GLOBALS['con'], $predsql);
-	return mysqli_result($res,0,'ontology_uri')."/".mysqli_fetch_assoc($res)['predicate'];
+	return mysqli_fetch_assoc($res)['ontology_uri']."/".mysqli_fetch_assoc($res)['predicate'];
 }
 
 /**

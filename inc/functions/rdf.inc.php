@@ -235,7 +235,7 @@ function getVersionID($entity){
         if (mysqli_num_rows($res) == 0) {
                 return "";
         }
-        return mysqli_result($res, 0, 'id');
+        return mysqli_fetch_assoc($res)['id'];
 }
 
 /**
@@ -375,8 +375,8 @@ function getPermissions($policy_id){
 function addShareAndUpdateMode($contrib){
         $policysql="select share_mode, update_mode from policies where id =".$contrib['policy_id'];
         $pres=mysqli_query($GLOBALS['con'], $policysql);
-        $contrib['share_mode']=mysqli_result($pres,0,'share_mode');
-        $contrib['update_mode']=mysqli_result($pres,0,'update_mode');
+        $contrib['share_mode']=mysqli_fetch_assoc($pres)['share_mode'];
+        $contrib['update_mode']=mysqli_fetch_assoc($pres)['update_mode'];
         return $contrib;
 }
 
