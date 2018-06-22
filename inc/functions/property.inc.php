@@ -68,7 +68,7 @@ function getEntityURI($type,$id,$entity){
 	}
 	elseif (isset($entity_type['versioned_id'])) {
 		$version_sql = "SELECT {$entity_type['versioned_id']} AS versioned_id, version FROM {$entity_type['table']} WHERE id = $id";
-		$version_res = mysqli_query($con, $version_sql);
+		$version_res = mysqli_query($GLOBALS['con'], $version_sql);
 		if (mysqli_num_rows($version_res) == 0) {
 			return "";
 		}
@@ -77,7 +77,7 @@ function getEntityURI($type,$id,$entity){
         }
         elseif ($type=="GroupAnnouncement"){
    	 	$gasql="select network_id from group_announcements where id=$id";
-                $gares=mysqli_query($con, $gasql);
+                $gares=mysqli_query($GLOBALS['con'], $gasql);
                 return $datauri."groups/".mysqli_result($gares,0,'network_id')."/announcements/".$id;
         }
 	elseif ($type=="Ontology") return $entity['uri'];
@@ -173,7 +173,7 @@ function getMembers($group){
 	global $datauri;
 	$xml="";
         $msql = "select * from memberships where network_id=$group[id] and network_established_at is not null and user_established_at is not null";
-	$mres=mysqli_query($con, $msql);
+	$mres=mysqli_query($GLOBALS['con'], $msql);
         $xml.="    <sioc:has_member rdf:resource=\"${datauri}users/".$group['user_id']."\"/>\n";
         for ($m=0; $m<mysqli_num_rows($mres); $m++){
         	$xml.="    <sioc:has_member rdf:resource=\"${datauri}users/".mysqli_result($mres,$m,'user_id')."\"/>\n";
@@ -195,7 +195,7 @@ function getMemberships($user){
 	$xml="";
 	if (isset($user['id'])){
 		$msql=$sql['Membership']." where user_id=$user[id]";
-		$mres=mysqli_query($con, $msql);
+		$mres=mysqli_query($GLOBALS['con'], $msql);
 		for ($m=0; $m<mysqli_num_rows($mres); $m++){
 			$xml.="    <mebase:has-membership rdf:resource=\"${datauri}users/$user[id]/memberships/".mysqli_result($mres,$m,'id')."\"/>\n";
 		}
@@ -217,7 +217,7 @@ function getFriendships($user){
 	$xml="";
 	if (isset($user['id'])){
 		$fsql=addWhereClause($sql['Friendship'],"user_id=$user[id] or friend_id=$user[id]");
-        	$fres=mysqli_query($con, $fsql);
+        	$fres=mysqli_query($GLOBALS['con'], $fsql);
 	        for ($f=0; $f<mysqli_num_rows($fres); $f++){
         	        $xml.="    <mebase:has-friendship rdf:resource=\"${datauri}users/".mysqli_result($fres,$f,'user_id')."/friendships/".mysqli_result($fres,$f,'id')."\"/>\n";
         	}
@@ -239,7 +239,7 @@ function getFavourites($user){
 	$xml="";
 	if (isset($user['id'])){
 	        $fsql=addWhereClause($sql['Favourite'],"user_id=$user[id]");
-        	$fres=mysqli_query($con, $fsql);
+        	$fres=mysqli_query($GLOBALS['con'], $fsql);
 	        for ($f=0; $f<mysqli_num_rows($fres); $f++){
         	        $xml.="    <meannot:has-favourite rdf:resource=\"${datauri}users/$user[id]/favourites/".mysqli_result($fres,$f,'id')."\"/>\n";
         	}
@@ -260,7 +260,7 @@ function getTaggings($tag){
 	global $sql, $datauri;
 	$xml="";
 	$tsql=addWhereClause($sql['Tagging'],"tag_id=$tag[id]");
-	$tres=mysqli_query($con, $tsql);
+	$tres=mysqli_query($GLOBALS['con'], $tsql);
 	for ($t=0; $t<mysqli_num_rows($tres); $t++){
 		$row=mysqli_fetch_assoc($tres);
 		$xml.="    <meannot:for-tagging rdf:resource=\"".getEntityURI('Tagging',$row['id'],$row)."\"/>\n";
@@ -436,7 +436,7 @@ function getIsCurrentVersion($version){
         if (!isset($version_sql)) {
 		return FALSE;
 	}
-	$res = mysqli_query($con, $version_sql);
+	$res = mysqli_query($GLOBALS['con'], $version_sql);
 	if (mysqli_num_rows($res) > 0) return TRUE;
 	return FALSE;
 }
@@ -462,7 +462,7 @@ function getVersions($entity, $type){
 	if (!empty($entity['current_version'])) {
 		$versions_sql .= " and version!={$entity['current_version']}";
 	}
-	$res=mysqli_query($con, $versions_sql);
+	$res=mysqli_query($GLOBALS['con'], $versions_sql);
 	$versions_rdf="";
 	if ($type == "Pack") {
 		$property_name = "mepack:has-snapshot";
@@ -650,7 +650,7 @@ function getPackEntries($entity, $type){
 	if (stripos($lsql,'where')>0) $lsql.=" and ";
 	else $lsql.=" where ";	
 	$lsql.="pack_id=$id $versionsql";
-	$lres=mysqli_query($con, $lsql);
+	$lres=mysqli_query($GLOBALS['con'], $lsql);
 	for ($e=0; $e<mysqli_num_rows($lres); $e++){
 		$xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['LocalPackEntry']['url_subpath']}/".mysqli_result($lres,$e,'id')."\"/>\n";
 	}
@@ -658,7 +658,7 @@ function getPackEntries($entity, $type){
 	if (stripos($rsql,'where')>0) $rsql.=" and ";
         else $rsql.=" where ";
         $rsql.="pack_id=$id $versionsql";
-	$rres=mysqli_query($con, $rsql);
+	$rres=mysqli_query($GLOBALS['con'], $rsql);
         for ($e=0; $e<mysqli_num_rows($rres); $e++){
                 $xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['RemotePackEntry']['url_subpath']}/".mysqli_result($rres,$e,'id')."\"/>\n";
         }
@@ -667,7 +667,7 @@ function getPackEntries($entity, $type){
         else $prsql.=" where ";
         $prsql.="context_id={$entity['id']} AND context_type='{$entities[$type]['db_entity']}'";
 	//error_log($prsql);
-        $prres=mysqli_query($con, $prsql);
+        $prres=mysqli_query($GLOBALS['con'], $prsql);
 	for ($e=0; $e<mysqli_num_rows($prres); $e++){
                 $xml.="    <mepack:has-entry rdf:resource=\"$packurl/{$entities['RelationshipEntry']['url_subpath']}/".mysqli_result($prres,$e,'id')."\"/>\n";
         }
@@ -806,7 +806,7 @@ function getDataflowComponents($entity,$type,$retrieve=TRUE){
 	$sql="select workflow_versions.*, content_types.mime_type from workflow_versions inner join content_types on workflow_versions.content_type_id=content_types.id where ";
 	if ($type=="Workflow") $sql.="version='$entity[current_version]' and workflow_id='$entity[id]'";
 	elseif ($type=="WorkflowVersion") $sql.="workflow_versions.id='$entity[id]'";
-	$res=mysqli_query($con, $sql);
+	$res=mysqli_query($GLOBALS['con'], $sql);
 	$wfv=mysqli_fetch_assoc($res);
 	$ent_uri=$datauri."workflows/$wfv[workflow_id]/versions/$wfv[version]";
         if ($wfv['mime_type']=='application/vnd.taverna.t2flow+xml') $df_uri="$ent_uri#dataflows/1";
@@ -832,7 +832,7 @@ function getDataflowComponents($entity,$type,$retrieve=TRUE){
  */
 function getLicenseAttributes($license){
 	$sql="select license_options.* from license_attributes inner join license_options on license_attributes.license_option_id=license_options.id where license_attributes.license_id={$license['id']}";
-	$res=mysqli_query($con, $sql);
+	$res=mysqli_query($GLOBALS['con'], $sql);
 	$xml="";
 	for ($a=0; $a<mysqli_num_rows($res); $a++){
 		$row=mysqli_fetch_array($res);
@@ -863,7 +863,7 @@ function getAnnotations($entity, $type){
 	foreach ($annotations as $annotation){
 		if ($annotation == "Citation") $annot_sql=getAnnotationSQL($annotation, $entity['workflow_id'], $entity['version']);
 		else $annot_sql=getAnnotationSQL($annotation, $type, $entity['id']);
-		$res = mysqli_query($con, $annot_sql);
+		$res = mysqli_query($GLOBALS['con'], $annot_sql);
 	        for ($a=0; $a<mysqli_num_rows($res); $a++){
 			$row = mysqli_fetch_assoc($res);
                         $annot_uri=getEntityURI($annotation, $row['id'], $row);
@@ -889,7 +889,7 @@ function getPredicateRelations($entity){
 	if (!stripos('where',$sql['PredicateRelation'])) $predicatesql.=" where ";
         else $predicatesql.=" and ";
         $predicaterelsql=$predicatesql."subject_predicate_id=$entity[id]";
-        $res=mysqli_query($con, $predicaterelsql);
+        $res=mysqli_query($GLOBALS['con'], $predicaterelsql);
 	if ($res!==false){
 	        for ($r=0; $r<mysqli_num_rows($res); $r++){
         	        $row=mysqli_fetch_assoc($res);
@@ -996,7 +996,7 @@ function getRelationshipNode($id,$type){
 	global $datauri, $entities, $db_entity_mappings;
 	$type = $db_entity_mappings[$type];
 	$node_sql="select * from {$entities[$type]['table']} where id = $id";
-	$res=mysqli_query($con, $node_sql);
+	$res=mysqli_query($GLOBALS['con'], $node_sql);
 	$row=mysqli_fetch_assoc($res);
 	if ($type=="RemotePackEntry") return $row['uri'];
 	if ($type=="LocalPackEntry"){
@@ -1017,7 +1017,7 @@ function getRelationshipNode($id,$type){
  */
 function getPredicate($id){
 	$predsql="select ontologies.uri as ontology_uri, predicates.title as predicate from predicates inner join ontologies on predicates.ontology_id=ontologies.id where predicates.id=$id";
-	$res=mysqli_query($con, $predsql);
+	$res=mysqli_query($GLOBALS['con'], $predsql);
 	return mysqli_result($res,0,'ontology_uri')."/".mysqli_result($res,0,'predicate');
 }
 
@@ -1036,7 +1036,7 @@ function generatePredicatesRDF($id){
 	if (!stripos('where',$sql['ObjectProperty'])) $predssql.=" where ";
         else $predssql.=" and ";
 	$predssql.=" ontology_id=$id";
-	$res=mysqli_query($con, $predssql);
+	$res=mysqli_query($GLOBALS['con'], $predssql);
 	$xml="";
 	for ($p=0; $p<mysqli_num_rows($res); $p++){
 		$xml.=generateEntityRDF(mysqli_fetch_assoc($res),"ObjectProperty");
@@ -1075,7 +1075,7 @@ function getOREAggregatedResources($entity, $type){
         if (!empty($entities[$type]['aggregates_resources'])) {
                 if (!isset($entity['version'])) $entity['version'] = null;
                 $arsql=getAggregatedResourceSQL($type, $entity);
-                $res=mysqli_query($con, $arsql);
+                $res=mysqli_query($GLOBALS['con'], $arsql);
                 for ($i=0; $i<mysqli_num_rows($res); $i++){
                         $row=mysqli_fetch_assoc($res);
 			if (isset($row['entry_type']) && $row['entry_type']=="RemotePackEntry") {
@@ -1099,7 +1099,7 @@ function getOREAggregatedResources($entity, $type){
                         if (stripos($prsql,'where')>0) $prsql.=" and ";
                         else $prsql.=" where ";
                         $prsql.="context_id=$entity[id]";
-                        $res=mysqli_query($con, $prsql);
+                        $res=mysqli_query($GLOBALS['con'], $prsql);
                         for ($i=0; $i<mysqli_num_rows($res); $i++){
                                 $row=mysqli_fetch_assoc($res);
                                 $relurn=getRelationshipURN(getRelationshipSPO($row));

@@ -74,11 +74,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00023"></a>00023         <span class="keywordflow">if</span> ($_POST[<span class="stringliteral">&#39;ontology&#39;</span>]){
 <a name="l00024"></a>00024                 $tab10=array();
 <a name="l00025"></a>00025                 $uquery=<span class="stringliteral">&quot;update ontologies set name=&#39;$_POST[name]&#39;, url=&#39;$_POST[url]&#39;, image=&#39;$_POST[image]&#39;, namespace=&#39;$_POST[namespace]&#39;, ontology_type=&#39;$_POST[ontology_type]&#39;, timeout=$_POST[timeout] where id=&#39;$_POST[ontology]&#39;&quot;</span>;
-<a name="l00026"></a>00026                 $ures=mysqli_query($con, $uquery);
+<a name="l00026"></a>00026                 $ures=mysqli_query($GLOBALS['con'], $uquery);
 <a name="l00027"></a>00027         }
 <a name="l00028"></a>00028         <span class="keywordflow">else</span>{
 <a name="l00029"></a>00029                 $iquery=<span class="stringliteral">&quot;insert into ontologies values(&#39;&#39;,&#39;$_POST[name]&#39;,&#39;$_POST[url]&#39;,&#39;$_POST[image]&#39;,&#39;$_POST[namespace]&#39;,&#39;$_POST[ontology_type]&#39;,$_POST[timeout])&quot;</span>;
-<a name="l00030"></a>00030                 $ires=mysqli_query($con, $iquery);
+<a name="l00030"></a>00030                 $ires=mysqli_query($GLOBALS['con'], $iquery);
 <a name="l00031"></a>00031                 $_POST[<span class="stringliteral">&#39;ontology&#39;</span>]=mysql_insert_id();
 <a name="l00032"></a>00032         }
 <a name="l00033"></a>00033         <span class="keywordflow">if</span> ($_POST[<span class="stringliteral">&#39;cache&#39;</span>]||$_POST[<span class="stringliteral">&#39;uploadcache&#39;</span>]){

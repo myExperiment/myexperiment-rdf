@@ -379,7 +379,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00331"></a>00331         echo <span class="stringliteral">&quot;    &lt;h4&gt;Imported Ontologies&lt;/h4&gt;\n    &lt;p&gt;\n&quot;</span>;
 <a name="l00332"></a>00332         <span class="keywordflow">foreach</span> (<a class="code" href="generic__spec_8php.html#a926e69379784fc8359dd9d0fe4ddade7" title="An array listing all the ontologies imported by the current ontology specified in the HTML Specificat...">$ontimports</a> as <a class="code" href="generic__spec_8php.html#a2121a20e6bac58d008dc60ae13902c12" title="A string specifying the ID of the current ontology specified in the HTML Specification Document gener...">$ontology</a>){
 <a name="l00333"></a>00333                 $oquery=<span class="stringliteral">&quot;select * from ontologies where namespace like &#39;$ontology%&#39; or url like &#39;$ontology%&#39;&quot;</span>;
-<a name="l00334"></a>00334                 $ores=mysqli_query($con, $oquery);
+<a name="l00334"></a>00334                 $ores=mysqli_query($GLOBALS['con'], $oquery);
 <a name="l00335"></a>00335                 <span class="keywordflow">if</span> (mysqli_num_rows($ores)==1){
 <a name="l00336"></a>00336                         $ourl=<span class="stringliteral">&quot;?ontology=&quot;</span>.mysqli_result($ores,0,<span class="stringliteral">&#39;id&#39;</span>);
 <a name="l00337"></a>00337                         echo <span class="stringliteral">&quot;&lt;a href=\&quot;$ourl\&quot;&gt;&quot;</span>.$ontology.<span class="stringliteral">&quot;&lt;/a&gt;&lt;br/&gt;\n&quot;</span>;

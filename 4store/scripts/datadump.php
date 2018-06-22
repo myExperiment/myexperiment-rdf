@@ -25,7 +25,7 @@ fwrite($fh,generateGenericRDFHeader());
 foreach ($sql as $k => $v){
 	$v=setUserAndGroups($v);
 	echo "[".date("H:i:s")."] Adding $k\n";
-	$res=mysqli_query($con, $v);
+	$res=mysqli_query($GLOBALS['con'], $v);
 	if ($res!==false){
 		$rows=mysqli_num_rows($res);
 		$xml="";
